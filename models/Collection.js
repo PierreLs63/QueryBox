@@ -15,6 +15,7 @@ const UserAndPrivilege = new Schema({
 
 
 const CollectionSchema = new mongoose.Schema({
+    //this array of strings are requestIds
     requests: [{ type: String }],
     users: [UserAndPrivilege], 
     name: {
