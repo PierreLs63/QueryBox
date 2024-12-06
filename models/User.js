@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import randToken from "rand-token";
+import crypto from "crypto";
 
 const UserSchema = new mongoose.Schema({
     pseudo: {
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     token: {
         type: String,
         default: function() {
-            return randToken.generate(64);
+            return crypto.randomUUID();
         }
     },
     isValid: {
