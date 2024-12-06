@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 // UserId and privilege with disabled id
-const UserAndPrivilege = new Schema({
+const UserAndPrivilegeAndHasJoined = new Schema({
     UserId: { 
         type: String, 
         required: true 
@@ -10,20 +10,20 @@ const UserAndPrivilege = new Schema({
     privilege: { 
         type: int, 
         required: true 
+    },
+    hasJoined: {
+        type: Boolean,
+        default: false
     }
   }, { _id: false });
 
 
 const CollectionSchema = new mongoose.Schema({
-    requests: [{ type: String }],
-    users: [UserAndPrivilege], 
+    collections: [{ type: String }],
+    users: [UserAndPrivilegeAndHasJoined], 
     name: {
         type: String,
         required: true,
-    },
-    workspaceId: {
-        type: String,
-        required: true
     }
 },
     {timestamps: true}
