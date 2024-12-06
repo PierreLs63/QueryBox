@@ -15,11 +15,11 @@ const CollectionSchema = new mongoose.Schema({
     },
     url: {
         type: String,
-        required: true
+        default: ""
     },
     method: {
         type: String,
-        required: true
+        default: "GET"
     },
     body: {
         type: String,
