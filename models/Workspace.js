@@ -23,7 +23,7 @@ const WorkspaceSchema = new mongoose.Schema({
     users: [UserAndPrivilegeAndHasJoined], 
     name: {
         type: String,
-        required: true,
+        default: "untilted",
     }
 },
     {timestamps: true}
