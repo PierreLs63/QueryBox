@@ -18,7 +18,7 @@ const UserAndPrivilegeAndHasJoined = new Schema({
   }, { _id: false });
 
 
-const CollectionSchema = new mongoose.Schema({
+const WorkspaceSchema = new mongoose.Schema({
     collections: [{ type: String }],
     users: [UserAndPrivilegeAndHasJoined], 
     name: {
@@ -29,5 +29,5 @@ const CollectionSchema = new mongoose.Schema({
     {timestamps: true}
 );
 
-const Collection = mongoose.model("Collection", CollectionSchema);
-export default Collection;
+const Workspace = mongoose.model("Workspace", WorkspaceSchema);
+export default Workspace;

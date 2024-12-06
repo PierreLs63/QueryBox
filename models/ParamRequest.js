@@ -8,7 +8,7 @@ const KeyValueSchema = new Schema({
   }, { _id: false });
 
 
-const CollectionSchema = new mongoose.Schema({
+const ParamRequestSchema = new mongoose.Schema({
     requestId: {
         type: String,
         required: true,
@@ -36,5 +36,5 @@ const CollectionSchema = new mongoose.Schema({
     {timestamps: true}
 );
 
-const Collection = mongoose.model("Collection", CollectionSchema);
-export default Collection;
+const ParamRequest = mongoose.model("ParamRequest", ParamRequestSchema);
+export default ParamRequest;
