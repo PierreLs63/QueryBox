@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     pseudo: {
         type: String,
         required: true,
+        unique: true,
         min: 3,
         max: 32,
     },
@@ -17,7 +18,7 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        min: 6,   
+        min: 8,   
     },
     token: {
         type: String,
