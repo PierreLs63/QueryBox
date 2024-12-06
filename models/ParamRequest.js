@@ -23,7 +23,7 @@ const CollectionSchema = new mongoose.Schema({
     },
     body: {
         type: String,
-        required: true
+        default: ""
     },
     userId: {
         type: String,
