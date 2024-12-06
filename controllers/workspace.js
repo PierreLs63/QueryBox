@@ -40,7 +40,7 @@ export const deleteWorkspace = async (req, res) => {
         if(!workspace) {
             return res.status(404).json({message: "Workspace not found"});
         }
-        res.status(200).json({message: "Workspace deleted"});
+        res.status(200).json({message: "Workspace deleted"}); //test
     } catch (error) {
         res.status(500).json(error.message)
     }
