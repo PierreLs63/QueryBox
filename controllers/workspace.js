@@ -8,7 +8,7 @@ const viewer_grade = process.env.VIEWER_GRADE || 10;
 
 export const createWorkspace = async (req,res) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req.user;
         const newWorkspace = new Workspace({
             users: [{
                 userId,
@@ -26,7 +26,7 @@ export const createWorkspace = async (req,res) => {
 export const changeName = async (req,res) => {
     try {
         const { workspaceId , name} = req.params;
-        const { userId } = req.body;
+        const { userId } = req.user;
         const user = await User.findById(userId);
         if(!user) {
             return res.status(404).json({message: "User not found"});
@@ -55,7 +55,7 @@ export const changeName = async (req,res) => {
 export const deleteWorkspace = async (req, res) => {
     try {
         const { workspaceId } = req.params;
-        const { userId } = req.body;
+        const { userId } = req.user;
         const user = await  User.findById(userId);
         if(!user) {
             return res.status(404).json({message: "User not found"});
@@ -80,7 +80,8 @@ export const deleteWorkspace = async (req, res) => {
 
 export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
     try {
-        const { userId, workspaceId } = req.params;
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
         const { username } = req.body;
         
         const user = await User.findById(userId);
@@ -119,7 +120,8 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
 
 export const updatePrivileges = async (req,res) => {
     try {
-        const { userId, workspaceId } = req.params;
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
         const { username, level } = req.body;
 
         const user = await User.findById(userId);
@@ -151,7 +153,8 @@ export const updatePrivileges = async (req,res) => {
 
 export const getAllCollection = async (req, res) => {
     try {
-        const { userId, workspaceId } = req.params;
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
         const user = await User.findById(userId);
         //dans workspace il y a un array "users" d'objet {userId, privilege, hasJoined}, il faut que le user soit dans cette liste, ait un privilege >= viewer_grade et hasJoined === true pour pouvoir recuperer les collections
         if(!user) {
@@ -174,7 +177,8 @@ export const getAllCollection = async (req, res) => {
 
 export const inviteUserByUsername = async (req, res) => {
     try {
-        const { userId, workspaceId, username, level} = req.params;
+        const { workspaceId, username, level} = req.params;
+        const { userId } = req.user;
         const user = await User.findById(userId);
         if(!user) {
             return res.status(404).json({message: "User not found"});
@@ -213,7 +217,8 @@ export const inviteUserByUsername = async (req, res) => {
 
 export const joinWorkspace = async (req, res) => {
     try {
-        const { userId, workspaceId } = req.params;
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
         const user = await User.findById (userId);
         if(!user) {
             return res.status(404).json({message: "User not found"});
