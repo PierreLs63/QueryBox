@@ -6,6 +6,8 @@ import crypto from "crypto";
 import validator from "email-validator";
 import xss from "xss";
 
+const baseURL = process.env.BASE_URL || "http://localhost:5001";
+
 export const login = async (req, res) => {
     try {
       const { username, password } = req.body
@@ -195,7 +197,7 @@ export const login = async (req, res) => {
         subject: "Bienvenue sur QueryBox",
         text: "Bienvenue sur QueryBox",
         html:
-          "<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='http://localhost:5001/verifyEmail/" +
+          `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${baseURL}/verifyEmail/` +
           token +
           "'>Cliquez pour vérifier votre email</a></p>"
       })
