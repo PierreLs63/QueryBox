@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-
 // UserId and privilege with disabled id
-const requestandUserIdandParamSchema = new Schema({
+const requestandUserIdandParamSchema = new mongoose.Schema({
     paramRequestId: { 
         type: String, 
         required: true 

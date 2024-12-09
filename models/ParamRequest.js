@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-
 // Key value structure to be implemented in header with disabled id
-const KeyValueSchema = new Schema({
+const KeyValueSchema = new mongoose.Schema({
     key: { type: String, required: true },
     value: { type: String, required: true }
   }, { _id: false });

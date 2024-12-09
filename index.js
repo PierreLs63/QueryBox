@@ -11,6 +11,7 @@ import workspaceRoutes from "./routes/workspace.js";
 import collectionRoutes from "./routes/collection.js";
 import requestRoutes from "./routes/request.js";
 import historyRoutes from "./routes/history.js";
+import connectMongoDB from "./utils/connectMongoDB.js";
 
 //setup variables and config
 const __filename = fileURLToPath(import.meta.url);
@@ -32,4 +33,7 @@ app.use('/api/v1/history', historyRoutes);
 
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT,()=>console.log(`Server Port ${PORT}`));
+app.listen(PORT, () => {
+    connectMongoDB();
+    console.log(`Server Port ${PORT}`);
+});

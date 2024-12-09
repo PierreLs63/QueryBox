@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
-
 // UserId and privilege with disabled id
-const UserAndPrivilege = new Schema({
+const UserAndPrivilege = new mongoose.Schema({
     UserId: { 
         type: String, 
         required: true 
     },
     privilege: { 
-        type: int, 
+        type: Number, 
         required: true 
     }
   }, { _id: false });

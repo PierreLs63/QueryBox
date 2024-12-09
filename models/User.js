@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
 
+
 const UserSchema = new mongoose.Schema({
-    pseudo: {
+    username: {
         type: String,
         required: true,
         unique: true,
@@ -26,7 +27,7 @@ const UserSchema = new mongoose.Schema({
             return crypto.randomUUID();
         }
     },
-    isValid: {
+    isVerified: {
         type: Boolean,
         default: false,
     }
