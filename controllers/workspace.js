@@ -96,7 +96,6 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
         if(!userInWorkspace) {
             return res.status(404).json({message: "User not in workspace"});
         }
-        //si le user est lui meme, il peut se supprimer peut importe son grade, dans le cas ou aucun username est donné 
         if(userInWorkspace.userId.toString() === userId.toString() && !username) {
             const updatedWorkspace = await Workspace.findByIdAndUpdate
             (workspaceId, { $pull: { users: { userId: user._id } } }, {new: true});
@@ -156,7 +155,6 @@ export const getAllCollection = async (req, res) => {
         const { workspaceId } = req.params;
         const { userId } = req.user;
         const user = await User.findById(userId);
-        //dans workspace il y a un array "users" d'objet {userId, privilege, hasJoined}, il faut que le user soit dans cette liste, ait un privilege >= viewer_grade et hasJoined === true pour pouvoir recuperer les collections
         if(!user) {
             return res.status(404).json({message: "User not found"});
         }
