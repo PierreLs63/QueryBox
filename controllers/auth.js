@@ -117,7 +117,7 @@ export const login = async (req, res) => {
         await newUser.save()
         generateTokenAndSetCookie(res, newUser._id)
         // Create a transporter object
-        /* sendMail({
+        sendMail({
           to: email,
           subject: "Bienvenue sur QueryBox",
           text: "Bienvenue sur QueryBox",
@@ -125,7 +125,8 @@ export const login = async (req, res) => {
             "<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='http://localhost:5001/verifyEmail/" +
             token +
             "'>Cliquez pour vérifier votre email</a></p>"
-        }) */
+        })
+
         res.status(201).json({
           _id: newUser._id,
           username: newUser.username,
