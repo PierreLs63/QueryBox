@@ -2,12 +2,11 @@ import Response from '../models/Response';
 import Request from '../models/Request';
 import ParamRequest from '../models/ParamRequest';
 import Collection from '../models/Collection';
-
+import dotenv from 'dotenv';
 
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
 const viewer_grade = process.env.VIEWER_GRADE || 10;
-
 
 export const deleteResponse = async (req, res) => {
     try {
@@ -54,7 +53,6 @@ export const deleteResponse = async (req, res) => {
     }
 };
 
-//je veux une fonction qui me retourne la paramRequest d'une response
 export const getParamRequest = async (req, res) => {
     try {
         const { responseId } = req.params;
@@ -89,4 +87,4 @@ export const getParamRequest = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });     
     }
-}
+};
