@@ -200,3 +200,27 @@ export const joinWorkspace = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const leaveWorkspace = async (req, res) => {
+    try {
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
+
+        const workspace = await Workspace.findById(workspaceId);
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        if (!userInWorkspace) {
+            return res.status(404).json({ message: "User not found in workspace" });
+        }
+
+        workspace.users = workspace.users.filter(user => user.userId.toString() !== userId.toString());
+        await workspace.save();
+
+        res.status(200).json({ message: "User left workspace successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

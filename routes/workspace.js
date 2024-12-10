@@ -8,7 +8,8 @@ import {
     updatePrivileges,
     getAllCollection,
     inviteUserByUsername,
-    joinWorkspace
+    joinWorkspace,
+    leaveWorkspace
 } from "../controllers/workspace.js";
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.put("/:workspaceId/updatePrivileges", protectRoute, updatePrivileges); //
 router.get("/:workspaceId/collections", protectRoute, getAllCollection);
 router.post("/:workspaceId/invite", protectRoute, inviteUserByUsername); // Invitation d'un utilisateur
 router.put("/:workspaceId/join", protectRoute, joinWorkspace); // Mise à jour pour rejoindre un workspace
+router.put("/:workspaceId/leave", protectRoute, leaveWorkspace); // Route pour quitter un workspace
 
 export default router;
