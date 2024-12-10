@@ -11,6 +11,10 @@ import {
     joinWorkspace,
     leaveWorkspace
 } from "../controllers/workspace.js";
+import {
+    getHistory,
+    getMyHistory
+} from "../controllers/history.js";
 
 const router = express.Router();
 
@@ -23,5 +27,9 @@ router.get("/:workspaceId/collections", protectRoute, getAllCollection);
 router.post("/:workspaceId/invite", protectRoute, inviteUserByUsername); // Invitation d'un utilisateur
 router.put("/:workspaceId/join", protectRoute, joinWorkspace); // Mise à jour pour rejoindre un workspace
 router.put("/:workspaceId/leave", protectRoute, leaveWorkspace); // Route pour quitter un workspace
+
+// Routes pour l'historique
+router.get("/:workspaceId/history", protectRoute, getHistory); // Obtenir l'historique complet
+router.get("/:workspaceId/history/me", protectRoute, getMyHistory); // Obtenir l'historique de l'utilisateur courant
 
 export default router;

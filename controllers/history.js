@@ -3,6 +3,7 @@ import Request from '../models/Request';
 import ParamRequest from '../models/ParamRequest';
 import Workspace from '../models/Workspace';
 import Collection from '../models/Collection';
+import dotenv from 'dotenv';
 
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
