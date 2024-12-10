@@ -221,7 +221,6 @@ const executeRequest = async (request, paramRequest) => {
 
     // Créer une nouvelle réponse
     const response = new Response({
-        requestId: request._id,
         paramRequestId: paramRequest._id,
         code: api.status,
         body: await api.text(),

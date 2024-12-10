@@ -20,6 +20,10 @@ const ResponseSchema = new mongoose.Schema({
     body: {
         type: String,
         default:""
+    },
+    paramRequestId: {
+        type: String,
+        required: true
     }
 },
     {timestamps: true}
