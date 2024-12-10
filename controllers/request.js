@@ -70,13 +70,16 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
             return res.status(404).json({ message: "Request not found" });
         }
 
+        // Trouver la collection associée à la requête
         const collection = await Collection.findById(request.collectionId);
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
+
+        // Vérifier si l'utilisateur a le grade viewer dans la collection
         const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
         if (!userInCollection || userInCollection.privilege < viewer_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
+            return res.status(403).json({ message: "You don't have the required privileges to create a param request" });
         }
 
         // Créer un nouveau ParamRequest
@@ -97,7 +100,10 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
         request.paramRequests.push(newParamRequest._id);
         await request.save();
 
-        res.status(201).json(newParamRequest);
+        // Exécuter la requête
+        const response = await executeRequest(request, newParamRequest);
+
+        res.status(201).json({ paramRequest: newParamRequest, response });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -177,3 +183,52 @@ export const getRequests = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+
+const executeRequest = async (request, paramRequest) => {
+    const { url, method, body, header, parameters } = paramRequest;
+
+    // Préparer les en-têtes pour la requête
+    const headers = {};
+    header.forEach(h => {
+        headers[h.key] = h.value;
+    });
+
+    // Préparer les paramètres pour la requête
+    const queryParams = new URLSearchParams();
+    parameters.forEach(p => {
+        queryParams.append(p.key, p.value);
+    });
+
+    // Construire l'URL avec les paramètres
+    const requestUrl = `${url}?${queryParams.toString()}`;
+
+    // Envoyer la requête au serveur avec fetch
+    const api = await fetch(requestUrl, {
+        method,
+        headers,
+        body: method !== 'GET' ? body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
+    });
+
+    if (!api.ok) {
+        throw new Error("Error while fetching the request");
+    }
+
+    // Préparer les en-têtes de la réponse
+    const responseHeaders = [];
+    api.headers.forEach((value, key) => {
+        responseHeaders.push({ key, value });
+    });
+
+    // Créer une nouvelle réponse
+    const response = new Response({
+        requestId: request._id,
+        paramRequestId: paramRequest._id,
+        code: api.status,
+        body: await api.text(),
+        header: responseHeaders,
+        userId: paramRequest.userId
+    });
+
+    await response.save();
+};
