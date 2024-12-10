@@ -5,8 +5,11 @@ import sendMail from "../utils/sendMail.js";
 import crypto from "crypto";
 import validator from "email-validator";
 import xss from "xss";
+import dotenv from 'dotenv';
 
-const baseURL = process.env.BASE_URL || "http://localhost:5001/api/v1/auth";
+dotenv.config();
+const baseURL = process.env.BASE_URL || "http://localhost";
+const api_version = process.env.API_VERSION;
 
 export const login = async (req, res) => {
     try {
@@ -193,14 +196,15 @@ export const login = async (req, res) => {
       user.token = token
       await user.save()
   
+      const port = process.env.PORT;
+      const verificationLink = `${baseURL}:${port}/api/${api_version}/mailVerification/${token}`;
+  
       sendMail({
         to: user.email,
         subject: "Bienvenue sur QueryBox",
         text: "Bienvenue sur QueryBox",
         html:
-          `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${baseURL}/mailVerification/` +
-          token +
-          "'>Cliquez pour vérifier votre email</a></p>"
+          `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
       })
   
       res.status(201).json({ message: "Email renvoyé avec succès" })
