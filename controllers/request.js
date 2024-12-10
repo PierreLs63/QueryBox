@@ -2,6 +2,7 @@ import Response from '../models/Response';
 import Request from '../models/Request';
 import ParamRequest from '../models/ParamRequest';
 import Collection from '../models/Collection';
+import dotenv from 'dotenv';
 
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
@@ -32,10 +33,11 @@ export const createRequest = async (req, res) => {
 
 export const changeName = async (req, res) => {
     try {
-        const { requestId, name} = req.params;
+        const { requestId } = req.params;
+        const { name } = req.body;
         const { userId } = req.user;
 
-        const request = await Request.findOne({ _id: requestId, "requests.userId": userId });
+        const request = await Request.findById(requestId);
 
         if (!request) {
             return res.status(404).json({ message: "Request not found" });
@@ -113,7 +115,7 @@ export const deleteRequest = async (req, res) => {
         const { requestId } = req.params;
         const { userId } = req.user;
 
-        const request = await Request.findOne({ _id: requestId, "requests.userId": userId });
+        const request = await Request.findById(requestId);
         if (!request) {
             return res.status(404).json({ message: "Request not found" });
         }
@@ -124,7 +126,7 @@ export const deleteRequest = async (req, res) => {
         }
         const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
         if (!userInCollection || userInCollection.privilege < admin_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
+            return res.status(403).json({ message: "You don't have the required privileges to delete the request" });
         }
 
         await Request.findByIdAndRemove(requestId);
@@ -154,7 +156,7 @@ export const deleteParamRequest = async (req, res) => {
 
         const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
         if (!userInCollection || userInCollection.privilege < admin_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
+            return res.status(403).json({ message: "You don't have the required privileges to delete the param request" });
         }
         await ParamRequest.findByIdAndRemove(paramRequestId);
         res.status(200).json({ message: "ParamRequest deleted successfully" });
