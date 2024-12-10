@@ -169,6 +169,7 @@ export const getRequests = async (req, res) => {
     try {
         const { collectionId } = req.params;
         const { userId } = req.user;
+        const { page = 1, perPage = 10 } = req.query;
 
         const collection = await Collection.findById(collectionId);
         if (!collection) {
@@ -178,7 +179,9 @@ export const getRequests = async (req, res) => {
         if (!userInCollection) {
             return res.status(404).json({ message: "User not found in collection" });
         }
-        const requests = await Request.find({ collectionId: collectionId });
+        const requests = await Request.find({ collectionId: collectionId })
+            .skip((page - 1) * perPage)
+            .limit(parseInt(perPage));
         res.status(200).json(requests);
     } catch (error) {
         res.status(500).json({ message: error.message });
