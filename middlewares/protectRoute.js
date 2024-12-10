@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken"
-import User from "../models/user.model.js"
+import User from "../models/User.js"
 
 const protectRoute = async (req, res, next) => {
 
   try {
-    const token = req.cookies.jwt
+    const token = req.cookies?.jwt
     if (!token) {
       return res.status(401).json({ error: "Unauthorized - No token" })
     }
@@ -24,7 +24,7 @@ const protectRoute = async (req, res, next) => {
     }
     
     user.userId = user._id; // déplacer _id vers userId
-
+    
     req.user = user;
 
     next()
