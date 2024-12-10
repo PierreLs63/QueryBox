@@ -1,7 +1,6 @@
 import Response from '../models/Response';
 import Request from '../models/Request';
 import ParamRequest from '../models/ParamRequest';
-import Workspace from '../models/Workspace';
 import Collection from '../models/Collection';
 
 dotenv.config();
