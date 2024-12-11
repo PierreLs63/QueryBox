@@ -55,7 +55,7 @@ const App = () => {
         <Sider
           width={400}
           collapsible
-          breakpoint="md" // 小屏幕自动折叠
+          breakpoint="md"
           collapsedWidth="0"
           style={{ background: colorBgContainer }}
         >
@@ -81,19 +81,19 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {/* 外部容器 */}
+            {/* Block */}
             <div
               style={{
                 display: 'flex',
-                gap: '16px', // 块之间的间距
-                flexDirection: 'column', // 横向排列（可改为 column 实现垂直排列）
+                gap: '16px',
+                flexDirection: 'column',
                 alignItems: 'flex-start',
               }}
             >
-              {/* Request 区块 */}
+              {/* Request */}
               <div
                 style={{
-                  flex: 1, // 两个块等宽
+                  flex: 1,
                   padding: 16,
                   background: '#f0f2f5',
                   borderRadius: '8px',
@@ -102,13 +102,13 @@ const App = () => {
                 }}
               >
                 <h3>Request</h3>
-                <p>这里显示 Request 内容。</p>
+                <p>Contenu Request</p>
               </div>
 
-              {/* Response 区块 */}
+              {/* Response */}
               <div
                 style={{
-                  flex: 1, // 两个块等宽
+                  flex: 1,
                   padding: 16,
                   background: '#f0f2f5',
                   borderRadius: '8px',
@@ -117,7 +117,7 @@ const App = () => {
                 }}
               >
                 <h3>Response</h3>
-                <p>这里显示 Response 内容。</p>
+                <p>Contenu Réponse</p>
               </div>
             </div>
           </Content>

@@ -55,7 +55,7 @@ const App = () => {
         <Sider
           width={400}
           collapsible
-          breakpoint="md" // 小屏幕自动折叠
+          breakpoint="md"
           collapsedWidth="0"
           style={{ background: colorBgContainer }}
         >
