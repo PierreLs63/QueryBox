@@ -84,3 +84,27 @@ export const changeCollectionName = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const updatePrivileges = async (req, res) => {
+    try {
+        const { collectionId } = req.params;
+        const userConnectedId = req.user.userId;
+        const { userId, privilege } = req.body;
+
+        const collection = await Collection.findById(collectionId);
+        if (!collection) return res.status(404).json({ message: "Collection not found" });
+
+        const user = collection.users.find(u => u.userId == userConnectedId);
+        if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
+
+        const userToUpdate = collection.users.find(u => u.userId == userId);
+        if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
+
+        userToUpdate.privilege = privilege;
+        await collection.save();
+
+        res.status(200).json({ message: "User privileges updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
