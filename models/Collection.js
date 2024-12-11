@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // UserId and privilege with disabled id
 const UserAndPrivilege = new mongoose.Schema({
-    UserId: { 
+    userId: { 
         type: String, 
         required: true 
     },

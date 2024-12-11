@@ -1,6 +1,7 @@
 import Collection from '../models/Collection.js';
 import Workspace from '../models/Workspace.js';
 import dotenv from 'dotenv';
+
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
 const viewer_grade = process.env.VIEWER_GRADE || 10;
@@ -10,13 +11,13 @@ export const createCollection = async (req, res) => {
         const { workspaceId } = req.params;
         const { userId } = req.user;
 
-        const user = await Workspace.findOne({ _id: workspaceId, "users.UserId": userId });
+        const user = await Workspace.findOne({ _id: workspaceId, "users.userId": userId });
         // Si l'utilisateur n'est pas dans le workspace
         if (!user) return res.status(404).json({ message: "User not found in workspace" });
         // Si l'utilisateur n'a pas les droits de lecture et écriture dans le workspace
-        if (user.users.find(u => u.UserId === userId).privilege < 10) return res.status(403).json({ message: "User not authorized" });
+        if (user.users.find(u => u.userId == userId).privilege < 10) return res.status(403).json({ message: "User not authorized" });
 
-        const collection = new Collection({ name: "Untitled Collection", workspace: workspaceId, users: [{ UserId: userId, privilege: 20 }] });
+        const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();
         res.status(201).json(collection);
     } catch (error) {
@@ -32,11 +33,27 @@ export const deleteCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.UserId === userId);
+        const user = collection.users.find(u => u.userId == userId);
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
-        await Collection.findByIdAndRemove(collectionId);
+        await Collection.findByIdAndDelete(collectionId);
         res.status(200).json({ message: "Collection deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const getAllRequestsFromCollection = async (req, res) => {
+    try {
+        const { collectionId } = req.params;
+        const { userId } = req.user;
+
+        const collection = await Collection.findById(collectionId);
+        if (!collection) return res.status(404).json({ message: "Collection not found" });
+
+        const user = collection.users.find(u => u.userId == userId);
+        if (!user|| user.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        await collection.populate("requests").execPopulate();
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
