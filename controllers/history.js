@@ -1,8 +1,8 @@
-import Response from '../models/Response';
-import Request from '../models/Request';
-import ParamRequest from '../models/ParamRequest';
-import Workspace from '../models/Workspace';
-import Collection from '../models/Collection';
+import Response from '../models/Response.js';
+import Request from '../models/Request.js';
+import ParamRequest from '../models/ParamRequest.js';
+import Workspace from '../models/Workspace.js';
+import Collection from '../models/Collection.js';
 import dotenv from 'dotenv';
 
 dotenv.config();

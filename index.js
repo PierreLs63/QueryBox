@@ -17,8 +17,8 @@ import connectMongoDB from "./utils/connectMongoDB.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const api_version = process.env.API_VERSION || "v1";
 dotenv.config();
+const api_version = process.env.API_VERSION || "v1";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -27,10 +27,10 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname,'public/assets')));
 
-app.use(`api/${api_version}/auth`, authRoutes);
-app.use(`api/${api_version}/workspace`, workspaceRoutes);
-app.use(`api/${api_version}/collection`, collectionRoutes);
-app.use(`api/${api_version}/request`, requestRoutes);
+app.use(`/api/${api_version}/auth`, authRoutes);
+app.use(`/api/${api_version}/workspace`, workspaceRoutes);
+app.use(`/api/${api_version}/collection`, collectionRoutes);
+app.use(`/api/${api_version}/request`, requestRoutes);
 
 
 

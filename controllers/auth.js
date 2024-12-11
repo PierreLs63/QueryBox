@@ -119,15 +119,16 @@ export const login = async (req, res) => {
       if (newUser) {
         await newUser.save()
         generateTokenAndSetCookie(res, newUser._id)
-        // Create a transporter object
+
+        const port = process.env.PORT;
+        const verificationLink = `${baseURL}:${port}/api/${api_version}/verification-email/${token}`;
+        
         sendMail({
           to: email,
           subject: "Bienvenue sur QueryBox",
           text: "Bienvenue sur QueryBox",
           html:
-            `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${baseURL}/mailVerification/` +
-            token +
-            "'>Cliquez pour vérifier votre email</a></p>"
+            `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
         })
 
         res.status(201).json({
@@ -197,7 +198,7 @@ export const login = async (req, res) => {
       await user.save()
   
       const port = process.env.PORT;
-      const verificationLink = `${baseURL}:${port}/api/${api_version}/mailVerification/${token}`;
+      const verificationLink = `${baseURL}:${port}/api/${api_version}/verification-email/${token}`;
   
       sendMail({
         to: user.email,

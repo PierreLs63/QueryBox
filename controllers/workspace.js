@@ -1,5 +1,6 @@
 import Workspace from "../models/Workspace.js";
 import User from "../models/User.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
