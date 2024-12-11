@@ -1,9 +1,8 @@
 import express from "express";
-import { createCollection } from "../controllers/collection.js";
+import { deleteCollection } from "../controllers/collection.js";
 
 const router = express.Router();
 
-router.post("/:workspaceId", createCollection); // Création d'une collection dans un workspace avec un nom par défaut
-
+router.delete("/:collectionId", deleteCollection); // Suppression d'une collection
 
 export default router;

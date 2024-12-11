@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const baseURL = process.env.BASE_URL || "http://localhost";
-const api_version = process.env.API_VERSION;
+const api_version = process.env.API_VERSION || "v1";
 
 export const login = async (req, res) => {
     try {
@@ -121,7 +121,7 @@ export const login = async (req, res) => {
         generateTokenAndSetCookie(res, newUser._id)
 
         const port = process.env.PORT;
-        const verificationLink = `${baseURL}:${port}/api/${api_version}/verification-email/${token}`;
+        const verificationLink = `${baseURL}:${port}/api/${api_version}/auth/verification-email/${token}`;
         
         sendMail({
           to: email,
@@ -198,7 +198,7 @@ export const login = async (req, res) => {
       await user.save()
   
       const port = process.env.PORT;
-      const verificationLink = `${baseURL}:${port}/api/${api_version}/verification-email/${token}`;
+      const verificationLink = `${baseURL}:${port}/api/${api_version}/auth/verification-email/${token}`;
   
       sendMail({
         to: user.email,
