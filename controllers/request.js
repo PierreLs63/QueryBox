@@ -13,18 +13,24 @@ export const createRequest = async (req, res) => {
         const { collectionId } = req.params;
         const { userId } = req.user;
 
-        const user = await Collection.findOne({ _id: collectionId, "users.UserId": userId });
+        const user = await Collection.findOne({ _id: collectionId, "users.userId": userId });
         
         if (!user) {
             return res.status(404).json({ message: "User not found in collection" });
         }
         
-        if (user.users.find(u => u.UserId === userId).privilege < viewer_grade) {
+        if (user.users.find(u => u.userId == userId).privilege < viewer_grade) {
             return res.status(401).json({ message: "User not authorized" });
         }
 
+        // Créer une nouvelle requête
         const request = new Request({ name: "Untitled Request", collectionId: collectionId });
         await request.save();
+
+        // Ajouter la requête à la collection
+        const collection = await Collection.findById(collectionId);
+        collection.requests.push(request._id);
+        await collection.save();
         res.status(201).json(request);
     } catch (error) {
         res.status(409).json({ message: error.message }); 

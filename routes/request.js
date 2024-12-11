@@ -11,7 +11,6 @@ import {
 
 const router = express.Router();
 
-router.post("/:collectionId/request", protectRoute, createRequest); // Créer une nouvelle requête
 router.put("/:requestId/name", protectRoute, changeName); // Changer le nom d'une requête
 router.post("/:requestId/paramRequest", protectRoute, createParamRequestAndUpdateRequest); // Créer un nouveau ParamRequest et mettre à jour la requête
 router.delete("/:requestId", protectRoute, deleteRequest); // Supprimer une requête

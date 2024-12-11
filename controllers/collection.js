@@ -53,7 +53,9 @@ export const getAllRequestsFromCollection = async (req, res) => {
 
         const user = collection.users.find(u => u.userId == userId);
         if (!user|| user.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
-        await collection.populate("requests").execPopulate();
+        await collection.populate('requests');
+        // On envoie les données de toutes les requêtes de la collection et non pas juste un tableau d'ids
+        res.status(200).json(collection.requests);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

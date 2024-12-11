@@ -15,7 +15,7 @@ const UserAndPrivilege = new mongoose.Schema({
 
 const CollectionSchema = new mongoose.Schema({
     //this array of strings are requestIds
-    requests: [{ type: String }],
+    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Request' }], // Important de dire que c'est un type ObjectId et lui donner le modele de reference pour la fonction populate()
     users: [UserAndPrivilege], 
     name: {
         type: String,
