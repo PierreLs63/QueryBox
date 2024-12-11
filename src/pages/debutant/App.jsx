@@ -1,11 +1,13 @@
 import React from 'react';
 import { Button } from 'antd';
+import Sider from 'antd/es/layout/Sider';
 
 const App = () => {
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Welcome to Ant Design with Vite!</h1>
-      <Button type="primary">Click Me</Button>
+      <h1>test</h1>
+      <Button type="primary">ooo</Button>
+      <Sider></Sider>
     </div>
   );
 };
