@@ -15,10 +15,12 @@ import {
     getHistory,
     getMyHistory
 } from "../controllers/history.js";
+import { createCollection } from "../controllers/collection.js";
 
 const router = express.Router();
 
 router.post("/", protectRoute, createWorkspace);
+router.post("/:workspaceId", createCollection); // Création d'une collection dans un workspace avec un nom par défaut
 router.put("/:workspaceId/name", protectRoute, changeName); // Mise à jour du nom du workspace
 router.delete("/:workspaceId", protectRoute, deleteWorkspace);
 router.put("/:workspaceId/removeUser", protectRoute, removeUserBFromWorkspaceFromUserA); // Mise à jour pour retirer un utilisateur
