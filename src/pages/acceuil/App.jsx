@@ -81,6 +81,45 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
+            {/* 外部容器 */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '16px', // 块之间的间距
+                flexDirection: 'column', // 横向排列（可改为 column 实现垂直排列）
+                alignItems: 'flex-start',
+              }}
+            >
+              {/* Request 区块 */}
+              <div
+                style={{
+                  flex: 1, // 两个块等宽
+                  padding: 16,
+                  background: '#f0f2f5',
+                  borderRadius: '8px',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+                  width: '100%'
+                }}
+              >
+                <h3>Request</h3>
+                <p>这里显示 Request 内容。</p>
+              </div>
+
+              {/* Response 区块 */}
+              <div
+                style={{
+                  flex: 1, // 两个块等宽
+                  padding: 16,
+                  background: '#f0f2f5',
+                  borderRadius: '8px',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+                  width: '100%'
+                }}
+              >
+                <h3>Response</h3>
+                <p>这里显示 Response 内容。</p>
+              </div>
+            </div>
           </Content>
         </Layout>
       </Layout>
