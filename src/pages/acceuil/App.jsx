@@ -1,33 +1,16 @@
 import React, { useState } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Button, Flex, Splitter, Typography, Radio } from 'antd';
+import { Layout, Menu, Button, Flex, Splitter, Radio } from 'antd';
+import RequestParam from './request_param.jsx';
+import RequestHeader from './request_header.jsx';
+import RequestBody from './request_body.jsx';
+import ResponseHeader from './response_header.jsx';
+import ResponseBody from './response_body.jsx';
 import './App.css';
 
+
+// Overall page layout
 const { Header, Content, Sider } = Layout;
-
-const onChange = (e) => {
-  console.log(`radio checked:${e.target.value}`);
-};
-
-const Desc = (props) => (
-  <Flex
-    justify="center"
-    align="center"
-    style={{
-      height: '100%',
-    }}
-  >
-    <Typography.Title
-      type="secondary"
-      level={5}
-      style={{
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {props.text}
-    </Typography.Title>
-  </Flex>
-);
 
 // initial items of Sider
 const initialItems = [
@@ -60,13 +43,32 @@ const initialItems = [
   },
 ];
 
+// Function application
 const App = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
+  // State variables for managing menu items, submenu counter and selected ratiobox
   const [menuItems, setMenuItems] = useState(initialItems);
   const [subMenuCounter, setSubMenuCounter] = useState(2);
+  const [selectedRequest, setSelectedRequest] = useState("param");
+  const [selectedResponse, setSelectedResponse] = useState("headerResponse");
+
+  // Event of request checked
+  const onChangeResquest = (e) => {
+    setSelectedRequest(e.target.value);
+  };
+
+  // Event of response checked
+  const onChangeResponse = (e) => {
+    setSelectedResponse(e.target.value);
+  };
+
+  // Data base of response header
+  const dataResponseHeader = Array.from({
+    length: 100,
+  }).map((_, i) => ({
+    key: i,
+    keyData: `Key ${i}`,
+    value: `Value ${i}`
+  }));
 
   // Add submenu method
   const addSubMenu = (key, event) => {
@@ -127,6 +129,7 @@ const App = () => {
           <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
         </div>
       </Header>
+
       <Layout>
         <Sider
           width={400}
@@ -178,8 +181,8 @@ const App = () => {
             style={{ height: '100%', borderRight: 0, paddingTop: '15px', paddingBottom: '20px', background: '#ebf9f4' }}
           />
         </Sider>
+
         <Layout style={{ padding: '0 24px 24px', width: '100%', background: '#d9ebe5' }}>
-          
         <div
           style={{
             display: 'flex',
@@ -217,6 +220,7 @@ const App = () => {
               border: '1px solid #54877c',
             }}
           />
+
           {/* Send Button */}
           <button
             style={{
@@ -236,21 +240,31 @@ const App = () => {
               padding: 24,
               margin: 0,
               background: "#c7dbd5",
-              borderRadius: borderRadiusLG,
-              overflowY: 'auto'
+              borderRadius: '10px',
+              overflowY: 'hidden'
             }}
           >
             <Splitter
               layout="vertical"
               style={{
-                height: '100%',
+                height: '100vh',
                 boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                background: "#d9ebe5"
+                background: "#d9ebe5",
+                overflow: 'hidden',
+                borderRadius: '10px'
               }}
             >
+              {/* Block of request */}
               <Splitter.Panel>
+                {/* Ratio box: param, header, body */}
                 <Flex vertical gap="middle">
-                  <Radio.Group onChange={onChange} defaultValue="param">
+                  <Radio.Group 
+                    onChange={onChangeResquest}  
+                    defaultValue="param"
+                    style={{
+                      paddingTop: '3px'
+                    }}
+                  >
                     <Radio.Button 
                     value="param"
                     style={{
@@ -258,39 +272,51 @@ const App = () => {
                     }}
                     >Param</Radio.Button>
                     <Radio.Button 
-                    value="header"
+                    value="headerRequest"
                     style={{
                       border: '1px solid #54877c',
                     }}
                     >Header</Radio.Button>
                     <Radio.Button 
-                    value="body"
+                    value="bodyRequest"
                     style={{
                       border: '1px solid #54877c',
                     }}
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
-                <Desc text="First" />
+                {selectedRequest === "param" && <RequestParam />}
+                {selectedRequest === "headerRequest" && <RequestHeader />}
+                {selectedRequest === "bodyRequest" && <RequestBody />}
               </Splitter.Panel>
+
+              {/* Block of response */}
               <Splitter.Panel>
+                {/* Ratio box: header, body */}
                 <Flex vertical gap="middle">
-                  <Radio.Group onChange={onChange} defaultValue="header">
+                  <Radio.Group 
+                    onChange={onChangeResponse} 
+                    defaultValue="headerResponse"
+                    style={{
+                      paddingTop: '3px'
+                    }}
+                  >
                     <Radio.Button 
-                    value="header"
+                    value="headerResponse"
                     style={{
                       border: '1px solid #54877c',
                     }}
                     >Header</Radio.Button>
                     <Radio.Button 
-                    value="body"
+                    value="bodyResponse"
                     style={{
                       border: '1px solid #54877c',
                     }}
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
-                <Desc text="Second" />
+                {selectedResponse === "headerResponse" && <ResponseHeader dataResponseHeader={dataResponseHeader} />}
+                {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
               </Splitter.Panel>
             </Splitter>
           </Content>
