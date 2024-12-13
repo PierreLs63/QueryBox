@@ -130,7 +130,7 @@ const App = () => {
         </div>
       </Header>
 
-      <Layout>
+      <Layout style={{ height: '100%', width: '100%', background: '#ebf9f4' }}>
         <Sider
           width={400}
           collapsible={false} // disable collapse
@@ -138,8 +138,8 @@ const App = () => {
           collapsedWidth="0"
           style={{
             background: '#ebf9f4',
-            overflowY: 'auto',
-            height: '100vh',
+            overflowY: 'scroll',
+            height: '115vh',
           }}
         >
           <Menu
@@ -182,7 +182,7 @@ const App = () => {
           />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '100%', background: '#d9ebe5' }}>
+        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
         <div
           style={{
             display: 'flex',
