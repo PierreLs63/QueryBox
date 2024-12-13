@@ -86,13 +86,13 @@ export const changeCollectionName = async (req, res) => {
     }
 }
 
-// collations
-
 export const updatePrivileges = async (req, res) => {
     try {
         const { collectionId } = req.params;
         const userConnectedId = req.user.userId;
         const { username, privilege } = req.body;
+
+        if (!username || !privilege || typeof privilege !== "number" || typeof username !== "string" ) return res.status(400).json({ message: "Missing or invalid data" })
 
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
