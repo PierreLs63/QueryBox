@@ -12,7 +12,7 @@ const SignupPage = () => {
   return (
     <div className="signup-container">
       <div className="signup-box">
-        <h1 className="signup-title">QUERYBOX</h1>
+        <h1 style={{ fontFamily: 'Monofett', fontSize: '70px', fontWeight: 'bold', color: '#1890FF', marginBottom: 30 }}>QueryBox</h1>
         <h2 className="signup-subtitle">Inscription</h2>
         <Form
           name="signup"

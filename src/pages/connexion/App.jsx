@@ -13,7 +13,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h1 className="login-title">QUERYBOX</h1>
+        <h1 style={{ fontFamily: 'Monofett', fontSize: '70px', fontWeight: 'bold', color: '#1890FF', marginBottom: 20 }}>QueryBox</h1>
         <h2 className="login-subtitle">Connexion</h2>
         <Form
           name="login"
