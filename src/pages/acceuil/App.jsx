@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Button, Flex, Splitter, Typography } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Button, Flex, Splitter, Typography, Radio } from 'antd';
 import './App.css';
 
 const { Header, Content, Sider } = Layout;
+
+const onChange = (e) => {
+  console.log(`radio checked:${e.target.value}`);
+};
 
 const Desc = (props) => (
   <Flex
@@ -245,9 +249,47 @@ const App = () => {
               }}
             >
               <Splitter.Panel>
+                <Flex vertical gap="middle">
+                  <Radio.Group onChange={onChange} defaultValue="param">
+                    <Radio.Button 
+                    value="param"
+                    style={{
+                      border: '1px solid #54877c',
+                    }}
+                    >Param</Radio.Button>
+                    <Radio.Button 
+                    value="header"
+                    style={{
+                      border: '1px solid #54877c',
+                    }}
+                    >Header</Radio.Button>
+                    <Radio.Button 
+                    value="body"
+                    style={{
+                      border: '1px solid #54877c',
+                    }}
+                    >Body</Radio.Button>
+                  </Radio.Group>
+                </Flex>
                 <Desc text="First" />
               </Splitter.Panel>
               <Splitter.Panel>
+                <Flex vertical gap="middle">
+                  <Radio.Group onChange={onChange} defaultValue="header">
+                    <Radio.Button 
+                    value="header"
+                    style={{
+                      border: '1px solid #54877c',
+                    }}
+                    >Header</Radio.Button>
+                    <Radio.Button 
+                    value="body"
+                    style={{
+                      border: '1px solid #54877c',
+                    }}
+                    >Body</Radio.Button>
+                  </Radio.Group>
+                </Flex>
                 <Desc text="Second" />
               </Splitter.Panel>
             </Splitter>
