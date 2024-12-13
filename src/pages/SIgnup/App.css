@@ -1,0 +1,57 @@
+/* Reset browser default styles */
+* {
+  margin: auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: #e6f7ff; /* Light blue background */
+}
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #e6f7ff; /* Match the background */
+}
+
+.signup-box {
+  width: 400px;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.signup-title {
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #1890ff;
+  margin-bottom: 20px;
+}
+
+.signup-subtitle {
+  color: #060606;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.already-account {
+  font-size: 14px;
+  color: black; /* Set the text color to black */
+  margin-top: -16px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.already-account a {
+  color: #1890ff; /* Keep the link blue for contrast */
+  text-decoration: none;
+}
+
+.already-account a:hover {
+  text-decoration: underline; /* Add underline on hover for the link */
+}
