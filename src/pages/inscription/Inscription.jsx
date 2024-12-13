@@ -1,9 +1,8 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import './App.css'; // Import the CSS below
 
-const SignupPage = () => {
+const Inscription = () => {
   const onFinish = (values) => {
     console.log('Form Values:', values);
     // Add your signup logic here
@@ -77,4 +76,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default Inscription;

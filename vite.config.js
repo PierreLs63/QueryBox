@@ -7,8 +7,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        inscription: './src/pages/inscription/index.html',
-        connexion: './src/pages/connexion/index.html',
         reinitialiser: './src/pages/reinitialiser/index.html',
         mailenvoye: './src/pages/mailenvoye/index.html',
         mailverifie: './src/pages/mailverifie/index.html',
