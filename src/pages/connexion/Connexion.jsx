@@ -1,9 +1,8 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import './App.css';
 
-const LoginPage = () => {
+const Connexion = () => {
   
   const onFinish = (values) => {
     console.log('Login Values:', values);
@@ -50,4 +49,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Connexion;
