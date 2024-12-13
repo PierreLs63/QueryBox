@@ -20,7 +20,7 @@ export const login = async (req, res) => {
       }
       const sanitizedUsername = xss(username.trim())
   
-      const user = await User.findOne({ username: sanitizedUsername }).lean()
+      const user = await User.findOne({ username: sanitizedUsername }).collation({ locale: 'en', strength: 2 }).lean()
       const isPasswordCorrect = await bcrypt.compare(
         password,
         user?.password || ""
@@ -94,9 +94,9 @@ export const login = async (req, res) => {
           .json({ error: "Les mots de passe ne correspondent pas" })
       }
   
-      const user = await User.findOne({ $or: [{ username }, { email }] })
+      const user = await User.findOne({ $or: [{ username }, { email }] }).collation({ locale: 'en', strength: 2 })
       if (user) {
-        if (user.username === username) {
+        if (user.username.toLowerCase() === username.toLowerCase()) {
           // Username is already in use
           return res.status(400).json({ error: "Nom d'utilisateur déjà utilisé" })
         }

@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         min: 3,
         max: 32,
+        collation: { locale: 'en', strength: 2 }
     },
     email: {
         type: String,

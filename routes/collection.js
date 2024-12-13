@@ -9,6 +9,6 @@ router.post("/:collectionId", protectRoute, createRequest); // Créer une nouvel
 router.delete("/:collectionId", protectRoute, deleteCollection); // Suppression d'une collection
 router.get("/:collectionId/requests", protectRoute, getAllRequestsFromCollection); // Récupérer les requêtes d'une collection
 router.put("/:collectionId/name", protectRoute, changeCollectionName); // Changer le nom d'une collection
-router.put(":collectionId/updatePrivileges", protectRoute, updatePrivileges); // Mettre à jour les privilèges d'un utilisateur dans une collection
+router.put("/:collectionId/updatePrivileges", protectRoute, updatePrivileges); // Mettre à jour les privilèges d'un utilisateur dans une collection
 
 export default router;

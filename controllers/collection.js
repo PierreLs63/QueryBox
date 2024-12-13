@@ -1,5 +1,6 @@
 import Collection from '../models/Collection.js';
 import Workspace from '../models/Workspace.js';
+import User from '../models/User.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -85,11 +86,13 @@ export const changeCollectionName = async (req, res) => {
     }
 }
 
+// collations
+
 export const updatePrivileges = async (req, res) => {
     try {
         const { collectionId } = req.params;
         const userConnectedId = req.user.userId;
-        const { userId, privilege } = req.body;
+        const { username, privilege } = req.body;
 
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
@@ -97,10 +100,10 @@ export const updatePrivileges = async (req, res) => {
         const user = collection.users.find(u => u.userId == userConnectedId);
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
-        const userToUpdate = collection.users.find(u => u.userId == userId);
+        const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
-        userToUpdate.privilege = privilege;
+        collection.users.find(u => u.userId == userToUpdate._id).privilege = privilege;
         await collection.save();
 
         res.status(200).json({ message: "User privileges updated successfully" });
