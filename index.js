@@ -12,6 +12,7 @@ import workspaceRoutes from "./routes/workspace.js";
 import collectionRoutes from "./routes/collection.js";
 import requestRoutes from "./routes/request.js";
 import connectMongoDB from "./utils/connectMongoDB.js";
+import { xss } from "express-xss-sanitizer";
 
 //setup variables and config
 const __filename = fileURLToPath(import.meta.url);
@@ -25,14 +26,14 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(cors());
-app.use("/assets", express.static(path.join(__dirname,'public/assets')));
+app.use(xss()); // XSS sanitizer
 
 app.use(`/api/${api_version}/auth`, authRoutes);
 app.use(`/api/${api_version}/workspace`, workspaceRoutes);
 app.use(`/api/${api_version}/collection`, collectionRoutes);
 app.use(`/api/${api_version}/request`, requestRoutes);
 
-
+app.use("/assets", express.static(path.join(__dirname,'public/assets')));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
