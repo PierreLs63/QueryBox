@@ -5,7 +5,6 @@ import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 const Inscription = () => {
   const onFinish = (values) => {
     console.log('Form Values:', values);
-    // Add your signup logic here
   };
 
   //Change default param from index.css
