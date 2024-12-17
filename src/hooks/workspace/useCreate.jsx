@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import baseURL from '../../utils/variables';
 
 const useCreate = () => {
     const [workspace, setWorkspace] = useState(null);
@@ -10,8 +8,7 @@ const useCreate = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const createWorkspace = async () => {
-        // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/create`;
+        const api = `${baseURL}/workspace/create`;
         try {
             setLoading(true);
             const response = await fetch(api, {

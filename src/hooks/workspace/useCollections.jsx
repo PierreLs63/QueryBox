@@ -1,8 +1,7 @@
 //je veux créer un hook pour récupérer les collections d'un workspace donné avec comme paramètre le workspaceId
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import dotenv from 'dotenv';
-dotenv.config();
+import baseURL from '../../utils/variables';
 
 const useCollections = () => {
     const [collections, setCollections] = useState([]);
@@ -16,8 +15,7 @@ const useCollections = () => {
         setLoading(true);
         setError(null);
         try {
-            //eslint-disable-next-line no-undef
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/workspaces/${workspaceId}/collections`, {
+            const response = await fetch(`${baseURL}/workspaces/${workspaceId}/collections`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

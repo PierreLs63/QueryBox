@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import dotenv from 'dotenv';
-dotenv.config();
+import baseURL from '../../utils/variables';
 
 const useInvite = () => {
     const [loading, setLoading] = useState(false);
@@ -14,8 +13,7 @@ const useInvite = () => {
         setLoading(true);
         setError(null);
         setSuccess(null);
-        // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/invite`;
+        const api = `${baseURL}/workspace/${workspaceId}/invite`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',

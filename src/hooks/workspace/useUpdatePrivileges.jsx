@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import dotenv from 'dotenv';
-dotenv.config();
+import { baseURL } from '../../../public/utils/variables';
 
 const useUpdatePrivileges = () => {
     const [loading, setLoading] = useState(false);
@@ -15,8 +14,7 @@ const useUpdatePrivileges = () => {
         setLoading(true);
         setError(null);
         setSuccess(null);
-        // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/updatePrivileges`;
+        const api = `${baseURL}/workspace/${workspaceId}/updatePrivileges`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',

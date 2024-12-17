@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import dotenv from 'dotenv';
+import { baseURL } from '../../../public/utils/variables';
 dotenv.config();
 
 const useRemoveUser = () => {
@@ -13,8 +14,7 @@ const useRemoveUser = () => {
         setLoading(true);
         setError(null);
         setSuccess(null);
-        // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/user/${userId}/remove`;
+        const api = `${baseURL}/user/${userId}/remove`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
