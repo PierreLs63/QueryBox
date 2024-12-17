@@ -9,19 +9,23 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-            <Route path="/connexion" element={<Connexion />} />
-            <Route path="/inscription" element={<Inscription />} />
-            <Route path="/reinitialiser" element={<Reinitialiser />} />
-            <Route path="/mailenvoye" element={<Mailenvoye />} />
-            <Route path="/mailverifie" element={<Mailverifie />} />
-            <Route path="/accueil" element={<Accueil />} />
-            <Route path="/debutant" element={<Debutant />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Toaster toastOptions={{
+      // Define default options
+      className: 'font-bold',
+      duration: 5000}} />
+      <Router>
+          <Routes>
+              <Route path="/connexion" element={<Connexion />} />
+              <Route path="/inscription" element={<Inscription />} />
+              <Route path="/reinitialiser" element={<Reinitialiser />} />
+              <Route path="/mailenvoye" element={<Mailenvoye />} />
+              <Route path="/mailverifie" element={<Mailverifie />} />
+              <Route path="/acceuil" element={<Acceuil />} />
+              <Route path="/debutant" element={<Debutant />} />
+          </Routes>
+      </Router>
+    </>
   )
   
 }
