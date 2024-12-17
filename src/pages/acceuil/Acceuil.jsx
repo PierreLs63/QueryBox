@@ -6,15 +6,15 @@ import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from './response_body.jsx';
-import SiderMenu from './sidermenu';
-import './App.css';
+import SiderMenu from './sider_menu.jsx';
+import './Acceuil.css';
 
 
 // Overall page layout
 const { Header, Content, Sider } = Layout;
 
 // Function application
-const App = () => {
+const Acceuil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
@@ -39,7 +39,7 @@ const App = () => {
   }));
 
   return (
-    <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
+    <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
         {/* QueryBox */}
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
@@ -222,4 +222,4 @@ const App = () => {
     </Layout>
   );
 };
-export default App;
+export default Acceuil;
