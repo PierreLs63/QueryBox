@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Flex, Splitter, Radio } from 'antd';
 import RequestParam from './request_param.jsx';
@@ -7,14 +7,12 @@ import RequestBody from './request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from './response_body.jsx';
 import SiderMenu from './sider_menu.jsx';
-import './Acceuil.css';
-
 
 // Overall page layout
 const { Header, Content, Sider } = Layout;
 
 // Function application
-const Acceuil = () => {
+const Accueil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
@@ -37,6 +35,12 @@ const Acceuil = () => {
     keyData: `Key ${i}`,
     value: `Value ${i}`
   }));
+  useEffect(() => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.documentElement.style.setProperty('color-scheme', 'light');
+  }, []);
 
   return (
     <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
@@ -222,4 +226,4 @@ const Acceuil = () => {
     </Layout>
   );
 };
-export default Acceuil;
+export default Accueil;
