@@ -1,5 +1,3 @@
-//je veux créer un hook pour join un workspace 
-
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import dotenv from 'dotenv';
@@ -20,7 +18,7 @@ const useJoin = () => {
         const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/join`;
         try {
             const response = await fetch(api, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 }
