@@ -143,7 +143,7 @@ const EditableCell = ({
         ...col,
         onCell: (record) => ({
           record,
-          inputType: 'text',
+          type: 'text',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: isEditing(record),
