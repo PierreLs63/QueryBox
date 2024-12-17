@@ -1,5 +1,3 @@
-//je veux créer un hook pour supprimer un workspace la route est la suivante: http://localhost:5001/api/v1/workspace/:workspaceId et la méthode est DELETE
-
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import dotenv from 'dotenv';
