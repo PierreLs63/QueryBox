@@ -6,6 +6,7 @@ import Mailverifie from './src/pages/mailverifie/Mailverifie.jsx'
 import Accueil from './src/pages/accueil/Accueil.jsx'
 import Debutant from './src/pages/debutant/Debutant.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
               <Route path="/reinitialiser" element={<Reinitialiser />} />
               <Route path="/mailenvoye" element={<Mailenvoye />} />
               <Route path="/mailverifie" element={<Mailverifie />} />
-              <Route path="/acceuil" element={<Acceuil />} />
+              <Route path="/accueil" element={<Accueil />} />
               <Route path="/debutant" element={<Debutant />} />
           </Routes>
       </Router>
