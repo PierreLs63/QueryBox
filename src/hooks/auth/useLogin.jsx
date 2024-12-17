@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../context/AuthContext';
-import dotenv from 'dotenv';
 
 
 
 const useLogin = () => {
-    dotenv.config();
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
 
-    const api = `http://localhost:${process.env.PORT || 5001}/api/${process.env.VERSION || "v1"}/auth/login`;
+    const api = `http://localhost:5001/api/v1/auth/login`;
     const login = async (username, password) => {
         try {
             
