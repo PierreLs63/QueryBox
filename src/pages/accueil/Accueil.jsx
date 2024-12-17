@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined } from '@ant-design/icons';
 import { Layout, Menu, Button, Flex, Splitter, Radio } from 'antd';
 import RequestParam from './request_param.jsx';
@@ -6,7 +6,6 @@ import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from './response_body.jsx';
-import './App.css';
 
 
 // Overall page layout
@@ -44,7 +43,7 @@ const initialItems = [
 ];
 
 // Function application
-const App = () => {
+const Accueil = () => {
   // State variables for managing menu items, submenu counter and selected ratiobox
   const [menuItems, setMenuItems] = useState(initialItems);
   const [subMenuCounter, setSubMenuCounter] = useState(2);
@@ -104,6 +103,13 @@ const App = () => {
     );
   };
 
+  useEffect(() => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.documentElement.style.setProperty('color-scheme', 'light');
+  }, []);
+
   return (
     <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
@@ -153,8 +159,8 @@ const App = () => {
                     <span>{child.label}</span>
                     {item.key !== 'account' && (
                       <CloseOutlined
-                      style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }}
-                      onClick={(event) => deleteSubMenu(item.key, child.key, event)} // Delete submenu
+                        style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }}
+                        onClick={(event) => deleteSubMenu(item.key, child.key, event)} // Delete submenu
                       />
                     )}
                   </div>
@@ -183,58 +189,6 @@ const App = () => {
         </Sider>
 
         <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            margin: '16px 0',
-          }}
-        >
-          {/* Method Dropdown */}
-          <select
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-              background: '#fff',
-            }}
-          >
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="PATCH">PATCH</option>
-            <option value="DELETE">DELETE</option>
-            <option value="HEAD">HEAD</option>
-            <option value="OPTIONS">OPTIONS</option>
-          </select>
-
-          {/* URL Input */}
-          <input
-            type="text"
-            placeholder="URL:"
-            style={{
-              flex: 1,
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-            }}
-          />
-
-          {/* Send Button */}
-          <button
-            style={{
-              padding: '8px 16px',
-              background: 'transparent',
-              color: 'black',
-              border: '1px solid #54877c',
-              borderRadius: '4px'
-            }}
-          >
-            Send
-          </button>
-        </div>
-
           <Content
             style={{
               padding: 24,
@@ -325,4 +279,5 @@ const App = () => {
     </Layout>
   );
 };
-export default App;
+
+export default Accueil;

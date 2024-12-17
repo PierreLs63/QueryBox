@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme, Button, Flex, Splitter, Typography } from 'antd';
-import "./App.css"
 const { Header, Content, Sider } = Layout;
 
 const Desc = (props) => (
@@ -55,7 +54,7 @@ const initialItems = [
   },
 ];
 
-const App = () => {
+const Debutant = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -96,6 +95,13 @@ const App = () => {
       )
     );
   };
+
+  useEffect(() => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.documentElement.style.setProperty('color-scheme', 'light');
+  }, []);
 
   return (
     <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
@@ -256,4 +262,4 @@ const App = () => {
     </Layout>
   );
 };
-export default App;
+export default Debutant;
