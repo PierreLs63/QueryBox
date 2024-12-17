@@ -1,28 +1,27 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const useInvite = () => {
+const useRemoveUser = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
-    
-    const invite = async (workspaceId, username, level) => {
-        setWorkspaceId(workspaceId);
+    const [userId, setUserId] = useState(null);
+    const removeUser = async (userId) => {
+        setUserId(userId);
         setLoading(true);
         setError(null);
         setSuccess(null);
         // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/invite`;
+        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/user/${userId}/remove`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({username, level})
+                body: JSON.stringify({ userBId : userId })
             });
             const data = await response.json();
             if (data.error) {
@@ -38,7 +37,7 @@ const useInvite = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, invite, workspaceId }
+    return { loading, error, success, removeUser, userId }
 }
 
-export default useInvite
+export default useRemoveUser

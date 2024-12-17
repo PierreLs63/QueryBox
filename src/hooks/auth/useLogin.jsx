@@ -1,24 +1,21 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import dotenv from 'dotenv';
-dotenv.config();
+
 
 
 const useLogin = () => {
+    dotenv.config();
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
 
     const api = `http://localhost:${process.env.PORT || 5001}/api/${process.env.VERSION || "v1"}/auth/login`;
     const login = async (username, password) => {
         try {
-
-            if (!username || !password) {
-                throw new Error('Please fill all fields');
-            }
             
             setLoading(true);
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(api, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

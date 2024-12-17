@@ -1,10 +1,13 @@
-import React, { useEffect }  from 'react';
+import { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import useLogin from '../../hooks/auth/useLogin';
 
 const Connexion = () => {
   const onFinish = (values) => {
     console.log('Login Values:', values);
+    const {loading, login} = useLogin();
+    login(values.username, values.password);
   };
 
   //Change default param from index.css
