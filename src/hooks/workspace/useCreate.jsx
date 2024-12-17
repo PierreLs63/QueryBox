@@ -9,8 +9,9 @@ const useCreate = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/create`;
     const createWorkspace = async () => {
+        // eslint-disable-next-line no-undef
+        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/create`;
         try {
             setLoading(true);
             const response = await fetch(api, {
