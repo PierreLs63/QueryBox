@@ -3,23 +3,25 @@ import toast from 'react-hot-toast';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const useChangeName = () => {
+
+const useJoin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const changeName = async (workspaceId, newName) => {
+    const [workspaceId, setWorkspaceId] = useState(null);
+    const join = async (workspaceId) => {
+        setWorkspaceId(workspaceId);
         setLoading(true);
         setError(null);
         setSuccess(null);
         // eslint-disable-next-line no-undef
-        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/name`;
+        const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/workspace/${workspaceId}/join`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({name: newName})
+                }
             });
             const data = await response.json();
             if (data.error) {
@@ -35,7 +37,7 @@ const useChangeName = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, changeName }
+    return { loading, error, success, join, workspaceId }
 }
 
-export default useChangeName
+export default useJoin
