@@ -9,7 +9,7 @@ const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
 
-    const api = `http://localhost:5001/api/${process.env.VERSION || "v1"}/auth/login`;
+    const api = `http://localhost:${process.env.PORT || 5001}/api/${process.env.VERSION || "v1"}/auth/login`;
     const login = async (username, password) => {
         try {
 
