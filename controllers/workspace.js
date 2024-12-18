@@ -78,10 +78,10 @@ export const deleteWorkspace = async (req, res) => {
 export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
     try {
         const { workspaceId } = req.params;
-        const { userBId } = req.body;
+        const { username } = req.body;
         const { userId } = req.user;
 
-        if (!userBId) return res.status(400).json({ message: "Missing data" });
+        if (!username) return res.status(400).json({ message: "Missing data" });
 
         const workspace = await Workspace.findById(workspaceId);
         if (!workspace) {
@@ -93,13 +93,28 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to remove a user from the workspace" });
         }
 
-        // Si l'utilisateur à retirer est un administrateur, on ne peut pas le retirer en tant qu'admin, il faut être le propriétaire
-        const userToRemove = workspace.users.find(user => user.userId.toString() == userBId.toString());
+        const userToSearch = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
+        if (!userToSearch) return res.status(404).json({ message: "User to remove not found" });
+
+        console.log(userToSearch)
+        const userToRemove = workspace.users.find(u => u.userId.toString() == userToSearch._id.toString());
+        if (!userToRemove) return res.status(404).json({ message: "User to remove not found in workspace" });
+
+        // Si l'utilisateur à retirer est l'utilisateur actuel, on ne peut pas le retirer
+        if (userInWorkspace.userId === userToRemove.userId) {
+            return res.status(403).json({ message: "You can't remove yourself from the workspace with this endpoint" });
+        }
+        // Si l'utilisateur à retirer est le propriétaire, on ne peut pas le retirer
+        if (userToRemove.privilege === owner_grade) {
+            return res.status(403).json({ message: "You can't remove the owner of the workspace" });
+        }
+
+         // Si l'utilisateur à retirer est un administrateur, on ne peut pas le retirer en tant qu'admin, il faut être le propriétaire
         if (userToRemove.privilege === admin_grade && userInWorkspace.privilege < owner_grade) {
             return res.status(403).json({ message: "You can't remove an admin from the workspace as an admin, only the owner can" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId.toString() != userBId.toString());
+        workspace.users = workspace.users.filter(user => user.userId != userToRemove.userId);
         await workspace.save();
         res.status(200).json({ message: "User removed from workspace successfully" });
     } catch (error) {
