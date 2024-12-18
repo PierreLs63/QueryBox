@@ -18,11 +18,11 @@ const UserAndPrivilegeAndHasJoined = new mongoose.Schema({
 
 
 const WorkspaceSchema = new mongoose.Schema({
-    collections: [{ type: String }],
+    collections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' }],
     users: [UserAndPrivilegeAndHasJoined], 
     name: {
         type: String,
-        default: "untilted",
+        default: "Untitled Workspace",
     }
 },
     {timestamps: true}

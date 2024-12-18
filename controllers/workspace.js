@@ -177,11 +177,11 @@ export const getAllCollection = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to view the collections" });
         }
-
+        await workspace.populate("collections");
         res.status(200).json(workspace.collections);
     } catch (error) {
         res.status(500).json({ message: error.message });

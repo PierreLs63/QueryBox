@@ -20,6 +20,13 @@ export const createCollection = async (req, res) => {
 
         const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();
+
+        const workspace = await Workspace.findById(workspaceId);
+        if (!workspace) return res.status(404).json({ message: "Workspace not found" });
+
+        workspace.collections.push(collection._id);
+        await workspace.save();
+        
         res.status(201).json(collection);
     } catch (error) {
         res.status(409).json({ message: error.message });
@@ -109,7 +116,7 @@ export const updatePrivileges = async (req, res) => {
         if (!foundUser) return res.status(404).json({ message: "User to update not found in collection" });
 
         foundUser.privilege = privilege;
-        
+
         await collection.save();
 
         res.status(200).json({ message: "User privileges updated successfully" });
