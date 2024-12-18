@@ -241,9 +241,13 @@ export const joinWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not invited to workspace" });
+        }
+        
+        if (userInWorkspace.hasJoined) {
+            return res.status(403).json({ message: "User already joined workspace" });
         }
 
         userInWorkspace.hasJoined = true;
