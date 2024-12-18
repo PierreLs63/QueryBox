@@ -146,7 +146,7 @@ export const updatePrivileges = async (req, res) => {
 
         foundUser.privilege = privilege;
         await workspace.save();
-        res.status(200).json(workspace);
+        res.status(200).json({ message: "User privileges updated successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
