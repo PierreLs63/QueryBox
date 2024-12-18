@@ -6,6 +6,7 @@ import Mailenvoye from './src/pages/mailenvoye/Mailenvoye.jsx'
 import Mailverifie from './src/pages/mailverifie/Mailverifie.jsx'
 import Acceuil from './src/pages/acceuil/Acceuil.jsx'
 import Debutant from './src/pages/debutant/Debutant.jsx'
+import Tuto from './src/pages/tuto/Tuto.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/mailverifie" element={<Mailverifie />} />
               <Route path="/acceuil" element={<Acceuil />} />
               <Route path="/debutant" element={<Debutant />} />
+              <Route path="/tuto" element={<Tuto />} />
           </Routes>
       </Router>
     </>

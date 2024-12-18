@@ -71,7 +71,7 @@ const Debutant = () => {
           >
             {/* Text */}
             <Title level={2} style={{ color: 'black', margin: 0 }}>
-              Tuto
+              Tuto utilisation
             </Title>
 
             {/* Button */}
