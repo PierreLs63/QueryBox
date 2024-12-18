@@ -62,12 +62,12 @@ export const deleteWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to delete the workspace" });
         }
 
-        await workspace.remove();
+        await Workspace.deleteOne({ _id: workspaceId });
         res.status(200).json({ message: "Workspace deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
