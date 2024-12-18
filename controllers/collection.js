@@ -16,7 +16,7 @@ export const createCollection = async (req, res) => {
         // Si l'utilisateur n'est pas dans le workspace
         if (!user) return res.status(404).json({ message: "User not found in workspace" });
         // Si l'utilisateur n'a pas les droits de lecture et écriture dans le workspace
-        if (user.users.find(u => u.userId == userId).privilege < 10) return res.status(403).json({ message: "User not authorized" });
+        if (user.users.find(u => u.userId == userId).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
         const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();

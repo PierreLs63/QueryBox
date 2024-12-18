@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import dotenv from "dotenv";
 
 dotenv.config();
+const owner_grade = process.env.OWNER_GRADE || 30;
 const admin_grade = process.env.ADMIN_GRADE || 20;
 const viewer_grade = process.env.VIEWER_GRADE || 10;
 
@@ -12,7 +13,7 @@ export const createWorkspace = async (req, res) => {
         const newWorkspace = new Workspace({
             users: [{
                 userId,
-                privilege: admin_grade,
+                privilege: owner_grade,
                 hasJoined: true
             }]
         });
@@ -80,17 +81,25 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
         const { userBId } = req.body;
         const { userId } = req.user;
 
+        if (!userBId) return res.status(400).json({ message: "Missing data" });
+
         const workspace = await Workspace.findById(workspaceId);
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to remove a user from the workspace" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId.toString() !== userBId.toString());
+        // Si l'utilisateur à retirer est un administrateur, on ne peut pas le retirer en tant qu'admin, il faut être le propriétaire
+        const userToRemove = workspace.users.find(user => user.userId.toString() == userBId.toString());
+        if (userToRemove.privilege === admin_grade && userInWorkspace.privilege < owner_grade) {
+            return res.status(403).json({ message: "You can't remove an admin from the workspace as an admin, only the owner can" });
+        }
+
+        workspace.users = workspace.users.filter(user => user.userId.toString() != userBId.toString());
         await workspace.save();
         res.status(200).json(workspace);
     } catch (error) {
