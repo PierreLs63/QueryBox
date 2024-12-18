@@ -68,6 +68,8 @@ export const changeCollectionName = async (req, res) => {
         const { userId } = req.user;
         const { name } = req.body;
 
+        if (!name) return res.status(400).json({ message: "Missing data" });
+
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 

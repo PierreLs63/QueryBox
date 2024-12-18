@@ -29,19 +29,24 @@ export const changeName = async (req, res) => {
         const { name } = req.body;
         const { userId } = req.user;
 
+        if (!name) return res.status(400).json({ message: "Missing data" });
+
         const workspace = await Workspace.findById(workspaceId);
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to change the name of the workspace" });
         }
 
-        workspace.name = name;
-        await workspace.save();
-        res.status(200).json(workspace);
+        if (workspace.name !== name) {
+            workspace.name = name;
+            await workspace.save();
+        }
+
+        res.status(200).json({ message: "Workspace name updated successfully to : " + name});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
