@@ -1,32 +1,33 @@
+//je veux créer un hook pour créer une collection dans un workspace donné avec comme paramètres le workspaceId
 import { useState } from 'react'
 import toast from 'react-hot-toast';
+
 import baseURL from '../../utils/variables';
 
-const useInvite = () => {
+const useCreateCollection = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
-    
-    const invite = async (workspaceId, username, level) => {
-        setWorkspaceId(workspaceId);
+
+    const createCollection = async (workspaceId) => {
         setLoading(true);
         setError(null);
         setSuccess(null);
-        const api = `${baseURL}/workspace/${workspaceId}/invite`;
         try {
-            const response = await fetch(api, {
-                method: 'PUT',
+            const response = await fetch(`${baseURL}/workspaces/${workspaceId}/collections`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username, level})
+                }
             });
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
             }
+            setWorkspaceId(workspaceId);
             setSuccess(data.message);
+
         }
         catch (error) {
             setError(error.message);
@@ -36,7 +37,7 @@ const useInvite = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, invite, workspaceId }
+    return { loading, error, success, createCollection, workspaceId }
 }
 
-export default useInvite
+export default useCreateCollection

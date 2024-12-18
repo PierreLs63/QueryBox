@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Typography, Flex } from 'antd';
 import SiderMenu from './sider_menu.jsx';
-import './Debutant.css';
-
 
 // Overall page layout
 const { Header, Content, Sider } = Layout;
@@ -13,6 +11,13 @@ const { Title } = Typography;
 
 // Function application
 const Debutant = () => {
+  useEffect(() => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.documentElement.style.setProperty('color-scheme', 'light');
+  }, []);
+
   return (
     <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
@@ -59,6 +64,7 @@ const Debutant = () => {
             style={{
               padding: 24,
               margin: 0,
+
               borderRadius: '10px',
               overflowY: 'hidden',
               height: '100%',

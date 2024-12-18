@@ -1,32 +1,31 @@
+//je veux créer un hook pour récupérer les collections d'un workspace donné avec comme paramètre le workspaceId
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import baseURL from '../../utils/variables';
 
-const useInvite = () => {
+const useCollections = () => {
+    const [collections, setCollections] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
-    
-    const invite = async (workspaceId, username, level) => {
+
+    const getCollections = async (workspaceId) => {
+        if (!workspaceId) return;
         setWorkspaceId(workspaceId);
         setLoading(true);
         setError(null);
-        setSuccess(null);
-        const api = `${baseURL}/workspace/${workspaceId}/invite`;
         try {
-            const response = await fetch(api, {
-                method: 'PUT',
+            const response = await fetch(`${baseURL}/workspaces/${workspaceId}/collections`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username, level})
+                }
             });
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setCollections(data.collections);
         }
         catch (error) {
             setError(error.message);
@@ -36,7 +35,7 @@ const useInvite = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, invite, workspaceId }
+    return { collections, loading, error, getCollections, workspaceId }
 }
 
-export default useInvite
+export default useCollections
