@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
-import { Layout, Button, Flex, Splitter, Radio } from 'antd';
+import { Layout, Button, Radio, Tour, Splitter } from 'antd';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
@@ -9,134 +9,144 @@ import ResponseBody from './response_body.jsx';
 import SiderMenu from './sider_menu.jsx';
 import './Tuto.css';
 
-
-// Overall page layout
 const { Header, Content, Sider } = Layout;
 
-// Function application
 const Tuto = () => {
-  // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
+  const [open, setOpen] = useState(false);
 
-  // Event of request checked
-  const onChangeResquest = (e) => {
-    setSelectedRequest(e.target.value);
-  };
+  // Ref for targeting specific elements
+  const menuRef = useRef(null);
+  const methodRef = useRef(null);
+  const requestRef = useRef(null);
+  const responseRef = useRef(null);
 
-  // Event of response checked
-  const onChangeResponse = (e) => {
-    setSelectedResponse(e.target.value);
-  };
+  useEffect(() => {
+    if (menuRef.current) {
+      menuRef.current.classList.add('menu-highlight');
+      console.log("menu-highlight added to menuRef");
+    }
+    if (methodRef.current) {
+      methodRef.current.classList.add('method-highlight');
+      console.log("method-highlight added to methodRef");
+    }
+    if (requestRef.current) {
+      requestRef.current.classList.add('request-ratio-box');
+      console.log("request-ratio-box added to requestRef");
+    }
+    if (responseRef.current) {
+      responseRef.current.classList.add('response-ratio-box');
+      console.log("response-ratio-box added to responseRef");
+    }
 
+    setOpen(true);
+  }, []);
+
+  // Tour steps: use ref as target
   const steps = [
     {
-      target: '.menu-account', // 左侧菜单“Account”位置
-      content: '这是 Account 菜单，您可以在这里管理账户信息。',
+      target: () => menuRef.current,
+      title: 'Cliquer Account/Workspace/Collection/History pour voir plus de détailles.'
     },
     {
-      target: '.url-input', // URL 输入框位置
-      content: '在此输入您要发送请求的 URL。',
+      target: () => methodRef.current,
+      title: 'Choisir votre méthode et mettre votre URL ici, puis cliquer le bouton <send>.'
     },
     {
-      target: '.send-button', // 发送按钮位置
-      content: '点击此按钮发送请求。',
+      target: () => requestRef.current,
+      title: 'Modifier ici votre Paramètre/Header/Body des requêtes.'
+    },
+    {
+      target: () => responseRef.current,
+      title: 'Cliquer les boutons pour voir Header/Body des réponses.'
     },
   ];
 
   return (
-    <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
-      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
-        {/* QueryBox */}
+    <Layout style={{ height: '100vh', background: '#d9ebe5' }}>
+      <Tour
+        open={open}
+        onClose={() => setOpen(false)}
+        steps={steps}
+        indicatorsRender={(current, total) => (
+          <span>
+            {current + 1} / {total}
+          </span>
+        )}
+      />
+
+      {/* Header */}
+      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#c7dbd5' }}>
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
-
-        {/* Welcome Message */}
-        <div style={{ fontSize: '20px', color: 'black' }}>Bienvenue sur QueryBox !</div>
-
-        {/* Icons and Button */}
+        <Button onClick={() => setOpen(true)}>Relire le tuto utilisation</Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Button 
-            shape="round" 
-            style={{
-              backgroundColor: 'transparent',
-              borderColor: '#54877c',
-              color: 'black',
-            }}>
-            Collaborateur
-          </Button>
           <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
           <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
           <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
         </div>
       </Header>
-
+      
       <Layout style={{ height: '100%', width: '100%', background: '#ebf9f4' }}>
-        <Sider
-          width={400}
-          collapsible={false} // disable collapse
-          breakpoint="md"
-          collapsedWidth="0"
-          style={{
-            background: '#ebf9f4',
-            overflowY: 'scroll',
-            height: '115vh',
-          }}
-        >
-          <SiderMenu />
+        <Sider width={400} style={{ background: '#ebf9f4', overflowY: 'scroll' }}>
+          <div ref={menuRef}>
+            <SiderMenu />
+          </div>
         </Sider>
 
         <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            margin: '16px 0',
-          }}
-        >
-          {/* Method Dropdown */}
-          <select
+          <div
+            ref={methodRef}
             style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-              background: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              margin: '16px 0',
             }}
           >
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="PATCH">PATCH</option>
-            <option value="DELETE">DELETE</option>
-            <option value="HEAD">HEAD</option>
-            <option value="OPTIONS">OPTIONS</option>
-          </select>
-
-          {/* URL Input */}
-          <input
-            type="text"
-            placeholder="URL:"
-            style={{
-              flex: 1,
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-            }}
-          />
-
-          {/* Send Button */}
-          <button
-            style={{
-              padding: '8px 16px',
-              background: 'transparent',
-              color: 'black',
-              border: '1px solid #54877c',
-              borderRadius: '4px'
-            }}
-          >
-            Send
-          </button>
-        </div>
+            {/* Method Dropdown */}
+            <select
+              style={{
+                padding: '8px',
+                borderRadius: '4px',
+                border: '1px solid #54877c',
+                background: '#fff',
+              }}
+            >
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="PATCH">PATCH</option>
+              <option value="DELETE">DELETE</option>
+              <option value="HEAD">HEAD</option>
+              <option value="OPTIONS">OPTIONS</option>
+            </select>
+  
+            {/* URL Input */}
+            <input
+              type="text"
+              placeholder="URL:"
+              style={{
+                flex: 1,
+                padding: '8px',
+                borderRadius: '4px',
+                border: '1px solid #54877c',
+              }}
+            />
+  
+            {/* Send Button */}
+            <button
+              style={{
+                padding: '8px 16px',
+                background: 'transparent',
+                color: 'black',
+                border: '1px solid #54877c',
+                borderRadius: '4px',
+              }}
+            >
+              Send
+            </button>
+          </div>
 
           <Content
             style={{
@@ -144,82 +154,42 @@ const Tuto = () => {
               margin: 0,
               background: "#c7dbd5",
               borderRadius: '10px',
-              overflowY: 'hidden'
+              overflowY: 'hidden',
             }}
           >
-            <Splitter
-              layout="vertical"
-              style={{
-                height: '100vh',
-                boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                background: "#d9ebe5",
-                overflow: 'hidden',
-                borderRadius: '10px'
-              }}
-            >
-              {/* Block of request */}
+            <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden', borderRadius: '10px' }}>
+              {/* Request Block */}
               <Splitter.Panel>
-                {/* Ratio box: param, header, body */}
-                <Flex vertical gap="middle">
-                  <Radio.Group 
-                    onChange={onChangeResquest}  
+                <div ref={requestRef}>
+                  <Radio.Group
+                    onChange={(e) => setSelectedRequest(e.target.value)}
                     defaultValue="param"
-                    style={{
-                      paddingTop: '3px'
-                    }}
+                    style={{ marginBottom: '16px' }}
                   >
-                    <Radio.Button 
-                    value="param"
-                    style={{
-                      border: '1px solid #54877c',
-                    }}
-                    >Param</Radio.Button>
-                    <Radio.Button 
-                    value="headerRequest"
-                    style={{
-                      border: '1px solid #54877c',
-                    }}
-                    >Header</Radio.Button>
-                    <Radio.Button 
-                    value="bodyRequest"
-                    style={{
-                      border: '1px solid #54877c',
-                    }}
-                    >Body</Radio.Button>
+                    <Radio.Button value="param">Param</Radio.Button>
+                    <Radio.Button value="headerRequest">Header</Radio.Button>
+                    <Radio.Button value="bodyRequest">Body</Radio.Button>
                   </Radio.Group>
-                </Flex>
-                {selectedRequest === "param" && <RequestParam />}
-                {selectedRequest === "headerRequest" && <RequestHeader />}
-                {selectedRequest === "bodyRequest" && <RequestBody />}
+                  {selectedRequest === "param" && <RequestParam />}
+                  {selectedRequest === "headerRequest" && <RequestHeader />}
+                  {selectedRequest === "bodyRequest" && <RequestBody />}
+                </div>
               </Splitter.Panel>
 
-              {/* Block of response */}
+              {/* Response Block */}
               <Splitter.Panel>
-                {/* Ratio box: header, body */}
-                <Flex vertical gap="middle">
-                  <Radio.Group 
-                    onChange={onChangeResponse} 
+                <div ref={responseRef}>
+                  <Radio.Group
+                    onChange={(e) => setSelectedResponse(e.target.value)}
                     defaultValue="headerResponse"
-                    style={{
-                      paddingTop: '3px'
-                    }}
+                    style={{ marginBottom: '16px' }}
                   >
-                    <Radio.Button 
-                    value="headerResponse"
-                    style={{
-                      border: '1px solid #54877c',
-                    }}
-                    >Header</Radio.Button>
-                    <Radio.Button 
-                    value="bodyResponse"
-                    style={{
-                      border: '1px solid #54877c',
-                    }}
-                    >Body</Radio.Button>
+                    <Radio.Button value="headerResponse">Header</Radio.Button>
+                    <Radio.Button value="bodyResponse">Body</Radio.Button>
                   </Radio.Group>
-                </Flex>
-                {selectedResponse === "headerResponse" && <ResponseHeader />}
-                {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
+                  {selectedResponse === "headerResponse" && <ResponseHeader />}
+                  {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
+                </div>
               </Splitter.Panel>
             </Splitter>
           </Content>
@@ -228,4 +198,5 @@ const Tuto = () => {
     </Layout>
   );
 };
+
 export default Tuto;
