@@ -245,7 +245,7 @@ export const joinWorkspace = async (req, res) => {
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not invited to workspace" });
         }
-        
+
         if (userInWorkspace.hasJoined) {
             return res.status(403).json({ message: "User already joined workspace" });
         }
@@ -269,12 +269,16 @@ export const leaveWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not found in workspace" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId.toString() !== userId.toString());
+        if (userInWorkspace.privilege === owner_grade) {
+            return res.status(403).json({ message: "Owner can't leave workspace, please transfer your ownership before leaving" });
+        }
+
+        workspace.users = workspace.users.filter(user => user.userId.toString() != userId.toString());
         await workspace.save();
 
         res.status(200).json({ message: "User left workspace successfully" });
