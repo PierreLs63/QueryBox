@@ -110,25 +110,41 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
 export const updatePrivileges = async (req, res) => {
     try {
         const { workspaceId } = req.params;
-        const { userToUpdateId, newPrivilege } = req.body;
+        const { username, privilege } = req.body;
         const { userId } = req.user;
+
+        if (!username || !privilege || typeof privilege !== "number" ) return res.status(400).json({ message: "Missing data" });
 
         const workspace = await Workspace.findById(workspaceId);
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to update user privileges" });
         }
 
-        const userToUpdate = workspace.users.find(user => user.userId.toString() === userToUpdateId.toString());
-        if (!userToUpdate) {
-            return res.status(404).json({ message: "User to update not found in workspace" });
+        const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
+        if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
+
+        
+        const foundUser = workspace.users.find(u => u.userId == userToUpdate._id);
+        if (!foundUser) return res.status(404).json({ message: "User to update not found in workspace" });
+
+        if (foundUser.privilege === admin_grade && userInWorkspace.privilege < owner_grade) {
+            return res.status(403).json({ message: "You can't update the privileges of an admin as an admin" });
         }
 
-        userToUpdate.privilege = newPrivilege;
+        if (userInWorkspace.privilege === owner_grade && privilege === owner_grade) {
+            userInWorkspace.privilege = admin_grade; // On transfère le grade de propriétaire à cette personne, il y a qu'un seul owner
+        }
+
+        if (foundUser.privilege === owner_grade) {
+            return res.status(403).json({ message: "You can't update the privileges of the owner" });
+        }
+
+        foundUser.privilege = privilege;
         await workspace.save();
         res.status(200).json(workspace);
     } catch (error) {

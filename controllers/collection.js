@@ -105,7 +105,11 @@ export const updatePrivileges = async (req, res) => {
         const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
-        collection.users.find(u => u.userId == userToUpdate._id).privilege = privilege;
+        const foundUser = collection.users.find(u => u.userId == userToUpdate._id);
+        if (!foundUser) return res.status(404).json({ message: "User to update not found in collection" });
+
+        foundUser.privilege = privilege;
+        
         await collection.save();
 
         res.status(200).json({ message: "User privileges updated successfully" });
