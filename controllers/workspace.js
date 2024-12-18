@@ -191,7 +191,7 @@ export const getAllCollection = async (req, res) => {
 export const inviteUserByUsername = async (req, res) => {
     try {
         const { workspaceId } = req.params;
-        const { username, level } = req.body;
+        const { username, privilege } = req.body;
         const { userId } = req.user;
 
         const workspace = await Workspace.findById(workspaceId);
@@ -199,22 +199,30 @@ export const inviteUserByUsername = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to invite a user" });
         }
 
-        const userToInvite = await User.findOne({ username });
+        const userToInvite = await User.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean();
         if (!userToInvite) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const userAlreadyInWorkspace = workspace.users.find(user => user.userId.toString() === userToInvite._id.toString());
+        const userAlreadyInWorkspace = workspace.users.find(user => user.userId.toString() == userToInvite._id.toString());
         if (userAlreadyInWorkspace) {
-            return res.status(403).json({ message: "User already in workspace" });
+            return res.status(403).json({ message: "User already in workspace or invited" });
         }
 
-        workspace.users.push({ userId: userToInvite._id, privilege: level || viewer_grade, hasJoined: false });
+        if (privilege && typeof privilege !== "number") {
+            return res.status(400).json({ message: "Invalid typeof privilege" });
+        }
+
+        if (privilege && (privilege < viewer_grade || privilege > admin_grade)) {
+            return res.status(400).json({ message: "Invalid privilege" });
+        }
+
+        workspace.users.push({ userId: userToInvite._id, privilege: privilege || viewer_grade, hasJoined: false });
         await workspace.save();
 
         res.status(200).json({ message: "User invited successfully" });
