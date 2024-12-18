@@ -101,7 +101,7 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
 
         workspace.users = workspace.users.filter(user => user.userId.toString() != userBId.toString());
         await workspace.save();
-        res.status(200).json(workspace);
+        res.status(200).json({ message: "User removed from workspace successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
