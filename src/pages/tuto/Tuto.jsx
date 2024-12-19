@@ -79,7 +79,23 @@ const Tuto = () => {
       {/* Header */}
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#c7dbd5' }}>
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
-        <Button onClick={() => setOpen(true)}>Relire le tuto utilisation</Button>
+        <Button 
+          onClick={() => setOpen(true)}
+          style={{
+            padding: '8px 16px',
+            background: 'transparent',
+            color: 'black',
+            border: '1px solid #54877c',
+            borderRadius: '4px'
+          }}>Relire le tuto utilisation</Button>
+        <Button 
+          style={{
+            padding: '8px 16px',
+            background: 'transparent',
+            color: 'black',
+            border: '1px solid #54877c',
+            borderRadius: '4px'
+          }}>Commencer votre premier essai</Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
           <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
@@ -141,7 +157,7 @@ const Tuto = () => {
                 background: 'transparent',
                 color: 'black',
                 border: '1px solid #54877c',
-                borderRadius: '4px',
+                borderRadius: '4px'
               }}
             >
               Send
@@ -154,7 +170,7 @@ const Tuto = () => {
               margin: 0,
               background: "#c7dbd5",
               borderRadius: '10px',
-              overflowY: 'hidden',
+              overflowY: 'auto',
             }}
           >
             <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden', borderRadius: '10px' }}>
