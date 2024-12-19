@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@ant-design/icons';
-import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List } from 'antd';
+import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List, Select } from 'antd';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
@@ -170,66 +170,60 @@ const Accueil = () => {
             }}
           >
             {/* Method Dropdown */}
-            <select
+            <Select
+              defaultValue="GET"
               style={{
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #54877c',
-                background: '#fff',
+                width: 120,
               }}
-            >
-              <option value="GET">GET</option>
-              <option value="POST">POST</option>
-              <option value="PUT">PUT</option>
-              <option value="PATCH">PATCH</option>
-              <option value="DELETE">DELETE</option>
-              <option value="HEAD">HEAD</option>
-              <option value="OPTIONS">OPTIONS</option>
-            </select>
-
-            {/* URL Input */}
-            <input
-              type="text"
-              placeholder="URL:"
-              style={{
-                flex: 1,
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #54877c',
-              }}
+              options={[
+                {
+                  value: 'GET',
+                  label: 'GET',
+                },
+                {
+                  value: 'POST',
+                  label: 'POST',
+                },
+                {
+                  value: 'PUT',
+                  label: 'PUT',
+                },
+                {
+                  value: 'PATCH',
+                  label: 'PATCH',
+                },
+                {
+                  value: 'DELETE',
+                  label: 'DELETE',
+                },
+                {
+                  value: 'HEAD',
+                  label: 'HEAD',
+                },
+                {
+                  value: 'OPTIONS',
+                  label: 'OPTIONS',
+                },
+              ]}
             />
 
+            {/* URL Input */}
+            
+            <Input placeholder="URL" />
+
             {/* Send Button */}
-            <button
-              style={{
-                padding: '8px 16px',
-                background: 'transparent',
-                color: 'black',
-                border: '1px solid #54877c',
-                borderRadius: '4px'
-              }}
-            >
-              Send
-            </button>
+            <Button>Send</Button>
           </div>
 
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              background: "#c7dbd5",
-              borderRadius: '10px',
-              overflowY: 'hidden'
-            }}
-          >
+          <Content>
             <Splitter
               layout="vertical"
               style={{
                 height: '100vh',
-                boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                //boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                 background: "#d9ebe5",
                 overflow: 'hidden',
-                borderRadius: '10px'
+                borderRadius: '4px'
               }}
             >
               {/* Block of request */}
@@ -240,7 +234,7 @@ const Accueil = () => {
                     onChange={onChangeResquest}  
                     defaultValue="param"
                     style={{
-                      paddingTop: '3px'
+                      marginBottom: '16px',
                     }}
                   >
                     <Radio.Button 
@@ -276,7 +270,8 @@ const Accueil = () => {
                     onChange={onChangeResponse} 
                     defaultValue="headerResponse"
                     style={{
-                      paddingTop: '3px'
+                      marginBottom: '16px',
+                      marginTop: '16px'
                     }}
                   >
                     <Radio.Button 
