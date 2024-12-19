@@ -36,10 +36,7 @@ const useGetMyHistory = () => {
                 },
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            setHistory(data.history);
+            setHistory(data);
         } catch (error) {
             setError(error.message);
             toast.error(error.message);
