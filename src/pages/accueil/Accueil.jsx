@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
-import { Layout, Button, Flex, Splitter, Radio } from 'antd';
+import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@ant-design/icons';
+import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List } from 'antd';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from './response_body.jsx';
+import toast from 'react-hot-toast';
 import SiderMenu from './sider_menu.jsx';
 
 // Overall page layout
@@ -16,6 +17,14 @@ const Accueil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
+  const [nickname, setNickname] = useState("");
+
+  //Notifications place-holders
+  const [notifications, setNotifications] = useState([
+    { id: 1, message: 'Place-holder 1' },
+    { id: 2, message: 'Multiple line place-holder beepbop 2' },
+    { id: 3, message: 'Place-holder 3' },
+  ]);
 
   // Event of request checked
   const onChangeResquest = (e) => {
@@ -33,14 +42,73 @@ const Accueil = () => {
   }).map((_, i) => ({
     key: i,
     keyData: `Key ${i}`,
-    value: `Value ${i}`
+    value: `Value ${i}`,
   }));
+
   useEffect(() => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     document.documentElement.style.setProperty('color-scheme', 'light');
   }, []);
+
+  const handleInvite = () => {
+    toast.success(`Invite sent to ${nickname} !`);
+    setNickname("");
+  };
+
+  const handleRemoveNotification = (id) => {
+    setNotifications(notifications.filter(notification => notification.id !== id));
+  };
+
+  const inviteContent = (
+    <div>
+      <Input
+        placeholder="Entrez pseudonyme"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        style={{ marginBottom: '10px' }}
+      />
+      <Button 
+        type="primary" 
+        onClick={handleInvite}
+        disabled={!nickname}
+      >
+        Invite
+      </Button>
+    </div>
+  );
+
+  const notificationContent = (
+    <div style={{ maxHeight: '200px', overflowY: 'scroll', width: '250px' }}>
+      <List
+        dataSource={notifications}
+        renderItem={item => (
+          <List.Item
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              wordWrap: 'break-word',
+              wordBreak: 'break-word',
+              maxWidth: '230px',
+            }}
+          >
+            <div style={{ flex: 1, marginRight: '10px' }}>
+              {item.message}
+            </div>
+            <Button
+              type="link"
+              icon={<CloseOutlined style={{ color: 'red' }} />}
+              onClick={() => handleRemoveNotification(item.id)}
+              style={{ padding: 0 }}
+            />
+          </List.Item>
+        )}
+      />
+    </div>
+  );
+  
 
   return (
     <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
@@ -62,8 +130,17 @@ const Accueil = () => {
             }}>
             Collaborateur
           </Button>
-          <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
-          <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+
+          {/* User Add Icon with Popover for user invite */}
+          <Popover content={inviteContent} title="Inviter Collaborateur" trigger="click">
+            <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          </Popover>
+
+          {/* Bell Icon with Popover for Notifications */}
+          <Popover content={notificationContent} title="Notifications" trigger="click">
+            <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          </Popover>
+
           <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
         </div>
       </Header>
@@ -84,57 +161,57 @@ const Accueil = () => {
         </Sider>
 
         <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            margin: '16px 0',
-          }}
-        >
-          {/* Method Dropdown */}
-          <select
+          <div
             style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-              background: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              margin: '16px 0',
             }}
           >
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="PATCH">PATCH</option>
-            <option value="DELETE">DELETE</option>
-            <option value="HEAD">HEAD</option>
-            <option value="OPTIONS">OPTIONS</option>
-          </select>
+            {/* Method Dropdown */}
+            <select
+              style={{
+                padding: '8px',
+                borderRadius: '4px',
+                border: '1px solid #54877c',
+                background: '#fff',
+              }}
+            >
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="PATCH">PATCH</option>
+              <option value="DELETE">DELETE</option>
+              <option value="HEAD">HEAD</option>
+              <option value="OPTIONS">OPTIONS</option>
+            </select>
 
-          {/* URL Input */}
-          <input
-            type="text"
-            placeholder="URL:"
-            style={{
-              flex: 1,
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #54877c',
-            }}
-          />
+            {/* URL Input */}
+            <input
+              type="text"
+              placeholder="URL:"
+              style={{
+                flex: 1,
+                padding: '8px',
+                borderRadius: '4px',
+                border: '1px solid #54877c',
+              }}
+            />
 
-          {/* Send Button */}
-          <button
-            style={{
-              padding: '8px 16px',
-              background: 'transparent',
-              color: 'black',
-              border: '1px solid #54877c',
-              borderRadius: '4px'
-            }}
-          >
-            Send
-          </button>
-        </div>
+            {/* Send Button */}
+            <button
+              style={{
+                padding: '8px 16px',
+                background: 'transparent',
+                color: 'black',
+                border: '1px solid #54877c',
+                borderRadius: '4px'
+              }}
+            >
+              Send
+            </button>
+          </div>
 
           <Content
             style={{
