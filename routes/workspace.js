@@ -10,7 +10,8 @@ import {
     inviteUserByUsername,
     joinWorkspace,
     leaveWorkspace,
-    getUsersInWorkspace
+    getUsersInWorkspace,
+    getWorkspaces
 } from "../controllers/workspace.js";
 import {
     getHistory,
@@ -20,6 +21,7 @@ import { createCollection } from "../controllers/collection.js";
 
 const router = express.Router();
 
+router.get("/", protectRoute, getWorkspaces); // Obtenir la liste des workspaces de l'utilisateur connecté
 router.post("/", protectRoute, createWorkspace);
 router.post("/:workspaceId", protectRoute, createCollection); // Création d'une collection dans un workspace avec un nom par défaut
 router.put("/:workspaceId/name", protectRoute, changeName); // Mise à jour du nom du workspace

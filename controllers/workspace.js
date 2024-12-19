@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Workspace from "../models/Workspace.js";
 import User from "../models/User.js";
 import dotenv from "dotenv";
@@ -204,7 +205,7 @@ export const inviteUserByUsername = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to invite a user" });
         }
 
-        const userToInvite = await User.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean();
+        const userToInvite = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
         if (!userToInvite) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -314,3 +315,19 @@ export const getUsersInWorkspace = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const getWorkspaces = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const workspaces = await Workspace.find();
+        const workspacesUser = workspaces.filter(workspace => workspace.users.find(user => user.userId.toString() == userId.toString()));
+        const filteredWorkspaces = workspacesUser.map(workspace => ({
+            id: workspace._id,
+            name: workspace.name
+        }));
+        res.status(200).json(filteredWorkspaces);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+    
