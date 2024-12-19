@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import SiderMenu from './sider_menu.jsx';
 
 // Overall page layout
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 
 // Function application
 const Accueil = () => {
@@ -245,7 +245,6 @@ const Accueil = () => {
             <Button>Send</Button>
           </div>
 
-
             <Splitter
               layout="vertical"
               style={{
@@ -322,7 +321,6 @@ const Accueil = () => {
                 {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
               </Splitter.Panel>
             </Splitter>
-
         </Layout>
       </Layout>
     </Layout>

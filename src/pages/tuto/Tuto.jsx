@@ -72,7 +72,7 @@ const Tuto = () => {
   ];
 
   return (
-    <Layout style={{ height: '100vh', background: '#d9ebe5' }}>
+    <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
       <Tour
         open={open}
         onClose={() => setOpen(false)}
@@ -85,7 +85,7 @@ const Tuto = () => {
       />
 
       {/* Header */}
-      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#c7dbd5' }}>
+      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#B4CDC4' }}>
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
         <Button 
           onClick={() => setOpen(true)}
@@ -108,14 +108,22 @@ const Tuto = () => {
             Commencer votre premier essai
         </Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
-          <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
-          <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
         </div>
       </Header>
       
-      <Layout style={{ height: '100%', width: '100%', background: '#ebf9f4' }}>
-        <Sider width={400} style={{ background: '#ebf9f4', overflowY: 'scroll' }}>
+      <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
+        <Sider width={400}
+          collapsible={false} // disable collapse
+          breakpoint="md"
+          collapsedWidth="0"
+          style={{
+            background: '#d9ebe5',
+            overflowY: 'scroll',
+            height: '100%',
+          }}>
           <div ref={menuRef}>
             <SiderMenu />
           </div>
@@ -175,15 +183,6 @@ const Tuto = () => {
             </button>
           </div>
 
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              background: "#c7dbd5",
-              borderRadius: '10px',
-              overflowY: 'auto',
-            }}
-          >
             <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden', borderRadius: '10px' }}>
               {/* Request Block */}
               <Splitter.Panel>
@@ -219,7 +218,6 @@ const Tuto = () => {
                 </div>
               </Splitter.Panel>
             </Splitter>
-          </Content>
         </Layout>
       </Layout>
     </Layout>
