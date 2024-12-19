@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
-import { Layout, Button, Flex, Splitter, Radio } from 'antd';
+import { Layout, Button, Input, Popover, Radio, Flex, Splitter } from 'antd';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from './response_body.jsx';
+import toast from 'react-hot-toast';
 import SiderMenu from './sider_menu.jsx';
 
 // Overall page layout
@@ -16,6 +17,7 @@ const Accueil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
+  const [nickname, setNickname] = useState("");
 
   // Event of request checked
   const onChangeResquest = (e) => {
@@ -35,12 +37,36 @@ const Accueil = () => {
     keyData: `Key ${i}`,
     value: `Value ${i}`
   }));
+
   useEffect(() => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     document.documentElement.style.setProperty('color-scheme', 'light');
   }, []);
+
+  const handleInvite = () => {
+    toast.success(`Invite sent to ${nickname} !`)
+    setNickname("");
+  };
+
+  const inviteContent = (
+    <div>
+      <Input
+        placeholder="Entrez pseudonyme"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        style={{ marginBottom: '10px' }}
+      />
+      <Button 
+        type="primary" 
+        onClick={handleInvite}
+        disabled={!nickname}
+      >
+        Invite
+      </Button>
+    </div>
+  );
 
   return (
     <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
@@ -62,7 +88,12 @@ const Accueil = () => {
             }}>
             Collaborateur
           </Button>
-          <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+
+          {/* User Add Icon with Popover */}
+          <Popover content={inviteContent} title="Inviter Collaborateur" trigger="click">
+            <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          </Popover>
+
           <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
           <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
         </div>
