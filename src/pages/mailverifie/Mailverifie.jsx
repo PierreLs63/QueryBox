@@ -3,10 +3,10 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const Mailverifie = () => {
-  // Navigate to accueil
+  // Navigate to debutant
   const navigate = useNavigate();
   const handleMailVerifie = () => {
-    navigate('/accueil');
+    navigate('/debutant');
   };
 
   //Change default param from index.css

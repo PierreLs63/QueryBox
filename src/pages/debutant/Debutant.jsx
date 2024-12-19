@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Typography, Flex } from 'antd';
 import SiderMenu from './sider_menu.jsx';
+import { useNavigate } from 'react-router-dom';
 
 // Overall page layout
 const { Header, Content, Sider } = Layout;
@@ -18,8 +19,18 @@ const Debutant = () => {
     document.documentElement.style.setProperty('color-scheme', 'light');
   }, []);
 
+    const navigate = useNavigate();
+    // Navigate to tuto
+    const handleTuto = () => {
+      navigate('/tuto');
+    };
+    // Navigate to accueil
+    const handleAccueil = () => {
+      navigate('/accueil');
+    };
+
   return (
-    <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
+    <Layout style={{ height: '100vh', width: '100vw', overflowY: 'hidden', background: '#d9ebe5' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
         {/* QueryBox */}
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
@@ -59,7 +70,7 @@ const Debutant = () => {
           <SiderMenu />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100vh', background: '#ebf9f4' }}>
+        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100vh', background: '#d9ebe5' }}>
           <Content
             style={{
               padding: 24,
@@ -90,6 +101,7 @@ const Debutant = () => {
                   color: 'black',
                   width: '100px'
                 }}
+                onClick={handleTuto}
               >
                 Commencer
               </Button>
@@ -101,6 +113,7 @@ const Debutant = () => {
                   color: 'black',
                   width: '100px'
                 }}
+                onClick={handleAccueil}
               >
                 Quitter
               </Button>
