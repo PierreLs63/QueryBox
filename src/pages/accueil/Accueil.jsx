@@ -3,11 +3,11 @@ import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@
 import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List, Select } from 'antd';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
-import RequestBody from './request_body.jsx';
+import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
-import ResponseBody from './response_body.jsx';
+import ResponseBody from '../../../public/components/response_body.jsx';
 import toast from 'react-hot-toast';
-import SiderMenu from './sider_menu.jsx';
+import SiderMenu from '../../../public/components/sider_menu.jsx';
 
 // Overall page layout
 const { Header, Sider } = Layout;
