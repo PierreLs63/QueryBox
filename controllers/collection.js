@@ -13,10 +13,15 @@ export const createCollection = async (req, res) => {
         const { userId } = req.user;
 
         const user = await Workspace.findOne({ _id: workspaceId, "users.userId": userId });
+
+        console.log(user);
         // Si l'utilisateur n'est pas dans le workspace
         if (!user) return res.status(404).json({ message: "User not found in workspace" });
+
+
+
         // Si l'utilisateur n'a pas les droits de lecture et écriture dans le workspace
-        if (user.users.find(u => u.userId == userId).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        if (user.users.find(u => u.userId.toString() == userId.toString()).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
         const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();
@@ -41,7 +46,7 @@ export const deleteCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId == userId);
+        const user = collection.users.find(u => u.userId.toString() == userId.toString());
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         await Collection.findByIdAndDelete(collectionId);
@@ -59,7 +64,7 @@ export const getAllRequestsFromCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId == userId);
+        const user = collection.users.find(u => u.userId.toString() == userId.toString());
         if (!user|| user.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
         await collection.populate('requests');
         // On envoie les données de toutes les requêtes de la collection et non pas juste un tableau d'ids
@@ -80,7 +85,7 @@ export const changeCollectionName = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId == userId);
+        const user = collection.users.find(u => u.userId.toString() == userId.toString());
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         // Si le nom de la collection est différent du nouveau nom

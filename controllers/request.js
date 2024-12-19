@@ -19,7 +19,7 @@ export const createRequest = async (req, res) => {
             return res.status(404).json({ message: "User not found in collection" });
         }
         
-        if (user.users.find(u => u.userId == userId).privilege < viewer_grade) {
+        if (user.users.find(u => u.userId.toString() == userId.toString()).privilege < viewer_grade) {
             return res.status(401).json({ message: "User not authorized" });
         }
 
@@ -53,13 +53,13 @@ export const changeName = async (req, res) => {
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
+        const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
         if (!userInCollection || userInCollection.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
         }
         request.name = name;
         await request.save();
-        res.status(200).json(request);
+        res.status(200).json({ message: "Request name changed successfully"});
     } catch (error) {
         res.status(409).json({ message: error.message });
     }

@@ -9,8 +9,9 @@ const KeyValueSchema = new mongoose.Schema({
 
 const ParamRequestSchema = new mongoose.Schema({
     requestId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: "Request"
     },
     url: {
         type: String,
@@ -25,8 +26,9 @@ const ParamRequestSchema = new mongoose.Schema({
         default: ""
     },
     userId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
     },
     header: [KeyValueSchema], // Array of key-value pairs
     parameters: [KeyValueSchema], // Array of key-value pairs

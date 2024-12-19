@@ -3,12 +3,14 @@ import mongoose from "mongoose";
 // UserId and privilege with disabled id
 const requestandUserIdandParamSchema = new mongoose.Schema({
     paramRequestId: { 
-        type: String, 
-        required: true 
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true,
+        ref: "ParamRequest" 
     },
     userId: { 
-        type: String, 
-        required: true 
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true,
+        ref: "User" 
     }
   }, { _id: false });
 
@@ -20,8 +22,9 @@ const RequestSchema = new mongoose.Schema({
         required: true,
     },
     collectionId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Collection"
     }
 },
     {timestamps: true}

@@ -14,8 +14,9 @@ const ResponseSchema = new mongoose.Schema({
     },
     header: [KeyValueSchema], // Array of key-value pairs
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: "User"
     },
     body: {
         type: String,

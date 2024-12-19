@@ -13,7 +13,7 @@ export const createWorkspace = async (req, res) => {
         const { userId } = req.user;
         const newWorkspace = new Workspace({
             users: [{
-                userId,
+                userId: userId,
                 privilege: owner_grade,
                 hasJoined: true
             }]
