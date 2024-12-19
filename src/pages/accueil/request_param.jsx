@@ -166,6 +166,7 @@ const EditableCell = ({
           pagination={{
             onChange: cancel,
           }}
+          size='small'
         />
       </Form>
     );
