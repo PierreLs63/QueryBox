@@ -21,7 +21,7 @@ export const createCollection = async (req, res) => {
 
 
         // Si l'utilisateur n'a pas les droits de lecture et écriture dans le workspace
-        if (user.users.find(u => u.userId.toString() == userId.toString()).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        if (user.users.find(u => u.userId.toString() === userId.toString()).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
         const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();
@@ -32,7 +32,7 @@ export const createCollection = async (req, res) => {
         workspace.collections.push(collection._id);
         await workspace.save();
         
-        res.status(201).json(collection);
+        res.status(201).json({ message: "Collection created successfully" });
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
@@ -46,7 +46,7 @@ export const deleteCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId.toString() == userId.toString());
+        const user = collection.users.find(u => u.userId.toString() === userId.toString());
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         await Collection.findByIdAndDelete(collectionId);
@@ -64,7 +64,7 @@ export const getAllRequestsFromCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId.toString() == userId.toString());
+        const user = collection.users.find(u => u.userId.toString() === userId.toString());
         if (!user|| user.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
         await collection.populate('requests');
         // On envoie les données de toutes les requêtes de la collection et non pas juste un tableau d'ids
@@ -85,7 +85,7 @@ export const changeCollectionName = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId.toString() == userId.toString());
+        const user = collection.users.find(u => u.userId.toString() === userId.toString());
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         // Si le nom de la collection est différent du nouveau nom
@@ -111,15 +111,21 @@ export const updatePrivileges = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId == userConnectedId);
+        const user = collection.users.find(u => u.userId.toString() === userConnectedId.toString());
         if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
-        const foundUser = collection.users.find(u => u.userId == userToUpdate._id);
+        const foundUser = collection.users.find(u => u.userId.toString() === userToUpdate._id.toString());
         if (!foundUser) return res.status(404).json({ message: "User to update not found in collection" });
 
+        if (userConnectedId.toString() === foundUser.userId.toString()) return res.status(403).json({ message: "You can't change your own privileges" });
+
+        if (foundUser.privilege === admin_grade) return res.status(403).json({ message: "You can't change the privileges of an admin" });
+        
+        if (privilege > admin_grade || privilege < viewer_grade) return res.status(403).json({ message: "Invalid privilege" });
+        
         foundUser.privilege = privilege;
 
         await collection.save();

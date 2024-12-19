@@ -38,7 +38,7 @@ export const changeName = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to change the name of the workspace" });
         }
@@ -64,7 +64,7 @@ export const deleteWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to delete the workspace" });
         }
@@ -89,7 +89,7 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to remove a user from the workspace" });
         }
@@ -98,7 +98,7 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
         if (!userToSearch) return res.status(404).json({ message: "User to remove not found" });
 
         console.log(userToSearch)
-        const userToRemove = workspace.users.find(u => u.userId.toString() == userToSearch._id.toString());
+        const userToRemove = workspace.users.find(u => u.userId.toString() === userToSearch._id.toString());
         if (!userToRemove) return res.status(404).json({ message: "User to remove not found in workspace" });
 
         // Si l'utilisateur à retirer est l'utilisateur actuel, on ne peut pas le retirer
@@ -115,7 +115,7 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
             return res.status(403).json({ message: "You can't remove an admin from the workspace as an admin, only the owner can" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId != userToRemove.userId);
+        workspace.users = workspace.users.filter(user => user.userId.toString() != userToRemove.userId.toString());
         await workspace.save();
         res.status(200).json({ message: "User removed from workspace successfully" });
     } catch (error) {
@@ -136,7 +136,7 @@ export const updatePrivileges = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to update user privileges" });
         }
@@ -145,20 +145,21 @@ export const updatePrivileges = async (req, res) => {
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
         
-        const foundUser = workspace.users.find(u => u.userId == userToUpdate._id);
+        const foundUser = workspace.users.find(u => u.userId.toString() === userToUpdate._id.toString());
         if (!foundUser) return res.status(404).json({ message: "User to update not found in workspace" });
 
         if (foundUser.privilege === admin_grade && userInWorkspace.privilege < owner_grade) {
             return res.status(403).json({ message: "You can't update the privileges of an admin as an admin" });
         }
 
+        if (foundUser.privilege === owner_grade) {
+            return res.status(403).json({ message: "You can't update the privileges of the owner" });
+        }
+        
         if (userInWorkspace.privilege === owner_grade && privilege === owner_grade) {
             userInWorkspace.privilege = admin_grade; // On transfère le grade de propriétaire à cette personne, il y a qu'un seul owner
         }
 
-        if (foundUser.privilege === owner_grade) {
-            return res.status(403).json({ message: "You can't update the privileges of the owner" });
-        }
 
         foundUser.privilege = privilege;
         await workspace.save();
@@ -178,7 +179,7 @@ export const getAllCollection = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to view the collections" });
         }
@@ -200,7 +201,7 @@ export const inviteUserByUsername = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to invite a user" });
         }
@@ -210,7 +211,7 @@ export const inviteUserByUsername = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const userAlreadyInWorkspace = workspace.users.find(user => user.userId.toString() == userToInvite._id.toString());
+        const userAlreadyInWorkspace = workspace.users.find(user => user.userId.toString() === userToInvite._id.toString());
         if (userAlreadyInWorkspace) {
             return res.status(403).json({ message: "User already in workspace or invited" });
         }
@@ -242,7 +243,7 @@ export const joinWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not invited to workspace" });
         }
@@ -270,7 +271,7 @@ export const leaveWorkspace = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not found in workspace" });
         }
