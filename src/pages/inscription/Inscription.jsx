@@ -1,10 +1,17 @@
 import React, { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const Inscription = () => {
   const onFinish = (values) => {
     console.log('Form Values:', values);
+  };
+
+  // Navigate to connection if have account
+  const navigate = useNavigate();
+  const handleHaveAccount = () => {
+    navigate('/connexion');
   };
 
   //Change default param from index.css
@@ -132,8 +139,8 @@ const Inscription = () => {
               <span>
                 Déjà un compte ?{' '}
                 <a
-                  href="#"
                   style={styles.alreadyAccountLink}
+                  onClick={handleHaveAccount}
                   onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
                   onMouseOut={(e) => (e.target.style.textDecoration = 'none')}
                 >
