@@ -1,9 +1,12 @@
 import React, { useEffect }  from 'react';
 import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Mailverifie = () => {
-  const handleResendEmail = () => {
-    console.log('Mail envoyé');
+  // Navigate to accueil
+  const navigate = useNavigate();
+  const handleMailVerifie = () => {
+    navigate('/accueil');
   };
 
   //Change default param from index.css
@@ -68,7 +71,7 @@ const Mailverifie = () => {
       <Button
         type="primary"
         style={styles.button}
-        onClick={handleResendEmail}
+        onClick={handleMailVerifie}
         onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
         onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
       >
