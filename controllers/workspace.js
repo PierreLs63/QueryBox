@@ -297,7 +297,7 @@ export const getUsersInWorkspace = async (req, res) => {
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
         }
-        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() === userId.toString());
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not found in workspace" });
         }
@@ -319,12 +319,8 @@ export const getUsersInWorkspace = async (req, res) => {
 export const getWorkspaces = async (req, res) => {
     try {
         const { userId } = req.user;
-        const workspaces = await Workspace.find();
-        const workspacesUser = workspaces.filter(workspace => workspace.users.find(user => user.userId.toString() == userId.toString()));
-        const filteredWorkspaces = workspacesUser.map(workspace => ({
-            id: workspace._id,
-            name: workspace.name
-        }));
+        const workspaces = await Workspace.find({"users.userId": userId});
+        const filteredWorkspaces = workspaces.map(workspace => ({ id: workspace._id, name: workspace.name}));
         res.status(200).json(filteredWorkspaces);
     } catch (error) {
         res.status(500).json({ message: error.message });
