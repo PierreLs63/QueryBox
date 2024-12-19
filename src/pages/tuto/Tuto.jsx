@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
-import { Layout, Button, Radio, Tour, Splitter } from 'antd';
+import { Layout, Button, Radio, Tour, Splitter, Select, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
@@ -144,47 +144,48 @@ const Tuto = () => {
             }}
           >
             {/* Method Dropdown */}
-            <select
+            <Select
+              defaultValue="GET"
               style={{
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #54877c',
-                background: '#fff',
+                width: 120,
               }}
-            >
-              <option value="GET">GET</option>
-              <option value="POST">POST</option>
-              <option value="PUT">PUT</option>
-              <option value="PATCH">PATCH</option>
-              <option value="DELETE">DELETE</option>
-              <option value="HEAD">HEAD</option>
-              <option value="OPTIONS">OPTIONS</option>
-            </select>
-  
-            {/* URL Input */}
-            <input
-              type="text"
-              placeholder="URL:"
-              style={{
-                flex: 1,
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #54877c',
-              }}
+              options={[
+                {
+                  value: 'GET',
+                  label: 'GET',
+                },
+                {
+                  value: 'POST',
+                  label: 'POST',
+                },
+                {
+                  value: 'PUT',
+                  label: 'PUT',
+                },
+                {
+                  value: 'PATCH',
+                  label: 'PATCH',
+                },
+                {
+                  value: 'DELETE',
+                  label: 'DELETE',
+                },
+                {
+                  value: 'HEAD',
+                  label: 'HEAD',
+                },
+                {
+                  value: 'OPTIONS',
+                  label: 'OPTIONS',
+                },
+              ]}
             />
   
+            {/* URL Input */}
+            <Input placeholder="URL" />
+
             {/* Send Button */}
-            <button
-              style={{
-                padding: '8px 16px',
-                background: 'transparent',
-                color: 'black',
-                border: '1px solid #54877c',
-                borderRadius: '4px'
-              }}
-            >
-              Send
-            </button>
+            <Button>Send</Button>
           </div>
 
             <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden', borderRadius: '10px' }}>
