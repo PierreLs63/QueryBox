@@ -57,6 +57,7 @@ const Accueil = () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     document.body.style.margin = '0';
     document.body.style.padding = '0';
+    document.documentElement.style.overflowX = 'hidden';
     document.documentElement.style.setProperty('color-scheme', 'light');
   }, []);
 
@@ -133,13 +134,13 @@ const Accueil = () => {
   );
 
   return (
-    <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
-      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
+    <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
+      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#B4CDC4' }}>
         {/* QueryBox */}
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
 
         {/* Welcome Message */}
-        <div style={{ fontSize: '20px', color: 'black' }}>Bienvenue sur QueryBox !</div>
+        <div style={{ fontSize: '20px', color: 'rgb(28, 41, 38)', fontWeight: 'bold' }}>Bienvenue sur QueryBox !</div>
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -149,8 +150,11 @@ const Accueil = () => {
               shape="round" 
               style={{
                 backgroundColor: 'transparent',
-                borderColor: '#54877c',
-                color: 'black',
+                borderColor: 'rgb(34, 56, 51)',
+                borderWidth: '2px',
+                color: 'rgb(28, 41, 38)',
+                height: '31px',
+                fontWeight: 'bold'
               }}
             >
               Collaborateur
@@ -159,28 +163,28 @@ const Accueil = () => {
 
           {/* User Add Icon with Popover for user invite */}
           <Popover content={inviteContent} title="Inviter Collaborateur" trigger="click">
-            <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+            <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
           </Popover>
 
           {/* Bell Icon with Popover for Notifications */}
           <Popover content={notificationContent} title="Notifications" trigger="click">
-            <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+            <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
           </Popover>
 
-          <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
         </div>
       </Header>
 
-      <Layout style={{ height: '100%', width: '100%', background: '#ebf9f4' }}>
+      <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
         <Sider
           width={400}
           collapsible={false} // disable collapse
           breakpoint="md"
           collapsedWidth="0"
           style={{
-            background: '#ebf9f4',
+            background: '#d9ebe5',
             overflowY: 'scroll',
-            height: '115vh',
+            height: '100%',
           }}
         >
           <SiderMenu />
@@ -241,7 +245,7 @@ const Accueil = () => {
             <Button>Send</Button>
           </div>
 
-          <Content>
+
             <Splitter
               layout="vertical"
               style={{
@@ -318,7 +322,7 @@ const Accueil = () => {
                 {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
               </Splitter.Panel>
             </Splitter>
-          </Content>
+
         </Layout>
       </Layout>
     </Layout>
