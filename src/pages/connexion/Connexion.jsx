@@ -11,16 +11,16 @@ const Connexion = () => {
     login(values.username, values.password);
   };
 
+  const navigate = useNavigate();
+
   // Navigate to reinitialiser if forget password
-  const navigateReinitialiser = useNavigate();
   const handleForgotPassword = () => {
-    navigateReinitialiser('/reinitialiser');
+    navigate('/reinitialiser');
   };
 
-  // Navigate to inscription if not have account
-  const navigateInscription = useNavigate();
+  // Navigate to inscription if not have password
   const handleNotHaveAccount = () => {
-    navigateInscription('/inscription');
+    navigate('/inscription');
   };
 
   //Change default param from index.css
@@ -120,7 +120,7 @@ const Connexion = () => {
               onClick={handleNotHaveAccount}
               onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
               onMouseOut={(e) => (e.target.style.textDecoration = 'none')}>
-              Pas de compte ?
+              Pas encore de compte ?
             </a>
           </div>
 

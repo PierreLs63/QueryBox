@@ -39,6 +39,7 @@ const RequestHeader = () => {
       columns={columns}
       dataSource={data}
       pagination={{ pageSize: 5 }}
+      size='small'
     />
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Radio, Tour, Splitter } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from './request_body.jsx';
@@ -21,6 +22,13 @@ const Tuto = () => {
   const methodRef = useRef(null);
   const requestRef = useRef(null);
   const responseRef = useRef(null);
+
+  // Navigate to accueil
+  const navigate = useNavigate();
+  const handleAccueil = () => {
+    navigate('/accueil');
+  };
+  
 
   useEffect(() => {
     if (menuRef.current) {
@@ -95,7 +103,10 @@ const Tuto = () => {
             color: 'black',
             border: '1px solid #54877c',
             borderRadius: '4px'
-          }}>Commencer votre premier essai</Button>
+            }}
+          onClick={handleAccueil}>
+            Commencer votre premier essai
+        </Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
           <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
