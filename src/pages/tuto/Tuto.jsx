@@ -9,7 +9,7 @@ import ResponseHeader from './response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 
 const Tuto = () => {
   const [selectedRequest, setSelectedRequest] = useState("param");
