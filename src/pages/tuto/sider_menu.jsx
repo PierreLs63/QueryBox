@@ -106,7 +106,7 @@ const SiderMenu = () => {
           </div>
         ),
       }))}
-      style={{ height: '100%', borderRight: 0, paddingTop: '15px', paddingBottom: '20px', background: '#ebf9f4' }}
+      style={{ height: '100%', borderRight: 0, paddingTop: '15px', paddingBottom: '20px', background: '#d9ebe5' }}
     />
   );
 };

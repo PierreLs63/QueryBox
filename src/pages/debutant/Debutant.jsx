@@ -31,12 +31,12 @@ const Debutant = () => {
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', overflowY: 'hidden', background: '#d9ebe5' }}>
-      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#c7dbd5' }}>
+      <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#B4CDC4' }}>
         {/* QueryBox */}
         <div style={{ fontFamily: 'Monofett', fontSize: '45px', fontWeight: 'bold', color: '#54877c' }}>QueryBox</div>
 
         {/* Welcome Message */}
-        <div style={{ fontSize: '20px', color: 'black' }}>Bienvenue sur QueryBox !</div>
+        <div style={{ fontSize: '20px', color: 'rgb(28, 41, 38)', fontWeight: 'bold' }}>Bienvenue sur QueryBox !</div>
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -44,33 +44,36 @@ const Debutant = () => {
             shape="round" 
             style={{
               backgroundColor: 'transparent',
-              borderColor: '#54877c',
-              color: 'black',
+              borderColor: 'rgb(34, 56, 51)',
+              borderWidth: '2px',
+              color: 'rgb(28, 41, 38)',
+              height: '31px',
+              fontWeight: 'bold'
             }}>
             Collaborateur
           </Button>
-          <UserAddOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
-          <BellOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
-          <SettingOutlined style={{ color: 'black', fontSize: '20px', cursor: 'pointer' }} />
+          <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
         </div>
       </Header>
 
-      <Layout style={{ height: '100%', width: '100%', background: '#ebf9f4' }}>
+      <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
         <Sider
           width={400}
           collapsible={false} // disable collapse
           breakpoint="md"
           collapsedWidth="0"
           style={{
-            background: '#ebf9f4',
+            background: '#d9ebe5',
             overflowY: 'scroll',
-            height: '115vh',
+            height: '100%',
           }}
         >
           <SiderMenu />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100vh', background: '#d9ebe5' }}>
+        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
           <Content
             style={{
               padding: 24,
