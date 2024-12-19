@@ -9,7 +9,8 @@ import {
     getAllCollection,
     inviteUserByUsername,
     joinWorkspace,
-    leaveWorkspace
+    leaveWorkspace,
+    getWorkspace,
 } from "../controllers/workspace.js";
 import {
     getHistory,
@@ -29,6 +30,7 @@ router.get("/:workspaceId/collections", protectRoute, getAllCollection);
 router.post("/:workspaceId/invite", protectRoute, inviteUserByUsername); // Invitation d'un utilisateur
 router.put("/:workspaceId/join", protectRoute, joinWorkspace); // Mise à jour pour rejoindre un workspace
 router.put("/:workspaceId/leave", protectRoute, leaveWorkspace); // Route pour quitter un workspace
+router.get("/:workspaceId", protectRoute, getWorkspace); // Obtenir les informations d'un workspace
 
 // Routes pour l'historique
 router.get("/:workspaceId/history", protectRoute, getHistory); // Obtenir l'historique complet

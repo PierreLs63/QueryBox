@@ -286,3 +286,25 @@ export const leaveWorkspace = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const getUsersInWorkspace = async (req, res) => {
+    try {
+        const { workspaceId } = req.params;
+        const { userId } = req.user;
+
+        const workspace = await Workspace.findById(workspaceId);
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+        const userInWorkspace = workspace.users.find(user => user.userId.toString() == userId.toString());
+        if (!userInWorkspace) {
+            return res.status(404).json({ message: "User not found in workspace" });
+        }
+       
+        await workspace.populate("users.userId");
+        res.status(200).json(workspace.users);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
