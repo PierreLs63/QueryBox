@@ -41,6 +41,7 @@ const ResponseHeader = ({ dataResponseHeader }) => {
       dataSource={dataResponseHeader}
       pagination={{ pageSize: 50 }}
       scroll={{ y: 55 * 5 }}
+      size="small"
     />
   );
 };
