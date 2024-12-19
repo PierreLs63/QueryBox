@@ -19,11 +19,19 @@ const Accueil = () => {
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
   const [nickname, setNickname] = useState("");
 
-  //Notifications place-holders
+  // Notifications place-holders
   const [notifications, setNotifications] = useState([
     { id: 1, message: 'Place-holder 1' },
     { id: 2, message: 'Multiple line place-holder beepbop 2' },
     { id: 3, message: 'Place-holder 3' },
+  ]);
+
+  // Placeholder usernames for the "Collaborateur" menu
+  const [collaborators, setCollaborators] = useState([
+    'PierreLs63',
+    'FireIceFly',
+    'duckduckxuan',
+    'CCtuhulu',
   ]);
 
   // Event of request checked
@@ -108,7 +116,21 @@ const Accueil = () => {
       />
     </div>
   );
-  
+
+  const collaboratorContent = (
+    <div style={{ maxHeight: '200px', overflowY: 'scroll', width: '200px' }}>
+      <List
+        dataSource={collaborators}
+        renderItem={(collaborator) => (
+          <List.Item>
+            <Button type="link" style={{ width: '100%' }}>
+              {collaborator}
+            </Button>
+          </List.Item>
+        )}
+      />
+    </div>
+  );
 
   return (
     <Layout style={{ height: '100%', width: '100vw', background: '#d9ebe5' }}>
@@ -121,15 +143,19 @@ const Accueil = () => {
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Button 
-            shape="round" 
-            style={{
-              backgroundColor: 'transparent',
-              borderColor: '#54877c',
-              color: 'black',
-            }}>
-            Collaborateur
-          </Button>
+          {/* Collaborateur Button with Popover for user list */}
+          <Popover content={collaboratorContent} title="Collaborateurs" trigger="click">
+            <Button 
+              shape="round" 
+              style={{
+                backgroundColor: 'transparent',
+                borderColor: '#54877c',
+                color: 'black',
+              }}
+            >
+              Collaborateur
+            </Button>
+          </Popover>
 
           {/* User Add Icon with Popover for user invite */}
           <Popover content={inviteContent} title="Inviter Collaborateur" trigger="click">

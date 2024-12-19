@@ -2,12 +2,25 @@ import { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import useLogin from '../../hooks/auth/useLogin';
+import { useNavigate } from 'react-router-dom';
 
 const Connexion = () => {
   const onFinish = (values) => {
     console.log('Login Values:', values);
     const {loading, login} = useLogin();
     login(values.username, values.password);
+  };
+
+  // Navigate to reinitialiser if forget password
+  const navigateReinitialiser = useNavigate();
+  const handleForgotPassword = () => {
+    navigateReinitialiser('/reinitialiser');
+  };
+
+  // Navigate to inscription if not have account
+  const navigateInscription = useNavigate();
+  const handleNotHaveAccount = () => {
+    navigateInscription('/inscription');
   };
 
   //Change default param from index.css
@@ -56,6 +69,10 @@ const Connexion = () => {
       textAlign: 'left',
       marginBottom: '10px',
     },
+    notHaveAccount: {
+      textAlign: 'left',
+      marginBottom: '10px',
+    },
     link: {
       color: '#1890ff',
       textDecoration: 'none',
@@ -88,8 +105,22 @@ const Connexion = () => {
           </Form.Item>
 
           <div style={styles.forgotPassword}>
-            <a href="#" style={styles.link}>
+            <a 
+              style={styles.link} 
+              onClick={handleForgotPassword}
+              onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
+              onMouseOut={(e) => (e.target.style.textDecoration = 'none')}>
               Mot de passe oublié ?
+            </a>
+          </div>
+
+          <div style={styles.notHaveAccount}>
+            <a 
+              style={styles.link} 
+              onClick={handleNotHaveAccount}
+              onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
+              onMouseOut={(e) => (e.target.style.textDecoration = 'none')}>
+              Pas de compte ?
             </a>
           </div>
 

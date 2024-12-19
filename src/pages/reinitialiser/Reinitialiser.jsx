@@ -1,10 +1,17 @@
 import React, { useEffect }  from 'react';
 import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Reinitialiser = () => {
   const handleResendEmail = () => {
     console.log('Renvoyer le mail');
   };
+
+  // Navigate to connection if already change password
+    const navigate = useNavigate();
+    const handleReconnection = () => {
+      navigate('/connexion');
+    };
 
   //Change default param from index.css
   useEffect(() => {
@@ -51,6 +58,7 @@ const Reinitialiser = () => {
       fontSize: '16px',
       cursor: 'pointer',
       transition: 'background-color 0.3s',
+      margin: '20px'
     },
     buttonHover: {
       backgroundColor: '#106cc8',
@@ -65,6 +73,7 @@ const Reinitialiser = () => {
       <div style={styles.message}>
         Un mail vous a été envoyé pour réinitialiser votre mot de passe.
       </div>
+
       <Button
         type="primary"
         style={styles.button}
@@ -74,6 +83,16 @@ const Reinitialiser = () => {
       >
         Renvoyer le mail
       </Button>
+
+      <Button
+      type="default"
+      style={styles.button}
+      onClick={handleReconnection}
+      onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
+      onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
+    >
+      Revenir à la page de connexion
+    </Button>
     </div>
   );
 };
