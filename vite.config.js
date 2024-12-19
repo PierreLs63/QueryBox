@@ -7,7 +7,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        tuto: './src/pages/tuto/index.html',
       },
     },
   },

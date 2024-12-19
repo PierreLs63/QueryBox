@@ -4,11 +4,10 @@ import { Layout, Button, Radio, Tour, Splitter } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
-import RequestBody from './request_body.jsx';
+import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
-import ResponseBody from './response_body.jsx';
-import SiderMenu from './sider_menu.jsx';
-import './Tuto.css';
+import ResponseBody from '../../../public/components/response_body.jsx';
+import SiderMenu from '../../../public/components/sider_menu.jsx';
 
 const { Header, Content, Sider } = Layout;
 
@@ -31,6 +30,11 @@ const Tuto = () => {
   
 
   useEffect(() => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.documentElement.style.setProperty('color-scheme', 'light');
+
     if (menuRef.current) {
       menuRef.current.classList.add('menu-highlight');
       console.log("menu-highlight added to menuRef");
