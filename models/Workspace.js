@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 // UserId and privilege with disabled id
 const UserAndPrivilegeAndHasJoined = new mongoose.Schema({
     userId: { 
-        type: String, 
-        required: true 
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true,
+        ref: 'User'
     },
     privilege: { 
         type: Number, 

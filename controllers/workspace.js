@@ -301,8 +301,14 @@ export const getUsersInWorkspace = async (req, res) => {
             return res.status(404).json({ message: "User not found in workspace" });
         }
        
-        await workspace.populate("users.userId");
-        res.status(200).json(workspace.users);
+        await workspace.populate({path:"users.userId", select: "username"});
+        const users = workspace.users.map(user => ({
+            userId: user.userId._id,       // Keep the userId
+            username: user.userId.username, // Extract the username
+            privilege: user.privilege,
+            hasJoined: user.hasJoined
+        }));
+        res.status(200).json(users);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
