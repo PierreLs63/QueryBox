@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@ant-design/icons';
 import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List, Select } from 'antd';
+import toast from 'react-hot-toast';
+import './Accueil.css'
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
-import toast from 'react-hot-toast';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 
 // Overall page layout
@@ -250,8 +251,7 @@ const Accueil = () => {
               style={{
                 height: '100vh',
                 background: "#d9ebe5",
-                overflow: 'hidden',
-                borderRadius: '4px'
+                overflow: 'hidden'
               }}
             >
               {/* Block of request */}
@@ -259,8 +259,7 @@ const Accueil = () => {
                 style={{
                   height: '50%',
                   background: "#d9ebe5",
-                  overflow: 'hidden',
-                  borderRadius: '4px'
+                  overflow: 'hidden'
                 }}>
                 {/* Ratio box: param, header, body */}
                 <Flex vertical gap="middle">
@@ -277,18 +276,21 @@ const Accueil = () => {
                     style={{
                       border: '1px solid #54877c',
                     }}
+                    className="custom-radio-button"
                     >Param</Radio.Button>
                     <Radio.Button 
                     value="headerRequest"
                     style={{
                       border: '1px solid #54877c',
                     }}
+                    className="custom-radio-button"
                     >Header</Radio.Button>
                     <Radio.Button 
                     value="bodyRequest"
                     style={{
                       border: '1px solid #54877c',
                     }}
+                    className="custom-radio-button"
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
@@ -302,8 +304,7 @@ const Accueil = () => {
                 style={{
                   height: '50%',
                   background: "#d9ebe5",
-                  overflow: 'hidden',
-                  borderRadius: '4px'
+                  overflow: 'hidden'
                 }}>
                 {/* Ratio box: header, body */}
                 <Flex vertical gap="middle">
@@ -320,12 +321,14 @@ const Accueil = () => {
                     style={{
                       border: '1px solid #54877c',
                     }}
+                    className="custom-radio-button"
                     >Header</Radio.Button>
                     <Radio.Button 
                     value="bodyResponse"
                     style={{
                       border: '1px solid #54877c',
                     }}
+                    className="custom-radio-button"
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
