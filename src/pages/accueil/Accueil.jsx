@@ -184,13 +184,16 @@ const Accueil = () => {
                     defaultValue="param"
                     style={{
                       marginBottom: '5px',
-                      marginTop: '0px'
+                      marginTop: '0px',
+                      display: 'flex'
                     }}
                   >
                     <Radio.Button 
                     value="param"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
                     className="custom-radio-button"
                     >Param</Radio.Button>
@@ -198,6 +201,8 @@ const Accueil = () => {
                     value="headerRequest"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
                     className="custom-radio-button"
                     >Header</Radio.Button>
@@ -205,6 +210,8 @@ const Accueil = () => {
                     value="bodyRequest"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
                     className="custom-radio-button"
                     >Body</Radio.Button>
@@ -229,13 +236,16 @@ const Accueil = () => {
                     defaultValue="headerResponse"
                     style={{
                       marginBottom: '5px',
-                      marginTop: '15px'
+                      marginTop: '15px',
+                      display: 'flex'
                     }}
                   >
                     <Radio.Button 
                     value="headerResponse"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
                     className="custom-radio-button"
                     >Header</Radio.Button>
@@ -243,6 +253,8 @@ const Accueil = () => {
                     value="bodyResponse"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
                     className="custom-radio-button"
                     >Body</Radio.Button>
