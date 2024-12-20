@@ -1,14 +1,6 @@
 import { Table, Button, Input, Form, Modal, Typography } from 'antd';
 import { useState } from 'react';
 
-const dict = {
-  Host: 'value_host',
-  User_Agent: 'value_userAgent',
-  Accept: 'value_accept',
-  Accept_Encoding: 'value_acceptEncoding',
-  Connection: 'value_connection',
-};
-
 const columns = [
   {
     title: 'Key',
@@ -24,29 +16,19 @@ const columns = [
   },
 ];
 
-const keys = Object.keys(dict);
-
-const initialData = Array.from({ length: keys.length }).map((_, i) => ({
-  key: i.toString(),
-  keyData: keys[i],
-  value: dict[keys[i]],
-  description: `Description for ${keys[i]}`,
-}));
-
-const RequestHeader = () => {
-  const [data, setData] = useState(initialData);
+const RequestHeader = ({ headerData = [], setHeaderData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
   // Add new rows to table
   const handleAdd = (values) => {
     const newRow = {
-      key: (data.length).toString(),
+      key: headerData.length.toString(),
       keyData: values.keyData,
       value: values.value,
       description: values.description,
     };
-    setData([...data, newRow]);
+    setHeaderData([...headerData, newRow]);
     setIsModalOpen(false);
     form.resetFields();
   };
@@ -64,7 +46,7 @@ const RequestHeader = () => {
 
   // Add a row
   const dataWithAddButton = [
-    ...data,
+    ...headerData,
     {
       key: 'add-row',
       keyData: (

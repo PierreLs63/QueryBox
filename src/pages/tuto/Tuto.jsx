@@ -3,7 +3,7 @@ import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icon
 import { Layout, Button, Radio, Tour, Splitter, Select, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import RequestParam from './request_param.jsx';
-import RequestHeader from './request_header.jsx';
+import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
