@@ -249,21 +249,27 @@ const Accueil = () => {
               layout="vertical"
               style={{
                 height: '100vh',
-                //boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                 background: "#d9ebe5",
                 overflow: 'hidden',
                 borderRadius: '4px'
               }}
             >
               {/* Block of request */}
-              <Splitter.Panel>
+              <Splitter.Panel
+                style={{
+                  height: '50%',
+                  background: "#d9ebe5",
+                  overflow: 'hidden',
+                  borderRadius: '4px'
+                }}>
                 {/* Ratio box: param, header, body */}
                 <Flex vertical gap="middle">
                   <Radio.Group 
                     onChange={onChangeResquest}  
                     defaultValue="param"
                     style={{
-                      marginBottom: '16px',
+                      marginBottom: '5px',
+                      marginTop: '0px'
                     }}
                   >
                     <Radio.Button 
@@ -292,15 +298,21 @@ const Accueil = () => {
               </Splitter.Panel>
 
               {/* Block of response */}
-              <Splitter.Panel>
+              <Splitter.Panel
+                style={{
+                  height: '50%',
+                  background: "#d9ebe5",
+                  overflow: 'hidden',
+                  borderRadius: '4px'
+                }}>
                 {/* Ratio box: header, body */}
                 <Flex vertical gap="middle">
                   <Radio.Group 
                     onChange={onChangeResponse} 
                     defaultValue="headerResponse"
                     style={{
-                      marginBottom: '16px',
-                      marginTop: '16px'
+                      marginBottom: '5px',
+                      marginTop: '15px'
                     }}
                   >
                     <Radio.Button 
