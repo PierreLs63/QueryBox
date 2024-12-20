@@ -3,6 +3,7 @@ import Request from '../models/Request.js';
 import ParamRequest from '../models/ParamRequest.js';
 import Collection from '../models/Collection.js';
 import dotenv from 'dotenv';
+import Workspace from '../models/Workspace.js';
 
 dotenv.config();
 const admin_grade = process.env.ADMIN_GRADE || 20;
@@ -13,13 +14,25 @@ export const createRequest = async (req, res) => {
         const { collectionId } = req.params;
         const { userId } = req.user;
 
-        const user = await Collection.findOne({ _id: collectionId, "users.userId": userId });
+        const collection = await Collection.findById(collectionId);
         
+        if (!collection) {
+            return res.status(404).json({ message: "Collection not found" });
+        }
+
+
+        var user = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
         if (!user) {
-            return res.status(404).json({ message: "User not found in collection" });
+            user = await Workspace.findOne({ collections: collectionId, "users.userId": userId });
+        }
+        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
+        if (!user) {
+            return res.status(404).json({ message: "User not found in workspace or collection" });
         }
         
-        if (user.users.find(u => u.userId.toString() == userId.toString()).privilege < viewer_grade) {
+        if (user.privilege < viewer_grade) {
             return res.status(401).json({ message: "User not authorized" });
         }
 
@@ -28,7 +41,6 @@ export const createRequest = async (req, res) => {
         await request.save();
 
         // Ajouter la requête à la collection
-        const collection = await Collection.findById(collectionId);
         collection.requests.push(request._id);
         await collection.save();
         res.status(201).json(request);
@@ -53,7 +65,17 @@ export const changeName = async (req, res) => {
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
-        const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
+
+        var userInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
+        if (!userInCollection) {
+            userInCollection = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        }
+        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
+        if (!userInCollection) {
+            return res.status(404).json({ message: "User not found in workspace or collection" });
+        }
         if (!userInCollection || userInCollection.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
         }
