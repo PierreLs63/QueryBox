@@ -7,12 +7,12 @@ import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx'
 import NotificationMenu from '../../../public/components/notificationMenu.jsx';
+import InviteMenu from '../../../public/components/inviteMenu.jsx';
 
 
 import { useState, useEffect } from 'react';
-import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@ant-design/icons';
-import { Layout, Button, Input, Popover, Radio, Flex, Splitter, List, Select } from 'antd';
-import toast from 'react-hot-toast';
+import { SettingOutlined } from '@ant-design/icons';
+import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -22,7 +22,7 @@ const Accueil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
-  const [nickname, setNickname] = useState("");
+  const [inviteNickname, setInviteNickname] = useState("");
 
   // Notifications place-holders
   const [notifications, setNotifications] = useState([
@@ -31,7 +31,7 @@ const Accueil = () => {
     { id: 3, message: 'Place-holder 3' },
   ]);
 
-  // Placeholder usernames for the "Collaborateur" menu
+  // Usernames place-holders
   const [collaborators, setCollaborators] = useState([
     'PierreLs63',
     'FireIceFly',
@@ -66,29 +66,6 @@ const Accueil = () => {
     document.documentElement.style.setProperty('color-scheme', 'light');
   }, []);
 
-  const handleInvite = () => {
-    toast.success(`Invite sent to ${nickname} !`);
-    setNickname("");
-  };
-
-  const inviteContent = (
-    <div>
-      <Input
-        placeholder="Entrez pseudonyme"
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-        style={{ marginBottom: '10px' }}
-      />
-      <Button 
-        type="primary" 
-        onClick={handleInvite}
-        disabled={!nickname}
-      >
-        Invite
-      </Button>
-    </div>
-  );
-
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#B4CDC4' }}>
@@ -100,14 +77,12 @@ const Accueil = () => {
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          
+
           {/* Collaborateur Button with Popover for user list */}
           <CollaboratorMenu collaborators={collaborators} />
 
           {/* User Add Icon with Popover for user invite */}
-          <Popover content={inviteContent} title="Inviter Collaborateur" trigger="click">
-            <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          </Popover>
+          <InviteMenu inviteNickname={inviteNickname} setInviteNickname={setInviteNickname} />
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />
