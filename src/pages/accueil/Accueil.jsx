@@ -191,7 +191,6 @@ const Accueil = () => {
                     <Radio.Button 
                     value="param"
                     style={{
-                      border: '1px solid #54877c',
                       flex: 0.1,
                       textAlign: 'center'
                     }}
@@ -200,7 +199,6 @@ const Accueil = () => {
                     <Radio.Button 
                     value="headerRequest"
                     style={{
-                      border: '1px solid #54877c',
                       flex: 0.1,
                       textAlign: 'center'
                     }}
@@ -209,7 +207,6 @@ const Accueil = () => {
                     <Radio.Button 
                     value="bodyRequest"
                     style={{
-                      border: '1px solid #54877c',
                       flex: 0.1,
                       textAlign: 'center'
                     }}
@@ -243,7 +240,6 @@ const Accueil = () => {
                     <Radio.Button 
                     value="headerResponse"
                     style={{
-                      border: '1px solid #54877c',
                       flex: 0.1,
                       textAlign: 'center'
                     }}
@@ -252,7 +248,6 @@ const Accueil = () => {
                     <Radio.Button 
                     value="bodyResponse"
                     style={{
-                      border: '1px solid #54877c',
                       flex: 0.1,
                       textAlign: 'center'
                     }}
