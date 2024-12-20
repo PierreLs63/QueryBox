@@ -76,7 +76,7 @@ export const changeName = async (req, res) => {
         if (!userInCollection) {
             return res.status(404).json({ message: "User not found in workspace or collection" });
         }
-        if (!userInCollection || userInCollection.privilege < viewer_grade) {
+        if (userInCollection.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
         }
         request.name = name;
@@ -152,8 +152,19 @@ export const deleteRequest = async (req, res) => {
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
-        if (!userInCollection || userInCollection.privilege < admin_grade) {
+
+        var userInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
+        if (!userInCollection) {
+            userInCollection = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        }
+        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
+        if (!userInCollection) {
+            return res.status(404).json({ message: "User not found in workspace or collection" });
+        }
+
+        if (userInCollection.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to delete the request" });
         }
 
