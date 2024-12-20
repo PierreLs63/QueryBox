@@ -163,9 +163,7 @@ const EditableCell = ({
           dataSource={data}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
+          pagination={{ pageSize: 5, onChange: cancel, showSizeChanger: false}}
           size='small'
         />
       </Form>
