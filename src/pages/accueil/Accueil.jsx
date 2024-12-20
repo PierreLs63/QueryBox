@@ -168,7 +168,12 @@ const Accueil = () => {
             <Input placeholder="URL" />
 
             {/* Send Button */}
-            <Button>Send</Button>
+            <Button
+              onClick={(e) => {
+                e.currentTarget.blur();
+              }}>
+              Send
+            </Button>
           </div>
 
             <Splitter

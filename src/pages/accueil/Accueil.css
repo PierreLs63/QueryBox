@@ -8,11 +8,11 @@
 
 .custom-radio-button:hover {
   background-color: #e6f7e6;
-  color: #054d29;
+  color: #397d4b;
 }
 
 .ant-radio-button-wrapper-checked.custom-radio-button {
-  color: #054d29;
+  color: #397d4b;
   font-weight: bold;
   border-color: #054d29 !important;
   background-color: #e6f7e6 !important;
@@ -20,7 +20,7 @@
 
 .ant-radio-button-wrapper-checked.custom-radio-button:hover {
   background-color: #e6f7e6 !important;
-  color: #054d29 !important;
+  color: #397d4b !important;
   border-color: #054d29 !important;
 }
 
@@ -53,7 +53,7 @@
 
 .ant-select-item-option-selected {
   background-color: #d0f0d0 !important;
-  color: #054d29 !important;
+  color: #397d4b !important;
 }
 
 
@@ -70,6 +70,6 @@
 /* Button style */
 .ant-btn:hover {
   border-color: #054d29 !important;
-  color: #054d29 !important;
+  color: #397d4b !important;
   box-shadow: 0 0 0 2px rgba(5, 77, 41, 0.2) !important;
 }
