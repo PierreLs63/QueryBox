@@ -93,8 +93,8 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
         if (!userInWorkspace || userInWorkspace.privilege < admin_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to remove a user from the workspace" });
         }
-
-        const userToSearch = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
+        // On cherche l'utilisateur à retirer dans la base de données sans le mot de passe
+        const userToSearch = await User.findOne({ username }).select("-password").collation({ locale: 'en', strength: 2 });
         if (!userToSearch) return res.status(404).json({ message: "User to remove not found" });
 
         console.log(userToSearch)
@@ -115,8 +115,18 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
             return res.status(403).json({ message: "You can't remove an admin from the workspace as an admin, only the owner can" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId.toString() != userToRemove.userId.toString());
+        workspace.users = workspace.users.filter(user => user.userId.toString() !== userToRemove.userId.toString());
+
+        await workspace.populate("collections");
+
+        // Si l'utilisateur a quitté le workspace, on le retire également de toutes les collections
+        for (let collection of workspace.collections) {
+            collection.users = collection.users.filter(user => user.userId.toString() !== userToRemove.userId.toString());
+            await collection.save();
+        }
+
         await workspace.save();
+
         res.status(200).json({ message: "User removed from workspace successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -141,7 +151,7 @@ export const updatePrivileges = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to update user privileges" });
         }
 
-        const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
+        const userToUpdate = await User.findOne({ username: username }).select("-password").collation({ locale: 'en', strength: 2 })
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
         
@@ -206,7 +216,7 @@ export const inviteUserByUsername = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to invite a user" });
         }
 
-        const userToInvite = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+        const userToInvite = await User.findOne({ username }).select("-password").collation({ locale: 'en', strength: 2 });
         if (!userToInvite) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -280,7 +290,16 @@ export const leaveWorkspace = async (req, res) => {
             return res.status(403).json({ message: "Owner can't leave workspace, please transfer your ownership before leaving" });
         }
 
-        workspace.users = workspace.users.filter(user => user.userId.toString() != userId.toString());
+        workspace.users = workspace.users.filter(user => user.userId.toString() !== userId.toString());
+
+        await workspace.populate("collections");
+
+        // Si l'utilisateur a quitté le workspace, on le retire également de toutes les collections
+        for (let collection of workspace.collections) {
+            collection.users = collection.users.filter(user => user.userId.toString() !== userId.toString());
+            await collection.save();
+        }
+
         await workspace.save();
 
         res.status(200).json({ message: "User left workspace successfully" });

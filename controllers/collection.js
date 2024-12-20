@@ -123,7 +123,7 @@ export const updatePrivileges = async (req, res) => {
         
         if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
-        const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
+        const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 })
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
         var foundUser = collection.users.find(u => u.userId.toString() === userToUpdate._id.toString());

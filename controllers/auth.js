@@ -20,7 +20,7 @@ export const login = async (req, res) => {
       }
       const sanitizedUsername = xss(username.trim())
   
-      const user = await User.findOne({ username: sanitizedUsername }).collation({ locale: 'en', strength: 2 }).lean()
+      const user = await User.findOne({ username: sanitizedUsername }).collation({ locale: 'en', strength: 2 })
       const isPasswordCorrect = await bcrypt.compare(
         password,
         user?.password || ""
