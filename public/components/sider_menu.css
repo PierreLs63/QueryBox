@@ -1,0 +1,27 @@
+.ant-menu-submenu-selected > .ant-menu-submenu-title {
+    color: #054d29 !important;
+    font-weight: bold;
+  }
+  
+  .ant-menu-submenu-selected > .ant-menu-submenu-title:hover {
+    background-color: #d0f0d0 !important;
+  }
+  
+  .ant-menu-item-selected {
+    background-color: #d0f0d0 !important;
+    color: #054d29 !important;
+  }
+  
+  .ant-menu-item:hover {
+    background-color: #d9ebe5;
+  }
+  
+  .ant-menu-item-selected:hover {
+    color: #054d29 !important;
+  }
+
+  .ant-menu-item:active, 
+  .ant-menu-submenu-title:active {
+  background-color: #d0f0d0 !important;
+  color: #054d29 !important;
+  }

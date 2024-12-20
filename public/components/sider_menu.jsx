@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Menu, Button } from 'antd';
-import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined } from '@ant-design/icons';
+import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import './sider_menu.css'
 
 const initialItems = [
   {
@@ -80,7 +81,7 @@ const SiderMenu = () => {
               <span>{child.label}</span>
               {item.key !== 'account' && (
                 <CloseOutlined
-                  style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }}
+                  style={{ color: '#054d29', cursor: 'pointer', marginLeft: '8px' }}
                   onClick={(event) => deleteSubMenu(item.key, child.key, event)}
                 />
               )}
@@ -96,12 +97,16 @@ const SiderMenu = () => {
                 onClick={(event) => addSubMenu(item.key, event)}
                 style={{
                   backgroundColor: 'transparent',
-                  borderColor: '#54877c',
-                  color: 'black',
+                  border: '1.5px solid #054d29',
+                  color: '#054d29',
+                  width: '18px',
+                  height: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-              >
-                Ajouter +
-              </Button>
+                icon={<PlusOutlined />}
+              />
             )}
           </div>
         ),

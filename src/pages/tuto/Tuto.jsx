@@ -188,18 +188,35 @@ const Tuto = () => {
             <Button>Send</Button>
           </div>
 
-            <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden', borderRadius: '10px' }}>
+            <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden' }}>
               {/* Request Block */}
-              <Splitter.Panel>
+              <Splitter.Panel
+                style={{
+                  height: '50%',
+                  background: "#d9ebe5",
+                  overflow: 'hidden'
+                }}>
                 <div ref={requestRef}>
                   <Radio.Group
                     onChange={(e) => setSelectedRequest(e.target.value)}
                     defaultValue="param"
-                    style={{ marginBottom: '16px' }}
+                    style={{ marginBottom: '5px' }}
                   >
-                    <Radio.Button value="param">Param</Radio.Button>
-                    <Radio.Button value="headerRequest">Header</Radio.Button>
-                    <Radio.Button value="bodyRequest">Body</Radio.Button>
+                    <Radio.Button
+                      value="param"
+                      style={{
+                        border: '1px solid #54877c',
+                      }}>Param</Radio.Button>
+                    <Radio.Button
+                      value="headerRequest"
+                      style={{
+                        border: '1px solid #54877c',
+                      }}>Header</Radio.Button>
+                    <Radio.Button
+                      value="bodyRequest"
+                      style={{
+                        border: '1px solid #54877c',
+                      }}>Body</Radio.Button>
                   </Radio.Group>
                   {selectedRequest === "param" && <RequestParam />}
                   {selectedRequest === "headerRequest" && <RequestHeader />}
@@ -208,15 +225,27 @@ const Tuto = () => {
               </Splitter.Panel>
 
               {/* Response Block */}
-              <Splitter.Panel>
+              <Splitter.Panel
+                style={{
+                  height: '50%',
+                  background: "#d9ebe5",
+                  overflow: 'hidden'
+                }}>
                 <div ref={responseRef}>
                   <Radio.Group
                     onChange={(e) => setSelectedResponse(e.target.value)}
                     defaultValue="headerResponse"
-                    style={{ marginBottom: '16px' }}
-                  >
-                    <Radio.Button value="headerResponse">Header</Radio.Button>
-                    <Radio.Button value="bodyResponse">Body</Radio.Button>
+                    style={{ marginBottom: '5px', marginTop: '15px' }}>
+                    <Radio.Button
+                      value="headerResponse"
+                      style={{
+                        border: '1px solid #54877c',
+                      }}>Header</Radio.Button>
+                    <Radio.Button
+                      value="bodyResponse"
+                      style={{
+                        border: '1px solid #54877c',
+                      }}>Body</Radio.Button>
                   </Radio.Group>
                   {selectedResponse === "headerResponse" && <ResponseHeader />}
                   {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}

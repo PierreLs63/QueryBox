@@ -1,0 +1,32 @@
+.custom-radio-button {
+    color: #000;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+  
+  .custom-radio-button:hover {
+    background-color: #d9ebe5;
+    color: #054d29;
+  }
+  
+  .ant-radio-button-wrapper-checked.custom-radio-button {
+    color: #054d29;
+    font-weight: bold;
+    border-color: #054d29;
+    background-color: #e6f7e6;
+  }
+
+  .ant-radio-button-wrapper-checked.custom-radio-button + .custom-radio-button {
+    border-left-color: #054d29;
+  }
+  
+  .ant-radio-button-wrapper-checked.custom-radio-button:hover {
+    background-color: #e6f7e6;
+    color: #054d29;
+    border-color: #054d29;
+  }
+  
+  .ant-radio-button-wrapper.custom-radio-button:not(.ant-radio-button-wrapper-checked):hover {
+    color: #000;
+    border-color: #d9ebe5;
+  }

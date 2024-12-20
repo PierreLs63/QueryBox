@@ -8,6 +8,7 @@ import SiderMenu from '../../../public/components/sider_menu.jsx';
 import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx'
 import NotificationMenu from '../../../public/components/notificationMenu.jsx';
 import InviteMenu from '../../../public/components/inviteMenu.jsx';
+import './Accueil.css'
 
 
 import { useState, useEffect } from 'react';
@@ -175,8 +176,7 @@ const Accueil = () => {
               style={{
                 height: '100vh',
                 background: "#d9ebe5",
-                overflow: 'hidden',
-                borderRadius: '4px'
+                overflow: 'hidden'
               }}
             >
               {/* Block of request */}
@@ -184,8 +184,7 @@ const Accueil = () => {
                 style={{
                   height: '50%',
                   background: "#d9ebe5",
-                  overflow: 'hidden',
-                  borderRadius: '4px'
+                  overflow: 'hidden'
                 }}>
                 {/* Ratio box: param, header, body */}
                 <Flex vertical gap="middle">
@@ -194,26 +193,36 @@ const Accueil = () => {
                     defaultValue="param"
                     style={{
                       marginBottom: '5px',
-                      marginTop: '0px'
+                      marginTop: '0px',
+                      display: 'flex'
                     }}
                   >
                     <Radio.Button 
                     value="param"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
+                    className="custom-radio-button"
                     >Param</Radio.Button>
                     <Radio.Button 
                     value="headerRequest"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
+                    className="custom-radio-button"
                     >Header</Radio.Button>
                     <Radio.Button 
                     value="bodyRequest"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
+                    className="custom-radio-button"
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
@@ -227,8 +236,7 @@ const Accueil = () => {
                 style={{
                   height: '50%',
                   background: "#d9ebe5",
-                  overflow: 'hidden',
-                  borderRadius: '4px'
+                  overflow: 'hidden'
                 }}>
                 {/* Ratio box: header, body */}
                 <Flex vertical gap="middle">
@@ -237,20 +245,27 @@ const Accueil = () => {
                     defaultValue="headerResponse"
                     style={{
                       marginBottom: '5px',
-                      marginTop: '15px'
+                      marginTop: '15px',
+                      display: 'flex'
                     }}
                   >
                     <Radio.Button 
                     value="headerResponse"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
+                    className="custom-radio-button"
                     >Header</Radio.Button>
                     <Radio.Button 
                     value="bodyResponse"
                     style={{
                       border: '1px solid #54877c',
+                      flex: 0.1,
+                      textAlign: 'center'
                     }}
+                    className="custom-radio-button"
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
