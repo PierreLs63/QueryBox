@@ -1,6 +1,6 @@
 // Import Components
 import RequestParam from './request_param.jsx';
-import RequestHeader from './request_header.jsx';
+import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
@@ -37,6 +37,15 @@ const Accueil = () => {
     'FireIceFly',
     'duckduckxuan',
     'CCtuhulu',
+  ]);
+
+  // Header place-holders
+  const [headerData, setHeaderData] = useState([
+    { key: 'Host', value: 'value_host', description: 'Description for Host' },
+    { key: 'User_Agent', value: 'value_userAgent', description: 'Description for User_Agent' },
+    { key: 'Accept', value: 'value_accept', description: 'Description for Accept' },
+    { key: 'Accept_Encoding', value: 'value_acceptEncoding', description: 'Description for Accept_Encoding' },
+    { key: 'Connection', value: 'value_connection', description: 'Description for Connection' },
   ]);
 
   // Event of request checked
@@ -209,7 +218,7 @@ const Accueil = () => {
                   </Radio.Group>
                 </Flex>
                 {selectedRequest === "param" && <RequestParam />}
-                {selectedRequest === "headerRequest" && <RequestHeader />}
+                {selectedRequest === "headerRequest" && <RequestHeader headerData={headerData} setHeaderData={setHeaderData} />}
                 {selectedRequest === "bodyRequest" && <RequestBody />}
               </Splitter.Panel>
 
