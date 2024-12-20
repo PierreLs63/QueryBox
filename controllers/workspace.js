@@ -97,7 +97,6 @@ export const removeUserBFromWorkspaceFromUserA = async (req, res) => {
         const userToSearch = await User.findOne({ username }).select("-password").collation({ locale: 'en', strength: 2 });
         if (!userToSearch) return res.status(404).json({ message: "User to remove not found" });
 
-        console.log(userToSearch)
         const userToRemove = workspace.users.find(u => u.userId.toString() === userToSearch._id.toString());
         if (!userToRemove) return res.status(404).json({ message: "User to remove not found in workspace" });
 
@@ -170,9 +169,18 @@ export const updatePrivileges = async (req, res) => {
             userInWorkspace.privilege = admin_grade; // On transfère le grade de propriétaire à cette personne, il y a qu'un seul owner
         }
 
-
         foundUser.privilege = privilege;
+
+        await workspace.populate("collections");
+
+        // Si l'utilisateur a ses privilèges modifié le workspace, on reset également le privilège de toutes les collections
+        for (let collection of workspace.collections) {
+            collection.users = collection.users.filter(user => user.userId.toString() !== userToUpdate._id.toString());
+            await collection.save();
+        }
+
         await workspace.save();
+
         res.status(200).json({ message: "User privileges updated successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });

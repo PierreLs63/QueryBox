@@ -14,7 +14,6 @@ export const createCollection = async (req, res) => {
 
         const user = await Workspace.findOne({ _id: workspaceId, "users.userId": userId });
 
-        console.log(user);
         // Si l'utilisateur n'est pas dans le workspace
         if (!user) return res.status(404).json({ message: "User not found in workspace" });
 
