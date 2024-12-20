@@ -1,3 +1,4 @@
+// Import Components
 import RequestParam from './request_param.jsx';
 import RequestHeader from './request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
@@ -5,6 +6,8 @@ import ResponseHeader from './response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx'
+import NotificationMenu from '../../../public/components/notificationMenu.jsx';
+
 
 import { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined, CloseOutlined } from '@ant-design/icons';
@@ -68,10 +71,6 @@ const Accueil = () => {
     setNickname("");
   };
 
-  const handleRemoveNotification = (id) => {
-    setNotifications(notifications.filter(notification => notification.id !== id));
-  };
-
   const inviteContent = (
     <div>
       <Input
@@ -90,36 +89,6 @@ const Accueil = () => {
     </div>
   );
 
-  const notificationContent = (
-    <div style={{ maxHeight: '200px', overflowY: 'scroll', width: '250px' }}>
-      <List
-        dataSource={notifications}
-        renderItem={item => (
-          <List.Item
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              wordWrap: 'break-word',
-              wordBreak: 'break-word',
-              maxWidth: '230px',
-            }}
-          >
-            <div style={{ flex: 1, marginRight: '10px' }}>
-              {item.message}
-            </div>
-            <Button
-              type="link"
-              icon={<CloseOutlined style={{ color: 'red' }} />}
-              onClick={() => handleRemoveNotification(item.id)}
-              style={{ padding: 0 }}
-            />
-          </List.Item>
-        )}
-      />
-    </div>
-  );
-
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 50px 0px 90px', backgroundColor: '#B4CDC4' }}>
@@ -131,6 +100,7 @@ const Accueil = () => {
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          
           {/* Collaborateur Button with Popover for user list */}
           <CollaboratorMenu collaborators={collaborators} />
 
@@ -140,9 +110,7 @@ const Accueil = () => {
           </Popover>
 
           {/* Bell Icon with Popover for Notifications */}
-          <Popover content={notificationContent} title="Notifications" trigger="click">
-            <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          </Popover>
+          <NotificationMenu notifications={notifications} setNotifications={setNotifications} />
 
           <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
         </div>
