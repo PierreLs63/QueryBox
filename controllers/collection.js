@@ -111,22 +111,52 @@ export const updatePrivileges = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId.toString() === userConnectedId.toString());
-        if (!user || user.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userConnectedId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: collectionId, "users.userId": userConnectedId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userConnectedId.toString());
+        }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+        
+        if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         const userToUpdate = await User.findOne({ username: username }).collation({ locale: 'en', strength: 2 }).lean()
         if (!userToUpdate) return res.status(404).json({ message: "User to update not found" });
 
-        const foundUser = collection.users.find(u => u.userId.toString() === userToUpdate._id.toString());
-        if (!foundUser) return res.status(404).json({ message: "User to update not found in collection" });
+        var foundUser = collection.users.find(u => u.userId.toString() === userToUpdate._id.toString());
+
+        const workspaceUserToUpdate = await Workspace.findOne({ collections: collectionId, "users.userId": userToUpdate._id });
+        if (!workspaceUserToUpdate) return res.status(404).json({ message: "User to update not found in workspace" });
+
+        if (!foundUser) {
+            foundUser = workspaceUserToUpdate.users.find(u => u.userId.toString() === userToUpdate._id.toString());
+        }
+        if (!foundUser) return res.status(404).json({ message: "User to update not found in collection or workspace" });
 
         if (userConnectedId.toString() === foundUser.userId.toString()) return res.status(403).json({ message: "You can't change your own privileges" });
 
-        if (foundUser.privilege === admin_grade) return res.status(403).json({ message: "You can't change the privileges of an admin" });
+        // Un admin ou owner ne peut pas changer les privilèges d'un autre admin (un admin a accès à toutes les collections)
+        // Si le owner souhaite changer les privilèges d'un admin, il doit d'abord le rétrograder en viewer dans le workspace et ensuite changer ses privilèges dans les collections
+        if (foundUser.privilege >= admin_grade && foundUser.hasJoined !== undefined) return res.status(403).json({ message: "You can't change the privileges of an admin of a workspace" }); // Cas userConnected = owner ou admin de workspace ou collection et foundUser = admin de workspace
+        if (foundUser.privilege >= admin_grade && userConnectedInCollection.hasJoined === undefined && foundUser.hasJoined === undefined) return res.status(403).json({ message: "You can't change the privileges of an admin of a collection as an admin of collection" }); // Cas userConnected = admin de collection et foundUser = admin de collection
         
         if (privilege > admin_grade || privilege < viewer_grade) return res.status(403).json({ message: "Invalid privilege" });
         
-        foundUser.privilege = privilege;
+        if (foundUser.hasJoined === undefined) {
+            // vérifier que l'on attribue pas le même privilege que dans le workspace, dans ce cas on supprime l'utilisateur de la collection (il aura le privilege du workspace)
+            const findUserInWorkspace = workspaceUserToUpdate.users.find(u => u.userId.toString() === userToUpdate._id.toString());
+            if (findUserInWorkspace.privilege === privilege) {
+                collection.users = collection.users.filter(u => u.userId.toString() !== userToUpdate._id.toString());
+            }
+        } else { // Si le privilege de l'utilisateur a été récupéré via le workspace
+            if (foundUser.privilege !== privilege) {
+                // add the user to the collection
+                collection.users.push({ userId: userToUpdate._id, privilege: privilege });
+            }
+        }
 
         await collection.save();
 
