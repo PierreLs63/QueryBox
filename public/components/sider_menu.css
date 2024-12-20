@@ -1,5 +1,5 @@
 .ant-menu-submenu-selected > .ant-menu-submenu-title {
-    color: #054d29 !important;
+    color: #397d4b !important;
     font-weight: bold;
   }
   
@@ -9,7 +9,7 @@
   
   .ant-menu-item-selected {
     background-color: #d0f0d0 !important;
-    color: #054d29 !important;
+    color: #397d4b !important;
   }
   
   .ant-menu-item:hover {
@@ -17,11 +17,11 @@
   }
   
   .ant-menu-item-selected:hover {
-    color: #054d29 !important;
+    color: #397d4b !important;
   }
 
   .ant-menu-item:active, 
   .ant-menu-submenu-title:active {
   background-color: #d0f0d0 !important;
-  color: #054d29 !important;
+  color: #397d4b !important;
   }

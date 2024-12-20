@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Form, Input, Popconfirm, Table, Typography } from 'antd';
+import './request_param.css'
 
 const EditableCell = ({
     editing,
@@ -108,16 +109,41 @@ const EditableCell = ({
                 onClick={() => save(record.key)}
                 style={{
                   marginInlineEnd: 8,
+                  color: '#388E3C'
                 }}
               >
                 Save
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <a>Cancel</a>
+              <Popconfirm
+                title="Sure to cancel?"
+                onConfirm={cancel}
+                okButtonProps={{
+                  className: 'custom-ok-button',
+                  style: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'black',
+                    color: '#388E3C',
+                  },
+                }}
+                cancelButtonProps={{
+                  className: 'custom-cancel-button',
+                  style: {
+                    color: 'red',
+                    borderColor: 'black',
+                  },
+                }}
+              >
+                <a style={{ color: 'red' }}>Cancel</a>
               </Popconfirm>
             </span>
           ) : (
-            <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+            <Typography.Link 
+              disabled={editingKey !== ''} 
+              onClick={() => edit(record)}
+              style={{
+                color: '#397d4b',
+              }}
+            >
               Edit
             </Typography.Link>
           );

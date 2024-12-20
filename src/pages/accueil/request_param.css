@@ -1,0 +1,8 @@
+.custom-ok-button:hover {
+    background-color: #e6f7e6 !important;
+  }  
+
+.custom-cancel-button:hover {
+    background-color: #ffe3e3 !important;
+    color: red !important;
+  } 
