@@ -1,5 +1,5 @@
 // Import Components
-import RequestParam from './request_param.jsx';
+import RequestParam from '../../../public/components/request_param.jsx';
 import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';
@@ -48,6 +48,16 @@ const Accueil = () => {
     { key: 'Accept_Encoding', value: 'value_acceptEncoding', description: 'Description for Accept_Encoding' },
     { key: 'Connection', value: 'value_connection', description: 'Description for Connection' },
   ]);
+
+  // ParamReq place-holders
+  const [paramReqData, setParamReqData] = useState(
+    Array.from({ length: 100 }).map((_, i) => ({
+      key: i.toString(),
+      keyData: `Param ${i}`,
+      value: `Value ${i}`,
+      description: `Description ${i}`,
+    }))
+  );
 
   // Event of request checked
   const onChangeResquest = (e) => {
@@ -226,7 +236,7 @@ const Accueil = () => {
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
-                {selectedRequest === "param" && <RequestParam />}
+                {selectedRequest === "param" && <RequestParam paramReqData={paramReqData} setParamReqData={setParamReqData} />}
                 {selectedRequest === "headerRequest" && <RequestHeader headerData={headerData} setHeaderData={setHeaderData} />}
                 {selectedRequest === "bodyRequest" && <RequestBody />}
               </Splitter.Panel>

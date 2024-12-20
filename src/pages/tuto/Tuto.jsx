@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Radio, Tour, Splitter, Select, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import RequestParam from './request_param.jsx';
+import RequestParam from '../../../public/components/request_param.jsx';
 import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from './response_header.jsx';

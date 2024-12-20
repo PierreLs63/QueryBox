@@ -1,15 +1,6 @@
 import { useState } from 'react';
 import { Form, Input, Popconfirm, Table, Typography } from 'antd';
 
-const originData = Array.from({
-  length: 100,
-}).map((_, i) => ({
-  key: i.toString(),
-  keyData: `Param ${i}`,
-  value: `Value ${i}`,
-  description: `Description ${i}`,
-}));
-
 const EditableCell = ({
     editing,
     dataIndex,
@@ -44,9 +35,8 @@ const EditableCell = ({
     );
   };
   
-  const RequestParam = () => {
+  const RequestParam = ({ paramReqData = [], setParamReqData }) => {
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState('');
   
     const isEditing = (record) => record.key === editingKey;
@@ -68,7 +58,7 @@ const EditableCell = ({
     const save = async (key) => {
       try {
         const row = await form.validateFields();
-        const newData = [...data];
+        const newData = [...paramReqData];
         const index = newData.findIndex((item) => key === item.key);
         if (index > -1) {
           const item = newData[index];
@@ -76,11 +66,11 @@ const EditableCell = ({
             ...item,
             ...row,
           });
-          setData(newData);
+          setParamReqData(newData);
           setEditingKey('');
         } else {
           newData.push(row);
-          setData(newData);
+          setParamReqData(newData);
           setEditingKey('');
         }
       } catch (errInfo) {
@@ -160,7 +150,7 @@ const EditableCell = ({
             },
           }}
           bordered
-          dataSource={data}
+          dataSource={paramReqData}
           columns={mergedColumns}
           rowClassName="editable-row"
           pagination={{ pageSize: 5, onChange: cancel, showSizeChanger: false}}
