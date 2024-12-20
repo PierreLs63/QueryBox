@@ -2,7 +2,7 @@
 import RequestParam from '../../../public/components/request_param.jsx';
 import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
-import ResponseHeader from './response_header.jsx';
+import ResponseHeader from '../../../public/components/response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx'
@@ -59,6 +59,15 @@ const Accueil = () => {
     }))
   );
 
+  // ResponseHeader place-holders
+  const dataResponseHeader = Array.from({
+    length: 100,
+  }).map((_, i) => ({
+    key: i,
+    keyData: `Key ${i}`,
+    value: `Value ${i}`,
+  }));
+
   // Event of request checked
   const onChangeResquest = (e) => {
     setSelectedRequest(e.target.value);
@@ -68,15 +77,6 @@ const Accueil = () => {
   const onChangeResponse = (e) => {
     setSelectedResponse(e.target.value);
   };
-
-  // Data base of response header
-  const dataResponseHeader = Array.from({
-    length: 100,
-  }).map((_, i) => ({
-    key: i,
-    keyData: `Key ${i}`,
-    value: `Value ${i}`,
-  }));
 
   useEffect(() => {
     document.body.style.fontFamily = "'Roboto', sans-serif";

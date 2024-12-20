@@ -12,7 +12,7 @@ const tableResponseHeader = [
   },
 ];
 
-const ResponseHeader = ({ dataResponseHeader }) => {
+const ResponseHeader = ({ dataResponseHeader = [] }) => {
   return (
     <Table
       columns={tableResponseHeader}

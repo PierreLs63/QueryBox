@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import RequestParam from '../../../public/components/request_param.jsx';
 import RequestHeader from '../../../public/components/request_header.jsx';
 import RequestBody from '../../../public/components/request_body.jsx';
-import ResponseHeader from './response_header.jsx';
+import ResponseHeader from '../../../public/components/response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
 
