@@ -2,8 +2,11 @@ import React from 'react';
 import { Input, Button, Popover, Select } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
+import useInvite from '../../src/hooks/workspace/useInvite';
 
-const InviteMenu = ({ inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite }) => {
+const InviteMenu = () => {
+  const { inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite } = useInvite();
+
   const handleInvite = () => {
     const workspaceId = "workspaceId"; // temporaire, il faut récupérer l'id du workspace
     invite(workspaceId, inviteUsername, invitePrivilege);
@@ -20,7 +23,7 @@ const InviteMenu = ({ inviteUsername, setInviteUsername, invitePrivilege, setInv
         style={{ marginBottom: '10px' }}
       />
       <Select 
-        defaultValue="viewer" 
+        value={invitePrivilege === 20 ? 'admin' : 'viewer'}
         style={{ width: '100%' }}
         onChange={(value) => setInvitePrivilege(value === 'admin' ? 20 : 10)}
       >

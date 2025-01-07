@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../../public/utils/variables';
 
 const useInvite = () => {
     const [loading, setLoading] = useState(false);

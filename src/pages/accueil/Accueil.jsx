@@ -113,7 +113,7 @@ const Accueil = () => {
           <CollaboratorMenu collaborators={collaborateurs || []} />
 
           {/* User Add Icon with Popover for user invite */}
-          <InviteMenu inviteNickname={inviteUsername} setInviteNickname={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
+          <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />
