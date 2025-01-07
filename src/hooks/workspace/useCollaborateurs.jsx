@@ -8,7 +8,6 @@ const useCollaborateurs = () => {
     const [success, setSuccess] = useState(null);
     const [collaborateurs, setCollaborateurs] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
-    const [invitePrivilege, setInvitePrivilege] = useState(10); // 10 pour viewer par défaut
 
     const getCollaborateurs = async (workspaceId) => {
         setWorkspaceId(workspaceId);
@@ -37,7 +36,7 @@ const useCollaborateurs = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, getCollaborateurs, collaborateurs, workspaceId, invitePrivilege, setInvitePrivilege }
+    return { loading, error, success, getCollaborateurs, collaborateurs, workspaceId }
 }
 
 

@@ -24,10 +24,9 @@ const Accueil = () => {
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
-  const [inviteNickname, setInviteNickname] = useState("");
 
   // Utilisation du hook useCollaborateurs
-  const { loading, error, getCollaborateurs, collaborateurs, invitePrivilege, setInvitePrivilege } = useCollaborateurs();
+  const { loading, error, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername } = useInvite();
 
   // Récupérer les collaborateurs lors du montage du composant
