@@ -32,7 +32,7 @@ const ParamRequestSchema = new mongoose.Schema({
     },
     header: [KeyValueSchema], // Array of key-value pairs
     parameters: [KeyValueSchema], // Array of key-value pairs
-    responses: [{type: String}],
+    responses: [{type: mongoose.Schema.Types.ObjectId, ref: "Response"}],
 },
     {timestamps: true}
 );

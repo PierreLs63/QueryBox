@@ -99,6 +99,16 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
         const { url, method, body, header, parameters, responses } = req.body;
         const { userId } = req.user;
 
+        if ((method && !["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"].includes(method)) || method === "") {
+            return res.status(400).json({ message: "Invalid method" });
+        }
+
+        // Vérifier si l'URL est valide
+
+        if (url && !new URL(url)) {
+            return res.status(400).json({ message: "Invalid URL" });
+        }
+
         // Vérifier si la requête existe
         const request = await Request.findById(requestId);
         if (!request) {
@@ -111,11 +121,18 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
             return res.status(404).json({ message: "Collection not found" });
         }
 
-        // Vérifier si l'utilisateur a le grade viewer dans la collection
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
-        if (!userInCollection || userInCollection.privilege < viewer_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to create a param request" });
+        // Vérifier si l'utilisateur a le grade viewer dans la collection ou workspace
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
         // Créer un nouveau ParamRequest
         const newParamRequest = new ParamRequest({
@@ -132,15 +149,12 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
         await newParamRequest.save();
 
         // Ajouter le nouveau ParamRequest à l'historique de la requête
-        request.paramRequests.push(newParamRequest._id);
+        request.requests.push({paramRequestId: newParamRequest._id, userId: userId});
         await request.save();
 
-        // Exécuter la requête
-        const response = await executeRequest(request, newParamRequest);
-
-        res.status(201).json({ paramRequest: newParamRequest, response });
+        return res.status(201).json({ paramRequest: newParamRequest });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -199,14 +213,24 @@ export const deleteParamRequest = async (req, res) => {
             return res.status(404).json({ message: "Collection not found" });
         }
 
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
-        if (!userInCollection || userInCollection.privilege < admin_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to delete the param request" });
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
-        await ParamRequest.findByIdAndRemove(paramRequestId);
-        res.status(200).json({ message: "ParamRequest deleted successfully" });
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+        
+        if (userConnectedInCollection.privilege < admin_grade && userConnectedInCollection.userId !== paramRequest.userId) return res.status(403).json({ message: "User not authorized" });
+
+        await ParamRequest.findByIdAndDelete(paramRequestId);
+        await Request.findByIdAndUpdate(request._id, { $pull: { requests: { paramRequestId } } });
+
+        return res.status(200).json({ message: "ParamRequest deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -220,7 +244,7 @@ export const getRequests = async (req, res) => {
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
+        const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
         if (!userInCollection) {
             return res.status(404).json({ message: "User not found in collection" });
         }
