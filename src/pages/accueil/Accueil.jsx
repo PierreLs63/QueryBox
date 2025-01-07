@@ -5,15 +5,15 @@ import RequestBody from '../../../public/components/request_body.jsx';
 import ResponseHeader from '../../../public/components/response_header.jsx';
 import ResponseBody from '../../../public/components/response_body.jsx';
 import SiderMenu from '../../../public/components/sider_menu.jsx';
-import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx'
+import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx';
 import NotificationMenu from '../../../public/components/notificationMenu.jsx';
 import InviteMenu from '../../../public/components/inviteMenu.jsx';
-import './Accueil.css'
-
+import './Accueil.css';
 
 import { useState, useEffect } from 'react';
 import { SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
+import useCollaborateurs from '../../../public/hooks/useCollaborateurs';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -24,6 +24,15 @@ const Accueil = () => {
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
   const [inviteNickname, setInviteNickname] = useState("");
+
+  // Utilisation du hook useCollaborateurs
+  const { loading, error, getCollaborateurs, collaborateurs } = useCollaborateurs();
+
+  // Récupérer les collaborateurs lors du montage du composant
+  useEffect(() => {
+    const workspaceId = "workspaceId"; // temporaire il faut récupérer l'id du workspace
+    getCollaborateurs(workspaceId);
+  }, []);
 
   // Notifications place-holders
   const [notifications, setNotifications] = useState([
@@ -99,7 +108,7 @@ const Accueil = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
 
           {/* Collaborateur Button with Popover for user list */}
-          <CollaboratorMenu collaborators={collaborators} />
+          <CollaboratorMenu collaborators={collaborateurs || []} />
 
           {/* User Add Icon with Popover for user invite */}
           <InviteMenu inviteNickname={inviteNickname} setInviteNickname={setInviteNickname} />
