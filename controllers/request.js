@@ -21,18 +21,17 @@ export const createRequest = async (req, res) => {
         }
 
 
-        var user = collection.users.find(u => u.userId.toString() === userId.toString());
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
 
-        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
-        if (!user) {
-            user = await Workspace.findOne({ collections: collectionId, "users.userId": userId });
+        const workspaceConnectedUser = await Workspace.findOne({ collections: collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
-        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
-        if (!user) {
-            return res.status(404).json({ message: "User not found in workspace or collection" });
-        }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
         
-        if (user.privilege < viewer_grade) {
+        if (userConnectedInCollection.privilege < viewer_grade) {
             return res.status(401).json({ message: "User not authorized" });
         }
 
@@ -43,9 +42,9 @@ export const createRequest = async (req, res) => {
         // Ajouter la requête à la collection
         collection.requests.push(request._id);
         await collection.save();
-        res.status(201).json(request);
+        return res.status(201).json(request);
     } catch (error) {
-        res.status(409).json({ message: error.message }); 
+        return res.status(409).json({ message: error.message }); 
     }
 }
 
@@ -54,6 +53,10 @@ export const changeName = async (req, res) => {
         const { requestId } = req.params;
         const { name } = req.body;
         const { userId } = req.user;
+
+        if (!name) {
+            return res.status(400).json({ message: "Name is required" });
+        }
 
         const request = await Request.findById(requestId);
 
@@ -66,24 +69,27 @@ export const changeName = async (req, res) => {
             return res.status(404).json({ message: "Collection not found" });
         }
 
-        var userInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
 
-        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
-        if (!userInCollection) {
-            userInCollection = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
-        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
-        if (!userInCollection) {
-            return res.status(404).json({ message: "User not found in workspace or collection" });
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+
+
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+
+        if (request.name !== name) {
+            request.name = name;
+            await request.save();
         }
-        if (userInCollection.privilege < viewer_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to change the name of the request" });
-        }
-        request.name = name;
-        await request.save();
-        res.status(200).json({ message: "Request name changed successfully"});
+
+        return res.status(200).json({ message: "Request name changed successfully"});
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        return res.status(409).json({ message: error.message });
     }
 }
 
@@ -153,25 +159,25 @@ export const deleteRequest = async (req, res) => {
             return res.status(404).json({ message: "Collection not found" });
         }
 
-        var userInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
 
-        // Si l'utilisateur n'est pas dans la collection, on vérifie s'il est dans le workspace de la collection
-        if (!userInCollection) {
-            userInCollection = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
-        }
-        // Si l'utilisateur n'est pas dans la collection ou le workspace, on retourne une erreur
-        if (!userInCollection) {
-            return res.status(404).json({ message: "User not found in workspace or collection" });
-        }
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
 
-        if (userInCollection.privilege < admin_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to delete the request" });
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
 
-        await Request.findByIdAndRemove(requestId);
-        res.status(200).json({ message: "Request deleted successfully" });
+
+        if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
+
+        await Request.findByIdAndDelete(requestId);
+        await Collection.findByIdAndUpdate(collection._id, { $pull: { requests: requestId } });
+        await ParamRequest.deleteMany({ requestId });
+        return res.status(200).json({ message: "Request deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 

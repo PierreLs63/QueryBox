@@ -31,9 +31,9 @@ export const createCollection = async (req, res) => {
         workspace.collections.push(collection._id);
         await workspace.save();
         
-        res.status(201).json({ message: "Collection created successfully" });
+        return res.status(201).json({ message: "Collection created successfully" });
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        return res.status(409).json({ message: error.message });
     }
 }
 
@@ -188,8 +188,8 @@ export const updatePrivileges = async (req, res) => {
 
         await collection.save();
 
-        res.status(200).json({ message: "User privileges updated successfully" });
+        return res.status(200).json({ message: "User privileges updated successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
