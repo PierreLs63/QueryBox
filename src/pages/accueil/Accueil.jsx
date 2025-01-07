@@ -13,7 +13,7 @@ import './Accueil.css';
 import { useState, useEffect } from 'react';
 import { SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
-import useCollaborateurs from '../../../public/hooks/useCollaborateurs';
+import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
 
 // Overall page layout
 const { Header, Sider } = Layout;

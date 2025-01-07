@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import dotenv from 'dotenv';
 import { baseURL } from '../../../public/utils/variables';
-
-dotenv.config();
 
 const useCollaborateurs = () => {
     const [loading, setLoading] = useState(false);
