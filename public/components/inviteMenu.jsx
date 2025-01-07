@@ -1,9 +1,9 @@
 import React from 'react';
-import { Input, Button, Popover } from 'antd';
+import { Input, Button, Popover, Select } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 
-const InviteMenu = ({ inviteNickname, setInviteNickname }) => {
+const InviteMenu = ({ inviteNickname, setInviteNickname, invitePrivilege, setInvitePrivilege }) => {
   const handleInvite = () => {
     toast.success(`Invite sent to ${inviteNickname} !`);
     setInviteNickname("");
@@ -17,6 +17,14 @@ const InviteMenu = ({ inviteNickname, setInviteNickname }) => {
         onChange={(e) => setInviteNickname(e.target.value)}
         style={{ marginBottom: '10px' }}
       />
+      <Select 
+        defaultValue="viewer" 
+        style={{ width: '100%' }}
+        onChange={(value) => setInvitePrivilege(value === 'admin' ? 20 : 10)}
+      >
+        <Select.Option value="admin">Admin</Select.Option>
+        <Select.Option value="viewer">Viewer</Select.Option>
+      </Select>
       <Button 
         type="primary" 
         onClick={handleInvite}

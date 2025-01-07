@@ -7,6 +7,7 @@ const useInvite = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
+    const [invitePrivilege, setInvitePrivilege] = useState(10); // 10 pour viewer par défaut
     
     const invite = async (workspaceId, username, level) => {
         setWorkspaceId(workspaceId);
@@ -20,7 +21,7 @@ const useInvite = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({username, level})
+                body: JSON.stringify({username, level: invitePrivilege})
             });
             const data = await response.json();
             if (data.error) {
@@ -36,7 +37,7 @@ const useInvite = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, invite, workspaceId }
+    return { loading, error, success, invite, workspaceId, invitePrivilege, setInvitePrivilege }
 }
 
 export default useInvite

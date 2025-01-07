@@ -26,7 +26,7 @@ const Accueil = () => {
   const [inviteNickname, setInviteNickname] = useState("");
 
   // Utilisation du hook useCollaborateurs
-  const { loading, error, getCollaborateurs, collaborateurs } = useCollaborateurs();
+  const { loading, error, getCollaborateurs, collaborateurs, invitePrivilege, setInvitePrivilege } = useCollaborateurs();
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
@@ -111,7 +111,7 @@ const Accueil = () => {
           <CollaboratorMenu collaborators={collaborateurs || []} />
 
           {/* User Add Icon with Popover for user invite */}
-          <InviteMenu inviteNickname={inviteNickname} setInviteNickname={setInviteNickname} />
+          <InviteMenu inviteNickname={inviteNickname} setInviteNickname={setInviteNickname} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} />
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />
