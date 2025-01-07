@@ -27,7 +27,10 @@ const Accueil = () => {
 
   // Utilisation du hook useCollaborateurs
   const { loading, error, getCollaborateurs, collaborateurs } = useCollaborateurs();
-  const { invite, inviteUsername, setInviteUsername } = useInvite();
+  const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
+
+
+
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
@@ -42,13 +45,6 @@ const Accueil = () => {
     { id: 3, message: 'Place-holder 3' },
   ]);
 
-  // Usernames place-holders
-  const [collaborators, setCollaborators] = useState([
-    'PierreLs63',
-    'FireIceFly',
-    'duckduckxuan',
-    'CCtuhulu',
-  ]);
 
   // Header place-holders
   const [headerData, setHeaderData] = useState([
