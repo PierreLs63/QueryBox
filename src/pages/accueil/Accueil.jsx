@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import { SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
 import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
+import useInvite from '../../hooks/workspace/useInvite.jsx';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -27,6 +28,7 @@ const Accueil = () => {
 
   // Utilisation du hook useCollaborateurs
   const { loading, error, getCollaborateurs, collaborateurs, invitePrivilege, setInvitePrivilege } = useCollaborateurs();
+  const { invite, inviteUsername, setInviteUsername } = useInvite();
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
@@ -111,7 +113,7 @@ const Accueil = () => {
           <CollaboratorMenu collaborators={collaborateurs || []} />
 
           {/* User Add Icon with Popover for user invite */}
-          <InviteMenu inviteNickname={inviteNickname} setInviteNickname={setInviteNickname} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} />
+          <InviteMenu inviteNickname={inviteUsername} setInviteNickname={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />

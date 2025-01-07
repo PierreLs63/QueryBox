@@ -3,18 +3,20 @@ import { Input, Button, Popover, Select } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 
-const InviteMenu = ({ inviteNickname, setInviteNickname, invitePrivilege, setInvitePrivilege }) => {
+const InviteMenu = ({ inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite }) => {
   const handleInvite = () => {
-    toast.success(`Invite sent to ${inviteNickname} !`);
-    setInviteNickname("");
+    const workspaceId = "workspaceId"; // temporaire, il faut récupérer l'id du workspace
+    invite(workspaceId, inviteUsername, invitePrivilege);
+    toast.success(`Invite sent to ${inviteUsername} !`);
+    setInviteUsername("");
   };
 
   const inviteContent = (
     <div>
       <Input
         placeholder="Entrez pseudonyme"
-        value={inviteNickname}
-        onChange={(e) => setInviteNickname(e.target.value)}
+        value={inviteUsername}
+        onChange={(e) => setInviteUsername(e.target.value)}
         style={{ marginBottom: '10px' }}
       />
       <Select 
@@ -28,7 +30,7 @@ const InviteMenu = ({ inviteNickname, setInviteNickname, invitePrivilege, setInv
       <Button 
         type="primary" 
         onClick={handleInvite}
-        disabled={!inviteNickname}
+        disabled={!inviteUsername}
       >
         Invite
       </Button>
