@@ -202,9 +202,9 @@ export const getAllCollection = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to view the collections" });
         }
         await workspace.populate("collections");
-        res.status(200).json(workspace.collections);
+        return res.status(200).json(workspace.collections);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 

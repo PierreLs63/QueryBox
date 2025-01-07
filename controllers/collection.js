@@ -58,9 +58,10 @@ export const deleteCollection = async (req, res) => {
         if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         await Collection.findByIdAndDelete(collectionId);
-        res.status(200).json({ message: "Collection deleted successfully" });
+        await Workspace.findByIdAndUpdate(workspaceConnectedUser._id, { $pull: { collections: collectionId } });
+        return res.status(200).json({ message: "Collection deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -72,13 +73,23 @@ export const getAllRequestsFromCollection = async (req, res) => {
         const collection = await Collection.findById(collectionId);
         if (!collection) return res.status(404).json({ message: "Collection not found" });
 
-        const user = collection.users.find(u => u.userId.toString() === userId.toString());
-        if (!user|| user.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
+        }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+
         await collection.populate('requests');
         // On envoie les données de toutes les requêtes de la collection et non pas juste un tableau d'ids
-        res.status(200).json(collection.requests);
+        return res.status(200).json(collection.requests);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
