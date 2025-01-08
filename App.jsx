@@ -25,7 +25,7 @@ function App() {
           {/* default path navigate to /connexion */}
           <Route path="/" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
           <Route path="/connexion" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Connexion />} />
-          <Route path="/inscription" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
+          <Route path="/inscription" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Inscription />} />
           <Route path="/reinitialiser" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
           <Route path="/mailenvoye" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Mailenvoye />) : <Navigate to='/connexion' />} />
           <Route path="/mailverifie" element={authUser ? <Navigate to="/accueil" /> : <Mailverifie />} />
