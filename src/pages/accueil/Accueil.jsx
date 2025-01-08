@@ -29,12 +29,12 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-
+  const workspaceId = "6763e72c9e59618f1b794204";
 
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
-    const workspaceId = "6763e72c9e59618f1b794204"; // temporaire il faut récupérer l'id du workspace
+   // temporaire il faut récupérer l'id du workspace
     getCollaborateurs(workspaceId);
   }, []);
 
@@ -105,6 +105,7 @@ const Accueil = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
 
           {/* Collaborateur Button with Popover for user list */}
+          
           <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} workspaceId={workspaceId}/>
 
           {/* User Add Icon with Popover for user invite */}

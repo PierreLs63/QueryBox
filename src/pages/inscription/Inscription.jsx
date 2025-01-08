@@ -2,10 +2,13 @@ import React, { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import useSignup from '../../hooks/auth/useSignup';
 
 const Inscription = () => {
+  const { loading, signup } = useSignup();
   const onFinish = (values) => {
-    console.log('Form Values:', values);
+    console.log('Form Values :', values);
+    signup(values);
   };
 
   // Navigate to connection if have account
@@ -113,7 +116,7 @@ const Inscription = () => {
 
             <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Veuillez entrer votre mot de passe!' }]}
+              rules={[{ required: true, message: 'Veuillez entrer votre mot de passe !' }, { min: 8, message: 'Le mot de passe doit contenir au moins 8 caractères !' }]}
             >
               <Input.Password prefix={<LockOutlined />} placeholder="Mot de passe" />
             </Form.Item>
