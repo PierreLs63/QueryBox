@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Typography, Flex } from 'antd';
-import SiderMenu from '../../../public/components/sider_menu.jsx';
+import SiderMenu from '../../components/sider_menu';
 import { useNavigate } from 'react-router-dom';
 
 // Overall page layout

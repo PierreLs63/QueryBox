@@ -12,7 +12,6 @@ import { useAuthContext } from './src/context/AuthContext.jsx';
 
 function App() {
   const { authUser } = useAuthContext();
-  console.log(authUser._id)
   return (
     <>
       <Toaster toastOptions={{

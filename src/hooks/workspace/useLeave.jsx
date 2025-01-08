@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import {baseURL} from '../../utils/variables';
 
 
 const useLeave = () => {
@@ -34,7 +34,7 @@ const useLeave = () => {
             setLoadingLeave(false);
         }
     }
-    return { loadingLeave, errorLeave, successLeave, leave, workspaceId }
+    return { loadingLeave, errorLeave, successLeave, leave }
 }
 
 export default useLeave

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, List, Popover, Tag, Spin, Alert, Modal, Select } from 'antd';
-import useUpdatePrivileges from '../../src/hooks/workspace/useUpdatePrivileges';
-import useRemoveUser from '../../src/hooks/workspace/useRemoveUser';
-import useLeave from '../../src/hooks/workspace/useLeave';
-import { useAuthContext } from '../../src/context/AuthContext';
+import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
+import useRemoveUser from '../hooks/workspace/useRemoveUser';
+import useLeave from '../hooks/workspace/useLeave';
+import { useAuthContext } from '../context/AuthContext';
 
 const { Option } = Select;
 

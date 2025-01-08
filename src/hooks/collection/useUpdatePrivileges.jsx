@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import { baseURL } from '../../../public/utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useUpdatePrivileges = () => {
     const [loading, setLoading] = useState(false);

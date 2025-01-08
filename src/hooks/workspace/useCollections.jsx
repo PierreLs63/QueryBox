@@ -1,7 +1,7 @@
 //je veux créer un hook pour récupérer les collections d'un workspace donné avec comme paramètre le workspaceId
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import {baseURL} from '../../utils/variables';
 
 const useCollections = () => {
     const [collections, setCollections] = useState([]);

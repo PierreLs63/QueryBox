@@ -1,13 +1,13 @@
 // Import Components
-import RequestParam from '../../../public/components/request_param.jsx';
-import RequestHeader from '../../../public/components/request_header.jsx';
-import RequestBody from '../../../public/components/request_body.jsx';
-import ResponseHeader from '../../../public/components/response_header.jsx';
-import ResponseBody from '../../../public/components/response_body.jsx';
-import SiderMenu from '../../../public/components/sider_menu.jsx';
-import CollaboratorMenu from '../../../public/components/collaboratorMenu.jsx';
-import NotificationMenu from '../../../public/components/notificationMenu.jsx';
-import InviteMenu from '../../../public/components/inviteMenu.jsx';
+import RequestParam from '../../components/request_param';
+import RequestHeader from '../../components/request_header';
+import RequestBody from '../../components/request_body';
+import ResponseHeader from '../../components/response_header';
+import ResponseBody from '../../components/response_body';
+import SiderMenu from '../../components/sider_menu';
+import CollaboratorMenu from '../../components/collaboratorMenu';
+import NotificationMenu from '../../components/notificationMenu';
+import InviteMenu from '../../components/inviteMenu';
 import './Accueil.css';
 
 import { useState, useEffect } from 'react';
@@ -34,7 +34,7 @@ const Accueil = () => {
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
-    const workspaceId = "workspaceId"; // temporaire il faut récupérer l'id du workspace
+    const workspaceId = "6763e72c9e59618f1b794204"; // temporaire il faut récupérer l'id du workspace
     getCollaborateurs(workspaceId);
   }, []);
 
