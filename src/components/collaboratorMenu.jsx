@@ -54,13 +54,15 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
           dataSource={collaborators}
           renderItem={(collaborator) => (
             <List.Item>
-              <Button
-                type="link"
-                style={{ width: '100%' }}
-                disabled={!collaborator.hasJoined}
+              <span
+                style={{
+                  width: '100%',
+                  color: collaborator.hasJoined ? 'inherit' : 'gray',
+                  cursor: collaborator.hasJoined ? 'pointer' : 'not-allowed',
+                }}
               >
                 {collaborator.username}
-              </Button>
+              </span>
               <Tag color={collaborator.privilege === 20 ? 'red' : collaborator.privilege === 30 ? 'blue' : 'green'}>
                 {collaborator.privilege === 20 ? 'Admin' : collaborator.privilege === 30 ? 'Owner' : 'Viewer'}
               </Tag>
