@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, Button } from 'antd';
 import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+<<<<<<< HEAD
 import './sider_menu.css';
 
 const initialItems = [
@@ -49,10 +50,53 @@ const initialItems = [
     ],
   },
 ];
+=======
+import './sider_menu.css'
+import useLogout from '../hooks/auth/useLogout';
+
+
+>>>>>>> 197becc062545e86ab8c5c5e885609e5da17076d
 
 
 
 const SiderMenu = () => {
+  
+  const {logout} = useLogout();
+
+  const initialItems = [
+    {
+      key: 'account',
+      icon: <UserOutlined />,
+      label: 'Account',
+      children: [
+        { key: 'profil', label: 'Profil' },
+        { key: 'deconnecter', label: 'Déconnecter', onClick: () => logout() },
+      ],
+    },
+    {
+      key: 'workspace',
+      icon: <DesktopOutlined />,
+      label: 'Workspace',
+      children: [{ 
+        key: 'workspace:1', 
+        label: 'Workspace 1',
+        children:[
+          {
+            key: 'collection',
+            icon: <FileOutlined />,
+            label: 'Collection',
+            children: [{ key: 'collection:1', label: 'Collection 1' }],
+          },
+          {
+            key: 'history',
+            icon: <HistoryOutlined />,
+            label: 'History',
+            children: [{ key: 'history:1', label: 'History 1' }],
+          },
+        ]}],
+    },
+  ];
+
   const [menuItems, setMenuItems] = useState(initialItems);
   const [workspaceCounter, setWorkspaceCounter] = useState(2);
   const [counterMap, setCounterMap] = useState({

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, List, Popover, Tag, Spin, Alert, Modal, Select } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
 import useRemoveUser from '../hooks/workspace/useRemoveUser';
 import useLeave from '../hooks/workspace/useLeave';
@@ -7,7 +8,7 @@ import { useAuthContext } from '../context/AuthContext';
 
 const { Option } = Select;
 
-const CollaboratorMenu = ({ collaborators, loading, error }) => {
+const CollaboratorMenu = ({ collaborators, loading, error , workspaceId}) => {
   const { authUser } = useAuthContext();
   const { updatePrivileges, loadingUpdatePrivileges } = useUpdatePrivileges();
   const { removeUser, loadingRemoveUser } = useRemoveUser();
@@ -23,12 +24,12 @@ const CollaboratorMenu = ({ collaborators, loading, error }) => {
   };
 
   const handleOk = async () => {
-    await updatePrivileges(selectedCollaborator.workspaceId, selectedCollaborator.userId, newPrivilege);
+    await updatePrivileges(workspaceId, selectedCollaborator.username, newPrivilege);
     setIsModalVisible(false);
   };
 
-  const handleRemove = async (userId) => {
-    await removeUser(userId);
+  const handleRemove = async (username) => {
+    await removeUser(workspaceId, username);
   };
 
   const handleLeave = async (workspaceId) => {
@@ -45,8 +46,12 @@ const CollaboratorMenu = ({ collaborators, loading, error }) => {
         <List
           dataSource={collaborators}
           renderItem={(collaborator) => (
-            <List.Item style={{ opacity: collaborator.hasJoined ? 1 : 0.5 }}>
-              <Button type="link" style={{ width: '100%' }}>
+            <List.Item>
+              <Button
+                type="link"
+                style={{ width: '100%' }}
+                disabled={!collaborator.hasJoined}
+              >
                 {collaborator.username}
               </Button>
               <Tag color={collaborator.privilege === 20 ? 'red' : collaborator.privilege === 30 ? 'blue' : 'green'}>
@@ -58,8 +63,21 @@ const CollaboratorMenu = ({ collaborators, loading, error }) => {
                 </Button>
               ) : (
                 <>
-                  <Button onClick={() => showEditModal(collaborator)}>Edit</Button>
-                  <Button onClick={() => handleRemove(collaborator.userId)} loading={loadingRemoveUser}>Remove</Button>
+                  <Button
+                    type="link"
+                    onClick={() => showEditModal(collaborator)}
+                    disabled={!collaborator.hasJoined}
+                    style={{ padding: 0, marginRight: 8 }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleRemove(collaborator.userId)}
+                    loading={loadingRemoveUser}
+                    disabled={!collaborator.hasJoined}
+                    style={{ color: 'red', border: 'none', background: 'none' }}
+                  />
                 </>
               )}
             </List.Item>
