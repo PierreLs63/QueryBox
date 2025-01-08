@@ -43,6 +43,7 @@ const SiderMenu = () => {
   const [collectionCounter, setCollectionCounter] = useState(2);
   const [historyCounter, setHistoryCounter] = useState(2);
 
+
   const addSubMenu = (key, event) => {
     event.stopPropagation();
     setMenuItems((prevItems) =>
@@ -52,7 +53,7 @@ const SiderMenu = () => {
               ...item,
               children: [
                 ...item.children,
-                { key: `${key}:${setWorkspaceCounter}`, 
+                { key: `${key}:${workspaceCounter}`, 
                   label: `${item.label} ${workspaceCounter}`, 
                   children: [
                     {
@@ -74,79 +75,95 @@ const SiderMenu = () => {
           : item
       )
     );
-    setSubMenuCounter((prevCounter) => prevCounter + 1);
+    setWorkspaceCounter((prevCounter) => prevCounter + 1);
   };
+
+
+  const deleteSubMenu = (subKey, event) => {
+    event.stopPropagation();
+
+    const recursiveDelete = (items) => {
+        return items.map((item) => ({
+            ...item,
+            children: item.children?.map((child) => ({
+                ...child,
+                children: child.children?.map((subChild) => ({
+                    ...subChild,
+                    children: subChild.children?.filter((subItem) => subItem.key !== subKey)
+                })).filter(subChild => subChild.key !== subKey)
+            })).filter(child => child.key !== subKey)
+        })).filter(item => item.key !== subKey);
+    };
+
+    setMenuItems((prevItems) => recursiveDelete(prevItems));
+};
+
+
+
+
+
+
 
   const addSubItem = (key, event, type) => {
     event.stopPropagation();
 
-    if (type === 'collection') {
-        setMenuItems((prevItems) =>
-            prevItems.map((item) =>
-                item.key === key
-                    ? {
-                          ...item,
-                          children: [
-                              ...item.children,
-                              {key: `collection:${collectionCounter}`, label: `Collection ${collectionCounter}`}
-                          ],
-                      }
-                    : item
-            )
+    const recursiveUpdate = (items) => {
+        return items.map((item) =>
+            item.key === key
+                ? {
+                      ...item,
+                      children: item.children.map((child) =>
+                          child.key === type
+                              ? {
+                                    ...child,
+                                    children: [
+                                        ...child.children,
+                                        {
+                                            key: `${type}:${type === 'collection' ? collectionCounter : historyCounter}`,
+                                            label: `${type.charAt(0).toUpperCase() + type.slice(1)} ${type === 'collection' ? collectionCounter : historyCounter}`,
+                                        }
+                                    ]
+                                }
+                              : child
+                      )
+                  }
+                : {
+                      ...item,
+                      children: item.children ? recursiveUpdate(item.children) : item.children
+                  }
         );
+    };
+
+    setMenuItems((prevItems) => recursiveUpdate(prevItems));
+    if (type === 'collection') {
         setCollectionCounter((prevCounter) => prevCounter + 1);
     } else if (type === 'history') {
-        setMenuItems((prevItems) =>
-            prevItems.map((item) =>
-                item.key === key
-                    ? {
-                          ...item,
-                          children: [
-                              ...item.children,
-                              {key: `history:${historyCounter}`, label: `History ${historyCounter}`}
-                          ],
-                      }
-                    : item
-            )
-        );
         setHistoryCounter((prevCounter) => prevCounter + 1);
     }
+  };
+
+
+  const deleteSubItem = (subKey, event) => {
+    event.stopPropagation();
+
+    const recursiveDelete = (items) => {
+        return items.map((item) => ({
+            ...item,
+            children: item.children?.map((child) => ({
+                ...child,
+                children: child.children?.map((subChild) => ({
+                    ...subChild,
+                    children: subChild.children?.filter((subItem) => subItem.key !== subKey)
+                }))
+            }))
+        })).filter(item => !(item.key === subKey));
+    };
+
+    setMenuItems((prevItems) => recursiveDelete(prevItems));
 };
 
-  const deleteSubMenu = (parentKey, subKey, event) => {
-    event.stopPropagation();
-    setMenuItems((prevItems) =>
-      prevItems.map((item) =>
-        item.key === parentKey
-          ? {
-              ...item,
-              children: item.children.filter((child) => child.key !== subKey),
-            }
-          : item
-      )
-    );
-  };
 
-  const deleteSubItem = (parentKey, subKey, event) => {
-    event.stopPropagation();
-    setMenuItems((prevItems) =>
-      prevItems.map((item) =>
-        item.key === parentKey
-          ? {
-              ...item,
-              children: item.children.map((child) =>
-                  child.key === subKey
-                      ? {
-                          ...child,
-                          children: child.children.filter((subItem) => subItem.key !== subKey)
-                        }
-                      : child
-              )
-            }
-          : item
-      )
-    );
-  };
+
 
   return (
     <Menu
@@ -155,19 +172,63 @@ const SiderMenu = () => {
           ...item,
           children: item.children?.map((child) => ({
               ...child,
+              children: child.children?.map((subChild) => ({
+                  ...subChild,
+                  children: subChild.children?.map((subItem) => ({
+                      ...subItem,
+                      label: (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span>{subItem.label}</span>
+                              {subItem.key.match(/^(collection|history):\d+$/) && (
+                                  <Button
+                                      size="small"
+                                      onClick={(event) => deleteSubItem(subItem.key, event)}
+                                      style={{
+                                          backgroundColor: 'transparent',
+                                          border: '1.5px solid #054d29',
+                                          color: '#054d29',
+                                          width: '18px',
+                                          height: '18px',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                      }}
+                                      icon={<CloseOutlined />}
+                                  />
+                              )}
+                          </div>
+                      ),
+                  })),
+                  label: (
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span>{subChild.label}</span>
+                          {subChild.key.match(/^(collection|history)$/) && (
+                              <Button
+                                  size="small"
+                                  onClick={(event) => addSubItem(child.key, event, subChild.key)}
+                                  style={{
+                                      backgroundColor: 'transparent',
+                                      border: '1.5px solid #054d29',
+                                      color: '#054d29',
+                                      width: '18px',
+                                      height: '18px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                  }}
+                                  icon={<PlusOutlined />}
+                              />
+                          )}
+                      </div>
+                  )
+              })),
               label: (
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span>{child.label}</span>
-                      {item.key !== 'account' && (
-                          <CloseOutlined
-                              style={{ color: '#054d29', cursor: 'pointer', marginLeft: '8px' }}
-                              onClick={(event) => deleteSubMenu(item.key, child.key, event)}
-                          />
-                      )}
-                      {child.key === 'collection' && (
+                      {child.key.match(/^workspace:\d+$/) && (
                           <Button
                               size="small"
-                              onClick={(event) => addSubItem(item.key, event, 'collection')}
+                              onClick={(event) => deleteSubMenu(child.key, event)}
                               style={{
                                   backgroundColor: 'transparent',
                                   border: '1.5px solid #054d29',
@@ -178,30 +239,7 @@ const SiderMenu = () => {
                                   alignItems: 'center',
                                   justifyContent: 'center',
                               }}
-                              icon={<PlusOutlined />}
-                          />
-                      )}
-                      {child.key === 'history' && (
-                          <Button
-                              size="small"
-                              onClick={(event) => addSubItem(item.key, event, 'history')}
-                              style={{
-                                  backgroundColor: 'transparent',
-                                  border: '1.5px solid #054d29',
-                                  color: '#054d29',
-                                  width: '18px',
-                                  height: '18px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                              }}
-                              icon={<PlusOutlined />}
-                          />
-                      )}
-                      {(child.key.match(/^(collection|history):\d+$/)) && (
-                          <CloseOutlined
-                              style={{ color: '#054d29', cursor: 'pointer', marginLeft: '8px' }}
-                              onClick={(event) => deleteSubItem(item.key, child.key, event)}
+                              icon={<CloseOutlined />}
                           />
                       )}
                   </div>
