@@ -3,18 +3,18 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../../public/utils/variables';
 
 const useInvite = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingInvite, setLoadingInvite] = useState(false);
+    const [errorInvite, setErrorInvite] = useState(null);
+    const [successInvite, setSuccessInvite] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
     const [invitePrivilege, setInvitePrivilege] = useState(10); // 10 pour viewer par défaut
     const [inviteUsername, setInviteUsername] = useState(""); // état pour le username
     
     const invite = async (workspaceId, username, level) => {
         setWorkspaceId(workspaceId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingInvite(true);
+        setErrorInvite(null);
+        setSuccessInvite(null);
         const api = `${baseURL}/workspace/${workspaceId}/invite`;
         try {
             const response = await fetch(api, {
@@ -28,17 +28,17 @@ const useInvite = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessInvite(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorInvite(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingInvite(false);
         }
     }
-    return { loading, error, success, invite, workspaceId, invitePrivilege, setInvitePrivilege, inviteUsername, setInviteUsername }
+    return { loadingInvite, errorInvite, successInvite, invite, workspaceId, invitePrivilege, setInvitePrivilege, inviteUsername, setInviteUsername }
 }
 
 export default useInvite
