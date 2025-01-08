@@ -3,17 +3,15 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
 const useCollaborateurs = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingCollaborateurs, setLoadingCollaborateurs] = useState(false);
+    const [errorCollaborateurs, setErrorCollaborateurs] = useState(null);
+    const [successCollaborateurs, setSuccessCollaborateurs] = useState(null);
     const [collaborateurs, setCollaborateurs] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
 
     const getCollaborateurs = async (workspaceId) => {
-        setWorkspaceId(workspaceId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingCollaborateurs(true);
+        setErrorCollaborateurs(null);
+        setSuccessCollaborateurs(null);
         const api = `${baseURL}/workspace/${workspaceId}/users`;
         try {
             const response = await fetch(api, {
@@ -29,14 +27,14 @@ const useCollaborateurs = () => {
             setCollaborateurs(data);
         }
         catch (error) {
-            setError(error.message);
+            setErrorCollaborateurs(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingCollaborateurs(false);
         }
     }
-    return { loading, error, success, getCollaborateurs, collaborateurs, workspaceId }
+    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs }
 }
 
 
