@@ -39,7 +39,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
     await removeUser(workspaceId, username);
   };
 
-  const handleLeave = async (workspaceId) => {
+  const handleLeave = async () => {
     await leave(workspaceId);
   };
 
@@ -69,7 +69,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
               {authUser._id === collaborator.userId ? (
                 <Button
                   icon={<LogoutOutlined />}
-                  onClick={() => handleLeave(collaborator.workspaceId)}
+                  onClick={() => handleLeave()}
                   loading={loadingLeave}
                   style={{ color: 'red', border: 'none', background: 'none' }}
                 />
@@ -88,7 +88,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
                   {authUserPrivilege > 10 && (
                     <Button
                       icon={<DeleteOutlined />}
-                      onClick={() => handleRemove(collaborator.userId)}
+                      onClick={() => handleRemove(collaborator.username)}
                       loading={loadingRemoveUser}
                       disabled={!collaborator.hasJoined}
                       style={{ color: 'red', border: 'none', background: 'none' }}
