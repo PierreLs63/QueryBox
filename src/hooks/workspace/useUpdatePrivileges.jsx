@@ -23,6 +23,10 @@ const useUpdatePrivileges = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+            if(data.message !== undefined) {
+                toast.error(data.message);
+                setErrorUpdatePrivileges(data.message);
+            }
             setSuccessUpdatePrivileges(data.message);
         }
         catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, List, Popover, Tag, Spin, Alert, Modal, Select } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
@@ -8,7 +8,7 @@ import { useAuthContext } from '../context/AuthContext';
 
 const { Option } = Select;
 
-const CollaboratorMenu = ({ collaborators, loading, error , workspaceId}) => {
+const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
   const { authUser } = useAuthContext();
   const { updatePrivileges, loadingUpdatePrivileges } = useUpdatePrivileges();
   const { removeUser, loadingRemoveUser } = useRemoveUser();
@@ -16,6 +16,13 @@ const CollaboratorMenu = ({ collaborators, loading, error , workspaceId}) => {
   const [selectedCollaborator, setSelectedCollaborator] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPrivilege, setNewPrivilege] = useState(null);
+  const [authUserPrivilege, setAuthUserPrivilege] = useState(null);
+
+  // Déterminer le grade de l'utilisateur connecté
+  useEffect(() => {
+    const userPrivilege = collaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
+    setAuthUserPrivilege(userPrivilege);
+  }, [collaborators, authUser]);
 
   const showEditModal = (collaborator) => {
     setSelectedCollaborator(collaborator);
@@ -63,21 +70,25 @@ const CollaboratorMenu = ({ collaborators, loading, error , workspaceId}) => {
                 </Button>
               ) : (
                 <>
-                  <Button
-                    type="link"
-                    onClick={() => showEditModal(collaborator)}
-                    disabled={!collaborator.hasJoined}
-                    style={{ padding: 0, marginRight: 8 }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    icon={<DeleteOutlined />}
-                    onClick={() => handleRemove(collaborator.userId)}
-                    loading={loadingRemoveUser}
-                    disabled={!collaborator.hasJoined}
-                    style={{ color: 'red', border: 'none', background: 'none' }}
-                  />
+                  {authUserPrivilege > 10 && (
+                    <Button
+                      type="link"
+                      onClick={() => showEditModal(collaborator)}
+                      disabled={!collaborator.hasJoined}
+                      style={{ padding: 0, marginRight: 8 }}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                  {authUserPrivilege > 10 && (
+                    <Button
+                      icon={<DeleteOutlined />}
+                      onClick={() => handleRemove(collaborator.userId)}
+                      loading={loadingRemoveUser}
+                      disabled={!collaborator.hasJoined}
+                      style={{ color: 'red', border: 'none', background: 'none' }}
+                    />
+                  )}
                 </>
               )}
             </List.Item>
@@ -105,16 +116,20 @@ const CollaboratorMenu = ({ collaborators, loading, error , workspaceId}) => {
         </Button>
       </Popover>
       <Modal
-        title="Edit Privileges"
+        title="Edit Collaborator"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
         confirmLoading={loadingUpdatePrivileges}
       >
-        <Select value={newPrivilege} onChange={setNewPrivilege} style={{ width: '100%' }}>
+        <Select
+          value={newPrivilege}
+          onChange={setNewPrivilege}
+          style={{ width: '100%' }}
+        >
           <Option value={10}>Viewer</Option>
-          <Option value={20}>Admin</Option>
-          <Option value={30}>Owner</Option>
+          {authUserPrivilege >= 20 && <Option value={20}>Admin</Option>}
+          {authUserPrivilege === 30 && <Option value={30}>Owner</Option>}
         </Select>
       </Modal>
     </>

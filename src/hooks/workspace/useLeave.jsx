@@ -24,6 +24,10 @@ const useLeave = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+            if(data.message !== undefined) {
+                toast.error(data.message);
+                setErrorLeave(data.message);
+            }
             setSuccessLeave(data.message);
         }
         catch (error) {

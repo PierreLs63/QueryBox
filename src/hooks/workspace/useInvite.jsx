@@ -26,6 +26,10 @@ const useInvite = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+            if(data.message !== undefined) {
+                toast.error(data.message);
+                setErrorInvite(data.message);
+            }
             setSuccessInvite(data.message);
         }
         catch (error) {
