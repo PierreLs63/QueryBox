@@ -7,7 +7,7 @@ import { useAuthContext } from '../context/AuthContext';
 
 const { Option } = Select;
 
-const CollaboratorMenu = ({ collaborators, loading, error }) => {
+const CollaboratorMenu = ({ collaborators, loading, error ,workspaceId}) => {
   const { authUser } = useAuthContext();
   const { updatePrivileges, loadingUpdatePrivileges } = useUpdatePrivileges();
   const { removeUser, loadingRemoveUser } = useRemoveUser();
@@ -27,8 +27,8 @@ const CollaboratorMenu = ({ collaborators, loading, error }) => {
     setIsModalVisible(false);
   };
 
-  const handleRemove = async (userId) => {
-    await removeUser(userId);
+  const handleRemove = async (username) => {
+    await removeUser(workspaceId, username);
   };
 
   const handleLeave = async (workspaceId) => {

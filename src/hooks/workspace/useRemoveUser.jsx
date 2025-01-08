@@ -8,19 +8,19 @@ const useRemoveUser = () => {
     const [errorRemoveUser, setErrorRemoveUser] = useState(null);
     const [successRemoveUser, setSuccessRemoveUser] = useState(null);
     const [userId, setUserId] = useState(null);
-    const removeUser = async (userId) => {
+    const removeUser = async (workspaceId, username) => {
         setUserId(userId);
         setLoadingRemoveUser(true);
         setErrorRemoveUser(null);
         setSuccessRemoveUser(null);
-        const api = `${baseURL}/user/${userId}/remove`;
+        const api = `${baseURL}/workspace/${workspaceId}/removeUser`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userBId : userId })
+                body: JSON.stringify({ username })
             });
             const data = await response.json();
             if (data.error) {
