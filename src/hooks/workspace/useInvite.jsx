@@ -6,12 +6,10 @@ const useInvite = () => {
     const [loadingInvite, setLoadingInvite] = useState(false);
     const [errorInvite, setErrorInvite] = useState(null);
     const [successInvite, setSuccessInvite] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
     const [invitePrivilege, setInvitePrivilege] = useState(10); // 10 pour viewer par défaut
     const [inviteUsername, setInviteUsername] = useState(""); // état pour le username
     
     const invite = async (workspaceId, username, level) => {
-        setWorkspaceId(workspaceId);
         setLoadingInvite(true);
         setErrorInvite(null);
         setSuccessInvite(null);
@@ -38,7 +36,7 @@ const useInvite = () => {
             setLoadingInvite(false);
         }
     }
-    return { loadingInvite, errorInvite, successInvite, invite, workspaceId, invitePrivilege, setInvitePrivilege, inviteUsername, setInviteUsername }
+    return { loadingInvite, errorInvite, successInvite, invite, invitePrivilege, setInvitePrivilege, inviteUsername, setInviteUsername }
 }
 
 export default useInvite

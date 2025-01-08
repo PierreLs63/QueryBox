@@ -5,15 +5,15 @@ import { baseURL } from '../../../public/utils/variables';
 dotenv.config();
 
 const useRemoveUser = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingRemoveUser, setLoadingRemoveUser] = useState(false);
+    const [errorRemoveUser, setErrorRemoveUser] = useState(null);
+    const [successRemoveUser, setSuccessRemoveUser] = useState(null);
     const [userId, setUserId] = useState(null);
     const removeUser = async (userId) => {
         setUserId(userId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingRemoveUser(true);
+        setErrorRemoveUser(null);
+        setSuccessRemoveUser(null);
         const api = `${baseURL}/user/${userId}/remove`;
         try {
             const response = await fetch(api, {
@@ -27,17 +27,17 @@ const useRemoveUser = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessRemoveUser(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorRemoveUser(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingRemoveUser(false);
         }
     }
-    return { loading, error, success, removeUser, userId }
+    return { loadingRemoveUser, errorRemoveUser, successRemoveUser, removeUser, userId }
 }
 
 export default useRemoveUser

@@ -7,10 +7,8 @@ const useCollaborateurs = () => {
     const [errorCollaborateurs, setErrorCollaborateurs] = useState(null);
     const [successCollaborateurs, setSuccessCollaborateurs] = useState(null);
     const [collaborateurs, setCollaborateurs] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
 
     const getCollaborateurs = async (workspaceId) => {
-        setWorkspaceId(workspaceId);
         setLoadingCollaborateurs(true);
         setErrorCollaborateurs(null);
         setSuccessCollaborateurs(null);
@@ -36,7 +34,7 @@ const useCollaborateurs = () => {
             setLoadingCollaborateurs(false);
         }
     }
-    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs, workspaceId }
+    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs }
 }
 
 
