@@ -12,6 +12,7 @@ import { useAuthContext } from './src/context/AuthContext.jsx';
 
 function App() {
   const { authUser } = useAuthContext();
+  console.log(authUser?.isVerified);
   return (
     <>
       <Toaster toastOptions={{
@@ -22,15 +23,15 @@ function App() {
       <Router>
         <Routes>
           {/* default path navigate to /connexion */}
-          <Route path="/" element={authUser ? <Navigate to="/accueil" /> : <Navigate to="/connexion" />} />
-          <Route path="/connexion" element={authUser ? <Navigate to="/accueil" /> : <Connexion />} />
-          <Route path="/inscription" element={authUser ? <Navigate to="/accueil" /> : <Inscription />} />
-          <Route path="/reinitialiser" element={authUser ? <Navigate to="/accueil" /> : <Reinitialiser />} />
-          <Route path="/mailenvoye" element={authUser ? <Navigate to="/accueil" /> : <Mailenvoye />} />
+          <Route path="/" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
+          <Route path="/connexion" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Connexion />} />
+          <Route path="/inscription" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
+          <Route path="/reinitialiser" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
+          <Route path="/mailenvoye" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Mailenvoye />) : <Navigate to='/connexion' />} />
           <Route path="/mailverifie" element={authUser ? <Navigate to="/accueil" /> : <Mailverifie />} />
-          <Route path="/accueil" element={authUser ? <Accueil /> : <Navigate to="/connexion" /> } />
-          <Route path="/debutant" element={authUser ? <Debutant /> : <Navigate to="/connexion" /> } />
-          <Route path="/tuto" element={authUser ? <Tuto /> : <Navigate to="/connexion" /> } />
+          <Route path="/accueil" element={authUser ? (authUser?.isVerified ? <Accueil /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" /> } />
+          <Route path="/debutant" element={authUser ? (authUser?.isVerified ? <Debutant /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
+          <Route path="/tuto" element={authUser ? (authUser?.isVerified ? <Tuto /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
         </Routes>
       </Router>
     </>
