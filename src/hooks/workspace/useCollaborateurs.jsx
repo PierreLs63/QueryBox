@@ -3,9 +3,9 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../../public/utils/variables';
 
 const useCollaborateurs = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingCollaborateurs, setLoadingCollaborateurs] = useState(false);
+    const [errorCollaborateurs, setErrorCollaborateurs] = useState(null);
+    const [successCollaborateurs, setSuccessCollaborateurs] = useState(null);
     const [collaborateurs, setCollaborateurs] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
 
@@ -36,7 +36,7 @@ const useCollaborateurs = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, getCollaborateurs, collaborateurs, workspaceId }
+    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs, workspaceId }
 }
 
 
