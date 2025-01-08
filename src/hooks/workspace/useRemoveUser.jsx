@@ -26,6 +26,10 @@ const useRemoveUser = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+            if(data.message !== undefined) {
+                toast.error(data.message);
+                setErrorRemoveUser(data.message);
+            }
             setSuccessRemoveUser(data.message);
         }
         catch (error) {
