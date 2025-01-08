@@ -5,9 +5,8 @@ import useLogin from '../../hooks/auth/useLogin';
 import { useNavigate } from 'react-router-dom';
 
 const Connexion = () => {
+  const {loading, login} = useLogin();
   const onFinish = (values) => {
-    console.log('Login Values:', values);
-    const {loading, login} = useLogin();
     login(values.username, values.password);
   };
 
@@ -131,6 +130,7 @@ const Connexion = () => {
               size="large"
               block
               style={styles.button}
+              disabled={loading}
             >
               Se connecter
             </Button>

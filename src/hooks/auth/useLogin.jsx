@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../context/AuthContext';
+import {baseURL} from '../../utils/variables';
 
 
 
@@ -8,7 +9,7 @@ const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
 
-    const api = `http://localhost:5001/api/v1/auth/login`;
+    const api = `${baseURL}/auth/login`;
     const login = async (username, password) => {
         try {
             

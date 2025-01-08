@@ -8,8 +8,11 @@ import Debutant from './src/pages/debutant/Debutant.jsx'
 import Tuto from './src/pages/tuto/Tuto.jsx'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useAuthContext } from './src/context/AuthContext.jsx';
 
 function App() {
+  const { authUser } = useAuthContext();
+  console.log(authUser._id)
   return (
     <>
       <Toaster toastOptions={{
@@ -20,15 +23,15 @@ function App() {
       <Router>
         <Routes>
           {/* default path navigate to /connexion */}
-          <Route path="/" element={<Navigate to="/connexion" replace />} />
-          <Route path="/connexion" element={<Connexion />} />
-          <Route path="/inscription" element={<Inscription />} />
-          <Route path="/reinitialiser" element={<Reinitialiser />} />
-          <Route path="/mailenvoye" element={<Mailenvoye />} />
-          <Route path="/mailverifie" element={<Mailverifie />} />
-          <Route path="/accueil" element={<Accueil />} />
-          <Route path="/debutant" element={<Debutant />} />
-          <Route path="/tuto" element={<Tuto />} />
+          <Route path="/" element={authUser ? <Navigate to="/accueil" /> : <Navigate to="/connexion" />} />
+          <Route path="/connexion" element={authUser ? <Navigate to="/accueil" /> : <Connexion />} />
+          <Route path="/inscription" element={authUser ? <Navigate to="/accueil" /> : <Inscription />} />
+          <Route path="/reinitialiser" element={authUser ? <Navigate to="/accueil" /> : <Reinitialiser />} />
+          <Route path="/mailenvoye" element={authUser ? <Navigate to="/accueil" /> : <Mailenvoye />} />
+          <Route path="/mailverifie" element={authUser ? <Navigate to="/accueil" /> : <Mailverifie />} />
+          <Route path="/accueil" element={authUser ? <Accueil /> : <Navigate to="/connexion" /> } />
+          <Route path="/debutant" element={authUser ? <Debutant /> : <Navigate to="/connexion" /> } />
+          <Route path="/tuto" element={authUser ? <Tuto /> : <Navigate to="/connexion" /> } />
         </Routes>
       </Router>
     </>
