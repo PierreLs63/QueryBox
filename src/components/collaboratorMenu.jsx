@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, List, Popover, Tag, Spin, Alert, Modal, Select } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LogoutOutlined } from '@ant-design/icons';
 import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
 import useRemoveUser from '../hooks/workspace/useRemoveUser';
 import useLeave from '../hooks/workspace/useLeave';
@@ -67,9 +67,12 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
                 {collaborator.privilege === 20 ? 'Admin' : collaborator.privilege === 30 ? 'Owner' : 'Viewer'}
               </Tag>
               {authUser._id === collaborator.userId ? (
-                <Button danger onClick={() => handleLeave(collaborator.workspaceId)} loading={loadingLeave}>
-                  Leave
-                </Button>
+                <Button
+                  icon={<LogoutOutlined />}
+                  onClick={() => handleLeave(collaborator.workspaceId)}
+                  loading={loadingLeave}
+                  style={{ color: 'red', border: 'none', background: 'none' }}
+                />
               ) : (
                 <>
                   {authUserPrivilege > 10 && (
