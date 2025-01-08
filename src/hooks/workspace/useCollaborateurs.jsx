@@ -11,9 +11,9 @@ const useCollaborateurs = () => {
 
     const getCollaborateurs = async (workspaceId) => {
         setWorkspaceId(workspaceId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingCollaborateurs(true);
+        setErrorCollaborateurs(null);
+        setSuccessCollaborateurs(null);
         const api = `${baseURL}/workspace/${workspaceId}/users`;
         try {
             const response = await fetch(api, {
@@ -29,11 +29,11 @@ const useCollaborateurs = () => {
             setCollaborateurs(data);
         }
         catch (error) {
-            setError(error.message);
+            setErrorCollaborateurs(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingCollaborateurs(false);
         }
     }
     return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs, workspaceId }
