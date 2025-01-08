@@ -24,6 +24,10 @@ const useCollaborateurs = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+            if(data.message !== undefined) {
+                toast.error(data.message);
+                setErrorCollaborateurs(data.message);
+            }
             setCollaborateurs(data);
         }
         catch (error) {
