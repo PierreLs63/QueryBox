@@ -23,7 +23,7 @@ const CollaboratorMenu = ({ collaborators, loading, error ,workspaceId}) => {
   };
 
   const handleOk = async () => {
-    await updatePrivileges(selectedCollaborator.workspaceId, selectedCollaborator.userId, newPrivilege);
+    await updatePrivileges(selectedCollaborator.workspaceId, selectedCollaborator.username, newPrivilege);
     setIsModalVisible(false);
   };
 
