@@ -4,11 +4,10 @@ import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import useInvite from '../../src/hooks/workspace/useInvite';
 
-const InviteMenu = () => {
+const InviteMenu = (workspaceId) => {
   const { inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite } = useInvite();
 
   const handleInvite = () => {
-    const workspaceId = "workspaceId"; // temporaire, il faut récupérer l'id du workspace
     invite(workspaceId, inviteUsername, invitePrivilege);
     toast.success(`Invite sent to ${inviteUsername} !`);
     setInviteUsername("");
