@@ -3,15 +3,15 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
 const useUpdatePrivileges = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingUpdatePrivileges, setLoadingUpdatePrivileges] = useState(false);
+    const [errorUpdatePrivileges, setErrorUpdatePrivileges] = useState(null);
+    const [successUpdatePrivileges, setSuccessUpdatePrivileges] = useState(null);
     const [collectionId, setCollectionId] = useState(null);
     const updatePrivileges = async (collectionId, userToUpdateId, newPrivilege) => {
         setCollectionId(collectionId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingUpdatePrivileges(true);
+        setErrorUpdatePrivileges(null);
+        setSuccessUpdatePrivileges(null);
         const api = `${baseURL}/collection/${collectionId}/updatePrivileges`;
         try {
             const response = await fetch(api, {
@@ -25,17 +25,17 @@ const useUpdatePrivileges = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessUpdatePrivileges(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorUpdatePrivileges(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingUpdatePrivileges(false);
         }
     }
-    return { loading, error, success, updatePrivileges, collectionId }
+    return { loadingUpdatePrivileges, errorUpdatePrivileges, successUpdatePrivileges, updatePrivileges, collectionId }
 }
 
 export default useUpdatePrivileges

@@ -1,8 +1,6 @@
-//hook to DELETE /request/paramRequest/:paramRequestId pour supprimer un paramRequest
-
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useDeleteParam = () => {
     const [loadingDeleteParam, setLoadingDeleteParam] = useState(false);
