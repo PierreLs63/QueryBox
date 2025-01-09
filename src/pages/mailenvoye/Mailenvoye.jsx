@@ -1,10 +1,9 @@
-import React, { useEffect }  from 'react';
+import { useEffect }  from 'react';
 import { Button } from 'antd';
+import useResendEmail from '../../hooks/auth/useResendEmail';
 
 const Mailenvoye = () => {
-  const handleResendEmail = () => {
-    console.log('Mail envoyé');
-  };
+  const {resendMail} = useResendEmail();
 
   //Change default param from index.css
   useEffect(() => {
@@ -68,7 +67,7 @@ const Mailenvoye = () => {
       <Button
         type="primary"
         style={styles.button}
-        onClick={handleResendEmail}
+        onClick={resendMail}
         onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
         onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
       >

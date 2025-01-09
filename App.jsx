@@ -9,10 +9,10 @@ import Tuto from './src/pages/tuto/Tuto.jsx'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './src/context/AuthContext.jsx';
+import VerificationEmail from './src/pages/verificationEmail/VerificationEmail.jsx';
 
 function App() {
   const { authUser } = useAuthContext();
-  console.log(authUser?.isVerified);
   return (
     <>
       <Toaster toastOptions={{
@@ -28,10 +28,12 @@ function App() {
           <Route path="/inscription" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Inscription />} />
           <Route path="/reinitialiser" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
           <Route path="/mailenvoye" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Mailenvoye />) : <Navigate to='/connexion' />} />
-          <Route path="/mailverifie" element={authUser ? <Navigate to="/accueil" /> : <Mailverifie />} />
+          <Route path="/mailverifie" element={authUser ? (authUser?.isVerified ? <Mailverifie /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' /> } />
           <Route path="/accueil" element={authUser ? (authUser?.isVerified ? <Accueil /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" /> } />
           <Route path="/debutant" element={authUser ? (authUser?.isVerified ? <Debutant /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
           <Route path="/tuto" element={authUser ? (authUser?.isVerified ? <Tuto /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
+          <Route path="/verificationEmail/:token" element={authUser ? (authUser?.isVerified ? <Navigate to="/mailverifie" /> : <VerificationEmail /> ) : <Navigate to='/connexion' /> } />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </>
