@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useChangeName = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingChangeName, setLoadingChangeName] = useState(false);
+    const [errorChangeName, setErrorChangeName] = useState(null);
+    const [successChangeName, setSuccessChangeName] = useState(null);
     const [requestId, setRequestId] = useState(null);
     const [newRequestName, setNewRequestName] = useState(null);
 
     const changeName = async (requestId, newRequestName) => {
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingChangeName(true);
+        setErrorChangeName(null);
+        setSuccessChangeName(null);
         setRequestId(requestId);
         setNewRequestName(newRequestName);
         const api = `${baseURL}/requests/${requestId}/name`;
@@ -28,17 +28,17 @@ const useChangeName = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessChangeName(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorChangeName(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingChangeName(false);
         }
     }
-    return { loading, error, success, changeName, requestId, newRequestName }
+    return { loadingChangeName, errorChangeName, successChangeName, changeName, requestId, newRequestName }
 }
 
 export default useChangeName

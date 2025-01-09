@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useCreateParamRequest = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingreateParamRequest, setLoadingreateParamRequest] = useState(false);
+    const [errorreateParamRequest, setErrorreateParamRequest] = useState(null);
+    const [successreateParamRequest, setSuccessreateParamRequest] = useState(null);
     const [requestId, setRequestId] = useState(null);
     const [url, setUrl] = useState(null);
     const [method, setMethod] = useState(null);
@@ -15,9 +15,9 @@ const useCreateParamRequest = () => {
     const [responses, setResponses] = useState(null);
 
     const createParamRequest = async (requestId, url, method, body, header, parameters, responses) => {
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingreateParamRequest(true);
+        setErrorreateParamRequest(null);
+        setSuccessreateParamRequest(null);
         setRequestId(requestId);
         setUrl(url);
         setMethod(method);
@@ -38,17 +38,17 @@ const useCreateParamRequest = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessreateParamRequest(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorreateParamRequest(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingreateParamRequest(false);
         }
     }
-    return { loading, error, success, createParamRequest, requestId, url, method, body, header, parameters, responses }
+    return { loadingreateParamRequest, errorreateParamRequest, successreateParamRequest, createParamRequest, requestId, url, method, body, header, parameters, responses }
 }
 
 export default useCreateParamRequest

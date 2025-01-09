@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useRequests = () => {
     const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [loadingRequests, setLoadingRequests] = useState(false);
+    const [errorRequests, setErrorRequests] = useState(null);
+    const [successRequests, setSuccessRequests] = useState(null);
     const [collectionId, setCollectionId] = useState(null);
 
     const getRequests = async (collectionId) => {
         if (!collectionId) return;
         setCollectionId(collectionId);
-        setLoading(true);
-        setError(null);
+        setLoadingRequests(true);
+        setErrorRequests(null);
+        setSuccessRequests(null);
         try {
             const response = await fetch(`${baseURL}/collection/${collectionId}/requests`, {
                 method: 'GET',
@@ -25,16 +27,17 @@ const useRequests = () => {
                 throw new Error(data.error);
             }
             setRequests(data.requests);
+            setSuccessRequests('Requests fetched successfully');
         }
         catch (error) {
-            setError(error.message);
+            setErrorRequests(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingRequests(false);
         }
     }
-    return { requests, loading, error, getRequests, collectionId }
+    return { requests, loadingRequests, errorRequests, getRequests, collectionId, successRequests }
 }
 
 export default useRequests

@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useDelete = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [errorDelete, setErrorDelete] = useState(null);
+    const [successDelete, setSuccessDelete] = useState(null);
     const [requestId, setRequestId] = useState(null);
 
     const deleteRequest = async (requestId) => {
         setRequestId(requestId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingDelete(true);
+        setErrorDelete(null);
+        setSuccessDelete(null);
         const api = `${baseURL}/request/${requestId}`;
         try {
             const response = await fetch(api, {
@@ -25,17 +25,17 @@ const useDelete = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessDelete(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorDelete(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingDelete(false);
         }
     }
-    return { loading, error, success, deleteRequest, requestId }
+    return { loadingDelete, errorDelete, successDelete, deleteRequest, requestId }
 }
 
 export default useDelete

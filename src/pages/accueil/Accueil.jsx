@@ -29,7 +29,7 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "6763e72c9e59618f1b794204";
+  const workspaceId = "677e5afac212fc2670aaece7";
 
 
   // Récupérer les collaborateurs lors du montage du composant
@@ -84,6 +84,7 @@ const Accueil = () => {
     setSelectedResponse(e.target.value);
   };
 
+
   useEffect(() => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     document.body.style.margin = '0';
@@ -109,12 +110,17 @@ const Accueil = () => {
           <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} workspaceId={workspaceId}/>
 
           {/* User Add Icon with Popover for user invite */}
-          <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
+          <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} workspaceId={workspaceId}/>
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />
 
-          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          {/* Setting Icon --- To do */}
+          <Button
+            type="text"
+            icon={<SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
         </div>
       </Header>
 

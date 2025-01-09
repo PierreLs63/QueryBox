@@ -52,9 +52,21 @@ const Debutant = () => {
             }}>
             Collaborateur
           </Button>
-          <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <Button
+            type="text"
+            icon={<UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
         </div>
       </Header>
 
@@ -100,9 +112,11 @@ const Debutant = () => {
                 shape="round" 
                 style={{
                   backgroundColor: 'transparent',
-                  borderColor: '#54877c',
-                  color: 'black',
-                  width: '100px'
+                  borderColor: 'rgb(34, 56, 51)',
+                  borderWidth: '2px',
+                  color: 'rgb(28, 41, 38)',
+                  height: '31px',
+                  fontWeight: 'bold'
                 }}
                 onClick={handleTuto}
               >
@@ -112,9 +126,11 @@ const Debutant = () => {
                 shape="round" 
                 style={{
                   backgroundColor: 'transparent',
-                  borderColor: '#54877c',
-                  color: 'black',
-                  width: '100px'
+                  borderColor: 'rgb(34, 56, 51)',
+                  borderWidth: '2px',
+                  color: 'rgb(28, 41, 38)',
+                  height: '31px',
+                  fontWeight: 'bold'
                 }}
                 onClick={handleAccueil}
               >

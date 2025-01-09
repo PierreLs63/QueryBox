@@ -1,20 +1,20 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useGetRequests = () => {
     const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingGetRequests, setLoadingGetRequests] = useState(false);
+    const [errorGetRequests, setErrorGetRequests] = useState(null);
+    const [successGetRequests, setSuccessGetRequests] = useState(null);
     const [collectionId, setCollectionId] = useState(null);
     const [page, setPage] = useState(null);
     const [perPage, setPerPage] = useState(null);
 
     const getRequests = async (collectionId, page, perPage) => {
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingGetRequests(true);
+        setErrorGetRequests(null);
+        setSuccessGetRequests(null);
         setCollectionId(collectionId);
         setPage(page);
         setPerPage(perPage);
@@ -27,13 +27,13 @@ const useGetRequests = () => {
             setRequests(data);
         }
         catch (error) {
-            setError(error.message);
+            setErrorGetRequests(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingGetRequests(false);
         }
     }
-    return { requests, loading, error, success, getRequests, collectionId, page, perPage }
+    return { requests, loadingGetRequests, errorGetRequests, successGetRequests, getRequests, collectionId, page, perPage }
 }
 export default useGetRequests;

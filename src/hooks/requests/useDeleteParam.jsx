@@ -1,20 +1,18 @@
-//hook to DELETE /request/paramRequest/:paramRequestId pour supprimer un paramRequest
-
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useDeleteParam = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingDeleteParam, setLoadingDeleteParam] = useState(false);
+    const [errorDeleteParam, setErrorDeleteParam] = useState(null);
+    const [successDeleteParam, setSuccessDeleteParam] = useState(null);
     const [paramRequestId, setParamRequestId] = useState(null);
 
     const deleteParam = async (paramRequestId) => {
         setParamRequestId(paramRequestId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingDeleteParam(true);
+        setErrorDeleteParam(null);
+        setSuccessDeleteParam(null);
         const api = `${baseURL}/request/paramRequest/${paramRequestId}`;
         try {
             const response = await fetch(api, {
@@ -27,17 +25,17 @@ const useDeleteParam = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessDeleteParam(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorDeleteParam(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingDeleteParam(false);
         }
     }
-    return { loading, error, success, deleteParam, paramRequestId }
+    return { loadingDeleteParam, errorDeleteParam, successDeleteParam, deleteParam, paramRequestId }
 }
 
 export default useDeleteParam

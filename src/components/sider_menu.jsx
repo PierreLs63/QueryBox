@@ -28,16 +28,16 @@ const SiderMenu = () => {
         label: 'Workspace 1',
         children:[
           {
-            key: 'collection',
+            key: 'workspace:1-collection',
             icon: <FileOutlined />,
             label: 'Collection',
-            children: [{ key: 'collection:1', label: 'Collection 1' }],
+            children: [{ key: 'workspace:1-collection:1', label: 'Collection 1' }],
           },
           {
-            key: 'history',
+            key: 'workspace:1-history',
             icon: <HistoryOutlined />,
             label: 'History',
-            children: [{ key: 'history:1', label: 'History 1' }],
+            children: [{ key: 'workspace:1-history:1', label: 'History 1' }],
           },
         ]}],
     },

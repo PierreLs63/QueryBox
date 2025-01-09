@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useGetAllHistory = () => {
     const [history, setHistory] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [loadingGetAllHistory, setLoadingGetAllHistory] = useState(false);
+    const [errorGetAllHistory, setErrorGetAllHistory] = useState(null);
+    const [successGetAllHistory, setSuccessGetAllHistory] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
     const [page, setPage] = useState(null);
     const [perPage, setPerPage] = useState(null);
@@ -14,9 +15,10 @@ const useGetAllHistory = () => {
         setWorkspaceId(workspaceId);
         setPage(page);
         setPerPage(perPage);
-        setLoading(true);
-        setError(null);
+        setLoadingGetAllHistory(true);
+        setErrorGetAllHistory(null);
         setHistory(null);
+        setSuccessGetAllHistory(null);
 
         //Optional params
         let api = `${baseURL}/workspace/${workspaceId}/history/`;
@@ -37,15 +39,16 @@ const useGetAllHistory = () => {
             });
             const data = await response.json();
             setHistory(data);
+            setSuccessGetAllHistory(true);
         } catch (error) {
-            setError(error.message);
+            setErrorGetAllHistory(error.message);
             toast.error(error.message);
         } finally {
-            setLoading(false);
+            setLoadingGetAllHistory(false);
         }
     };
 
-    return { history, loading, error, getAllHistory, workspaceId, page, perPage };
+    return { history, loadingGetAllHistory, errorGetAllHistory, getAllHistory, workspaceId, page, perPage, successGetAllHistory };
 };
 
 export default useGetAllHistory;

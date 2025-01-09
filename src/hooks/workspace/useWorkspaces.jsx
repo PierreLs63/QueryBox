@@ -1,5 +1,3 @@
-//I want you to create a custom hook called useWorkspaces that will return the workspaces data from the API. The hook should be the same style has the others
-
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
@@ -18,6 +16,7 @@ const useWorkspaces = () => {
         try {
             const response = await fetch(api);
             const data = await response.json();
+            //workspaces is an array of objects with id and name
             setWorkspaces(data);
         }
         catch (error) {

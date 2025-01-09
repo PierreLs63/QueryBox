@@ -17,6 +17,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPrivilege, setNewPrivilege] = useState(null);
   const [authUserPrivilege, setAuthUserPrivilege] = useState(null);
+  const [localCollaborators, setLocalCollaborators] = useState(collaborators);
 
   // Déterminer le grade de l'utilisateur connecté
   useEffect(() => {
@@ -37,6 +38,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
 
   const handleRemove = async (username) => {
     await removeUser(workspaceId, username);
+    setLocalCollaborators(prevCollaborators => prevCollaborators.filter(collaborator => collaborator.username !== username));
   };
 
   const handleLeave = async () => {
@@ -51,7 +53,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
         <Alert message="Erreur" description={error} type="error" showIcon />
       ) : (
         <List
-          dataSource={collaborators}
+          dataSource={localCollaborators}
           renderItem={(collaborator) => (
             <List.Item>
               <span
@@ -105,7 +107,10 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
 
   return (
     <>
-      <Popover content={collaboratorContent} title="Collaborateurs" trigger="click">
+      <Popover
+        content={collaboratorContent}
+        title={<div style={{ textAlign: 'center', width: '100%' }}>Collaborateurs</div>}
+        trigger="click">
         <Button
           shape="round"
           style={{

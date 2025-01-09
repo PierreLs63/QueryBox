@@ -8,6 +8,7 @@ import RequestBody from '../../components/request_body';
 import ResponseHeader from '../../components/response_header';
 import ResponseBody from '../../components/response_body';
 import SiderMenu from '../../components/sider_menu';
+import './tuto.css'
 
 const { Header, Sider } = Layout;
 
@@ -94,27 +95,53 @@ const Tuto = () => {
         <Button 
           onClick={() => setOpen(true)}
           style={{
-            padding: '8px 16px',
-            background: 'transparent',
-            color: 'black',
-            border: '1px solid #54877c',
-            borderRadius: '4px'
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(34, 56, 51)',
+            borderWidth: '2px',
+            color: 'rgb(28, 41, 38)',
+            height: '31px',
+            fontWeight: 'bold'
           }}>Relire le tuto utilisation</Button>
         <Button 
           style={{
-            padding: '8px 16px',
-            background: 'transparent',
-            color: 'black',
-            border: '1px solid #54877c',
-            borderRadius: '4px'
-            }}
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(34, 56, 51)',
+            borderWidth: '2px',
+            color: 'rgb(28, 41, 38)',
+            height: '31px',
+            fontWeight: 'bold'
+          }}
           onClick={handleAccueil}>
             Commencer votre premier essai
         </Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
-          <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
+          <Button 
+            shape="round" 
+            style={{
+              backgroundColor: 'transparent',
+              borderColor: 'rgb(34, 56, 51)',
+              borderWidth: '2px',
+              color: 'rgb(28, 41, 38)',
+              height: '31px',
+              fontWeight: 'bold'
+            }}>
+            Collaborateur
+          </Button>
+          <Button
+            type="text"
+            icon={<UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
         </div>
       </Header>
       
@@ -200,23 +227,36 @@ const Tuto = () => {
                   <Radio.Group
                     onChange={(e) => setSelectedRequest(e.target.value)}
                     defaultValue="param"
-                    style={{ marginBottom: '5px' }}
+                    style={{
+                      marginBottom: '5px',
+                      marginTop: '0px',
+                      display: 'flex'
+                    }}
                   >
                     <Radio.Button
                       value="param"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Param</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Param</Radio.Button>
                     <Radio.Button
                       value="headerRequest"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Header</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Header</Radio.Button>
                     <Radio.Button
                       value="bodyRequest"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Body</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Body</Radio.Button>
                   </Radio.Group>
                   {selectedRequest === "param" && <RequestParam />}
                   {selectedRequest === "headerRequest" && <RequestHeader />}
@@ -235,17 +275,27 @@ const Tuto = () => {
                   <Radio.Group
                     onChange={(e) => setSelectedResponse(e.target.value)}
                     defaultValue="headerResponse"
-                    style={{ marginBottom: '5px', marginTop: '15px' }}>
+                    style={{
+                      marginBottom: '5px',
+                      marginTop: '15px',
+                      display: 'flex'
+                    }}>
                     <Radio.Button
                       value="headerResponse"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Header</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Header</Radio.Button>
                     <Radio.Button
                       value="bodyResponse"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Body</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Body</Radio.Button>
                   </Radio.Group>
                   {selectedResponse === "headerResponse" && <ResponseHeader />}
                   {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}

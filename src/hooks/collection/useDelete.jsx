@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-import baseURL from '../../utils/variables';
+import { baseURL } from '../../utils/variables';
 
 const useDelete = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [errorDelete, setErrorDelete] = useState(null);
+    const [successDelete, setSuccessDelete] = useState(null);
     const [collectionId, setCollectionId] = useState(null);
     
     const deleteCollection = async (collectionId) => {
         setCollectionId(collectionId);
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingDelete(true);
+        setErrorDelete(null);
+        setSuccessDelete(null);
         const api = `${baseURL}/collection/${collectionId}`;
         try {
             const response = await fetch(api, {
@@ -28,14 +28,14 @@ const useDelete = () => {
             setSuccess(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorDelete(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingDelete(false);
         }
     }
-    return { loading, error, success, deleteCollection, collectionId }
+    return { loadingDelete, errorDelete, successDelete, deleteCollection, collectionId }
 }
 
 export default useDelete
