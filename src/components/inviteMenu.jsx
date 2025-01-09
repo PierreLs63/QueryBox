@@ -9,7 +9,6 @@ const InviteMenu = (workspaceId) => {
 
   const handleInvite = () => {
     invite(workspaceId, inviteUsername, invitePrivilege);
-    toast.success(`Invite sent to ${inviteUsername} !`);
     setInviteUsername("");
   };
 
