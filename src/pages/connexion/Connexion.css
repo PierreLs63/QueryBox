@@ -76,20 +76,20 @@
 /* form input style */
 .custom-input {
     border-radius: 8px;
-    border: 2px solid #ccc;
+    border: 2px solid #ccc !important;
     height: 35px;
     padding: 5px;
     font-size: 14px;
 }
 
 .custom-input:hover {
-    border-color: #2e4b44;
+    border-color: #2e4b44 !important;
 }
 
 .custom-input:focus {
-    border-color: #54877c;
+    border-color: #54877c !important;
     outline: none;
-    box-shadow: 0 0 5px rgba(84, 135, 124, 0.5);
+    box-shadow: 0 0 5px rgba(84, 135, 124, 0.5) !important;
 }
 
 

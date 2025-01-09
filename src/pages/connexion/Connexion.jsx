@@ -1,4 +1,3 @@
-import { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import useLogin from '../../hooks/auth/useLogin';
@@ -22,17 +21,6 @@ const Connexion = () => {
   const handleNotHaveAccount = () => {
     navigate('/inscription');
   };
-
-  //Change default param from index.css
-  useEffect(() => {
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.body.style.height = '100vh';
-    document.body.style.backgroundColor = '#d9ebe5';
-    document.body.style.display = 'flex';
-    document.body.style.justifyContent = 'center';
-    document.body.style.alignItems = 'center';
-  }, []);
 
 
   return (
