@@ -37,7 +37,10 @@ const NotificationMenu = ({ notifications, setNotifications }) => {
   );
 
   return (
-    <Popover content={notificationContent} title="Notifications" trigger="click">
+    <Popover
+      content={notificationContent}
+      title={<div style={{ textAlign: 'center', width: '100%' }}>Notifications</div>}
+      trigger="click">
       <Button
         type="text"
         icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}

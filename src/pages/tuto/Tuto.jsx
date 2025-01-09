@@ -8,6 +8,7 @@ import RequestBody from '../../components/request_body';
 import ResponseHeader from '../../components/response_header';
 import ResponseBody from '../../components/response_body';
 import SiderMenu from '../../components/sider_menu';
+import './tuto.css'
 
 const { Header, Sider } = Layout;
 
@@ -94,24 +95,38 @@ const Tuto = () => {
         <Button 
           onClick={() => setOpen(true)}
           style={{
-            padding: '8px 16px',
-            background: 'transparent',
-            color: 'black',
-            border: '1px solid #54877c',
-            borderRadius: '4px'
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(34, 56, 51)',
+            borderWidth: '2px',
+            color: 'rgb(28, 41, 38)',
+            height: '31px',
+            fontWeight: 'bold'
           }}>Relire le tuto utilisation</Button>
         <Button 
           style={{
-            padding: '8px 16px',
-            background: 'transparent',
-            color: 'black',
-            border: '1px solid #54877c',
-            borderRadius: '4px'
-            }}
+            backgroundColor: 'transparent',
+            borderColor: 'rgb(34, 56, 51)',
+            borderWidth: '2px',
+            color: 'rgb(28, 41, 38)',
+            height: '31px',
+            fontWeight: 'bold'
+          }}
           onClick={handleAccueil}>
             Commencer votre premier essai
         </Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Button 
+            shape="round" 
+            style={{
+              backgroundColor: 'transparent',
+              borderColor: 'rgb(34, 56, 51)',
+              borderWidth: '2px',
+              color: 'rgb(28, 41, 38)',
+              height: '31px',
+              fontWeight: 'bold'
+            }}>
+            Collaborateur
+          </Button>
           <UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
           <BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />
           <SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />

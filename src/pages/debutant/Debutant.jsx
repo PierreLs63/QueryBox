@@ -100,9 +100,11 @@ const Debutant = () => {
                 shape="round" 
                 style={{
                   backgroundColor: 'transparent',
-                  borderColor: '#54877c',
-                  color: 'black',
-                  width: '100px'
+                  borderColor: 'rgb(34, 56, 51)',
+                  borderWidth: '2px',
+                  color: 'rgb(28, 41, 38)',
+                  height: '31px',
+                  fontWeight: 'bold'
                 }}
                 onClick={handleTuto}
               >
@@ -112,9 +114,11 @@ const Debutant = () => {
                 shape="round" 
                 style={{
                   backgroundColor: 'transparent',
-                  borderColor: '#54877c',
-                  color: 'black',
-                  width: '100px'
+                  borderColor: 'rgb(34, 56, 51)',
+                  borderWidth: '2px',
+                  color: 'rgb(28, 41, 38)',
+                  height: '31px',
+                  fontWeight: 'bold'
                 }}
                 onClick={handleAccueil}
               >
