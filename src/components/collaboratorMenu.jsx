@@ -107,7 +107,10 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
 
   return (
     <>
-      <Popover content={collaboratorContent} title="Collaborateurs" trigger="click">
+      <Popover
+        content={collaboratorContent}
+        title={<div style={{ textAlign: 'center', width: '100%' }}>Collaborateurs</div>}
+        trigger="click">
         <Button
           shape="round"
           style={{
