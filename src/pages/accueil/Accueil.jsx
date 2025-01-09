@@ -29,7 +29,7 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "677e5afac212fc2670aaece7";
+  const workspaceId = "6763e72c9e59618f1b794204";
 
 
   // Récupérer les collaborateurs lors du montage du composant
