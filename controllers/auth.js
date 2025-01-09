@@ -96,11 +96,12 @@ export const login = async (req, res) => {
   
       const user = await User.findOne({ $or: [{ username }, { email }] }).collation({ locale: 'en', strength: 2 })
       if (user) {
+        console.log(user.username.toLowerCase(), username.toLowerCase())
         if (user.username.toLowerCase() === username.toLowerCase()) {
           // Username is already in use
           return res.status(400).json({ error: "Nom d'utilisateur déjà utilisé" })
         }
-        if (user.email === email) {
+        if (user.email.toLowerCase() === email.toLowerCase()) {
           // Email is already in use
           return res.status(400).json({ error: "Email déjà utilisé" })
         }
@@ -120,8 +121,8 @@ export const login = async (req, res) => {
         await newUser.save()
         generateTokenAndSetCookie(res, newUser._id)
 
-        const port = process.env.PORT;
-        const verificationLink = `${baseURL}:${port}/api/${api_version}/auth/verification-email/${token}`;
+        const port = process.env.PORT_CLIENT;
+        const verificationLink = `${baseURL}:${port}/verificationEmail/${token}`;
         
         sendMail({
           to: email,
@@ -173,7 +174,7 @@ export const login = async (req, res) => {
 		  res.status(201).json({ _id: user._id, username: user.username, email: user.email, isVerified: user.isVerified});
     } catch (error) {
       console.log("Error in verifyMail : ", error.message || "Unknown error occurred")
-      res.status(500).json({ error: "Internal server error" })
+      res.status(500).json({ error: error.message || "Internal server error" })
     }
   }
   
@@ -189,7 +190,7 @@ export const login = async (req, res) => {
         return res
           .status(400)
           .json({
-            error: "Veuillez attendre 1 minute avant de renvoyer un email"
+            error: "Veuillez attendre 1 minute avant de renvoyer un mail"
           })
       }
   
@@ -197,8 +198,8 @@ export const login = async (req, res) => {
       user.token = token
       await user.save()
   
-      const port = process.env.PORT;
-      const verificationLink = `${baseURL}:${port}/api/${api_version}/auth/verification-email/${token}`;
+      const port = process.env.PORT_CLIENT;
+      const verificationLink = `${baseURL}:${port}/verificationEmail/${token}`;
   
       sendMail({
         to: user.email,

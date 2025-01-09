@@ -26,6 +26,7 @@ API_VERSION=v1
 MAIL=your mail, for example : noreply@querybox.fr
 HOST_MAIL=host for example : localhost
 PORT_MAIL=port used to send mail, for example : 1025
+PORT_CLIENT=port used by the client, for example : 5173
 ````
 
 If you don't use MailDev you should provide a username and password
