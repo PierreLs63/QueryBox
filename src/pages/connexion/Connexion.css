@@ -1,0 +1,95 @@
+/* Global style */
+.global {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    background-color: #d9ebe5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* login box style */
+.login-box {
+    width: 400px;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* title style */
+.title {
+    font-family: 'Monofett';
+    font-size: 70px;
+    font-weight: bold;
+    color: #54877c;
+    margin-bottom: 20px;
+}
+
+/* subtitle style */
+.subtitle {
+    color: #060606;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* forget-password & not-have-account style */
+.forgot-password,
+.not-have-account {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* link style */
+.link {
+    color: #2e4b44;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #2e4b44;
+    text-decoration: underline;
+}
+
+/* button style */
+.button {
+    border-radius: 24px;
+    background-color: #54877c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.button:hover {
+    background-color: #90b9b0 !important;
+    border-color: #90b9b0 !important;
+    color: #2e4b44 !important;
+}
+
+/* form input style */
+.custom-input {
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    height: 35px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.custom-input:hover {
+    border-color: #2e4b44;
+}
+
+.custom-input:focus {
+    border-color: #54877c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(84, 135, 124, 0.5);
+}
+
+

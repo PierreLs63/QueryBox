@@ -8,7 +8,7 @@ import RequestBody from '../../components/request_body';
 import ResponseHeader from '../../components/response_header';
 import ResponseBody from '../../components/response_body';
 import SiderMenu from '../../components/sider_menu';
-import './tuto.css'
+import './Tuto.css'
 
 const { Header, Sider } = Layout;
 
