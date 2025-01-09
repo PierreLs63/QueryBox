@@ -3,13 +3,13 @@ import toast from 'react-hot-toast';
 import baseURL from '../../utils/variables';
 
 const useChangeName = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [loadingChangeName, setLoadingChangeName] = useState(false);
+    const [errorChangeName, setErrorChangeName] = useState(null);
+    const [successChangeName, setSuccessChangeName] = useState(null);
     const changeName = async (collectionId, newName) => {
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
+        setLoadingChangeName(true);
+        setErrorChangeName(null);
+        setSuccessChangeName(null);
         const api = `${baseURL}/collection/${collectionId}/name`;
         try {
             const response = await fetch(api, {
@@ -23,17 +23,17 @@ const useChangeName = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessChangeName(data.message);
         }
         catch (error) {
-            setError(error.message);
+            setErrorChangeName(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingChangeName(false);
         }
     }
-    return { loading, error, success, changeName }
+    return { loadingChangeName, errorChangeName, successChangeName, changeName }
 }
 
 export default useChangeName
