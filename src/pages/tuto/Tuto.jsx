@@ -215,23 +215,36 @@ const Tuto = () => {
                   <Radio.Group
                     onChange={(e) => setSelectedRequest(e.target.value)}
                     defaultValue="param"
-                    style={{ marginBottom: '5px' }}
+                    style={{
+                      marginBottom: '5px',
+                      marginTop: '0px',
+                      display: 'flex'
+                    }}
                   >
                     <Radio.Button
                       value="param"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Param</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Param</Radio.Button>
                     <Radio.Button
                       value="headerRequest"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Header</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Header</Radio.Button>
                     <Radio.Button
                       value="bodyRequest"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Body</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Body</Radio.Button>
                   </Radio.Group>
                   {selectedRequest === "param" && <RequestParam />}
                   {selectedRequest === "headerRequest" && <RequestHeader />}
@@ -250,17 +263,27 @@ const Tuto = () => {
                   <Radio.Group
                     onChange={(e) => setSelectedResponse(e.target.value)}
                     defaultValue="headerResponse"
-                    style={{ marginBottom: '5px', marginTop: '15px' }}>
+                    style={{
+                      marginBottom: '5px',
+                      marginTop: '15px',
+                      display: 'flex'
+                    }}>
                     <Radio.Button
                       value="headerResponse"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Header</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Header</Radio.Button>
                     <Radio.Button
                       value="bodyResponse"
                       style={{
-                        border: '1px solid #54877c',
-                      }}>Body</Radio.Button>
+                        flex: 0.1,
+                        textAlign: 'center'
+                      }}
+                      className="custom-radio-button"
+                      >Body</Radio.Button>
                   </Radio.Group>
                   {selectedResponse === "headerResponse" && <ResponseHeader />}
                   {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
