@@ -121,8 +121,9 @@ export const login = async (req, res) => {
         await newUser.save()
         generateTokenAndSetCookie(res, newUser._id)
 
-        const port = process.env.PORT_CLIENT;
-        const verificationLink = `${baseURL}:${port}/verificationEmail/${token}`;
+        const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
+
+        const verificationLink = `${clientURL}/verificationEmail/${token}`;
         
         sendMail({
           to: email,
@@ -198,8 +199,9 @@ export const login = async (req, res) => {
       user.token = token
       await user.save()
   
-      const port = process.env.PORT_CLIENT;
-      const verificationLink = `${baseURL}:${port}/verificationEmail/${token}`;
+      const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
+
+      const verificationLink = `${clientURL}/verificationEmail/${token}`;
   
       sendMail({
         to: user.email,
