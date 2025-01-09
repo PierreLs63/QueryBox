@@ -1,8 +1,8 @@
-import React, { useEffect }  from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import useSignup from '../../hooks/auth/useSignup';
+import './Inscription.css'
 
 const Inscription = () => {
   const { loading, signup } = useSignup();
@@ -17,80 +17,13 @@ const Inscription = () => {
     navigate('/connexion');
   };
 
-  //Change default param from index.css
-  useEffect(() => {
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.body.style.height = '100vh';
-    document.body.style.backgroundColor = '#e6f7ff';
-    document.body.style.display = 'flex';
-    document.body.style.justifyContent = 'center';
-    document.body.style.alignItems = 'center';
-  }, []);
-
-
-  const styles = {
-    global: {
-      margin: 'auto',
-      padding: 0,
-      boxSizing: 'border-box',
-      height: '100%',
-      backgroundColor: '#e6f7ff',
-    },
-    signupContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-      backgroundColor: '#e6f7ff',
-    },
-    signupBox: {
-      width: '400px',
-      padding: '30px',
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      textAlign: 'center',
-    },
-    signupSubtitle: {
-      color: '#060606',
-      fontSize: '20px',
-      marginBottom: '20px',
-    },
-    alreadyAccount: {
-      fontSize: '14px',
-      color: 'black',
-      marginTop: '-16px',
-      marginBottom: '10px',
-      textAlign: 'left',
-    },
-    alreadyAccountLink: {
-      color: '#1890ff',
-      textDecoration: 'none',
-    },
-    alreadyAccountLinkHover: {
-      textDecoration: 'underline',
-    },
-    button: {
-      borderRadius: '24px',
-    },
-  };
 
   return (
-    <div style={styles.global}>
-      <div style={styles.signupContainer}>
-        <div style={styles.signupBox}>
-          <h1
-            style={{
-              fontFamily: 'Monofett',
-              fontSize: '70px',
-              fontWeight: 'bold',
-              color: '#1890FF',
-              marginBottom: 30,
-            }}
-          >
-            QueryBox
-          </h1>
-          <h2 style={styles.signupSubtitle}>Inscription</h2>
+    <div className='global'>
+      <div className='signup-container'>
+        <div className='signup-box'>
+          <h1 className='title'>QueryBox</h1>
+          <h2 className='signup-subtitle'>Inscription</h2>
           <Form
             name="signup"
             initialValues={{ remember: true }}
@@ -101,7 +34,7 @@ const Inscription = () => {
               name="username"
               rules={[{ required: true, message: 'Veuillez entrer votre pseudonyme!' }]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Pseudonyme" />
+              <Input prefix={<UserOutlined />} placeholder="Pseudonyme" className="custom-input" />
             </Form.Item>
 
             <Form.Item
@@ -111,14 +44,14 @@ const Inscription = () => {
                 { type: 'email', message: 'Veuillez entrer un email valide!' },
               ]}
             >
-              <Input prefix={<MailOutlined />} placeholder="Email" />
+              <Input prefix={<MailOutlined />} placeholder="Email" className="custom-input" />
             </Form.Item>
 
             <Form.Item
               name="password"
               rules={[{ required: true, message: 'Veuillez entrer votre mot de passe !' }, { min: 8, message: 'Le mot de passe doit contenir au moins 8 caractères !' }]}
             >
-              <Input.Password prefix={<LockOutlined />} placeholder="Mot de passe" />
+              <Input.Password prefix={<LockOutlined />} placeholder="Mot de passe" className="custom-input" />
             </Form.Item>
 
             <Form.Item
@@ -135,14 +68,14 @@ const Inscription = () => {
                 }),
               ]}
             >
-              <Input.Password prefix={<LockOutlined />} placeholder="Confirmation de mot de passe" />
+              <Input.Password prefix={<LockOutlined />} placeholder="Confirmation de mot de passe" className="custom-input" />
             </Form.Item>
 
-            <div style={styles.alreadyAccount}>
+            <div className='already-account'>
               <span>
                 Déjà un compte ?{' '}
                 <a
-                  style={styles.alreadyAccountLink}
+                  className='already-account-link'
                   onClick={handleHaveAccount}
                   onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
                   onMouseOut={(e) => (e.target.style.textDecoration = 'none')}
@@ -158,7 +91,7 @@ const Inscription = () => {
                 htmlType="submit"
                 size="large"
                 block
-                style={styles.button}
+                className='button'
               >
                 S'inscrire
               </Button>

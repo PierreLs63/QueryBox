@@ -10,14 +10,23 @@
     align-items: center;
 }
 
-/* login box style */
-.login-box {
+/* sign up container style */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #d9ebe5;
+}
+
+/* sign up box style */
+.signup-box {
     width: 400px;
     padding: 30px;
+    background-color: #fff;
     border-radius: 8px;
     text-align: center;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* title style */
@@ -30,27 +39,28 @@
 }
 
 /* subtitle style */
-.subtitle {
+.signup-subtitle {
     color: #060606;
     font-size: 20px;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-/* forget-password & not-have-account style */
-.forgot-password,
-.not-have-account {
-    text-align: left;
+/* already-account style */
+.already-account {
+    font-size: 14px;
+    color: black;
+    margin-top: -16px;
     margin-bottom: 10px;
+    text-align: left;
 }
 
-/* link style */
-.link {
+/* already-account-link style */
+.already-account-link {
     color: #54877c;
     text-decoration: none;
 }
 
-.link:hover {
+.already-account-link:hover {
     color: #54877c;
     text-decoration: underline;
 }
@@ -58,19 +68,16 @@
 /* button style */
 .button {
     border-radius: 24px;
-    background-color: #54877c;
     border: none;
+    background-color: #54877c;
     color: white;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 20px;
 }
 
 .button:hover {
-    background-color: #90b9b0 !important;
-    border-color: #90b9b0 !important;
-    color: #2e4b44 !important;
+    background-color: #3a5a50;
 }
 
 /* form input style */
@@ -91,5 +98,3 @@
     outline: none;
     box-shadow: 0 0 5px rgba(84, 135, 124, 0.5) !important;
 }
-
-
