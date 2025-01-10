@@ -23,6 +23,7 @@ const useCreate = () => {
             }
             setWorkspace(data);
             setSuccess(data.message);
+            return data;
         }
         catch (error) {
             setError(error.message);
