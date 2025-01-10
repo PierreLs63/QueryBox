@@ -22,24 +22,33 @@ export const getHistory = async (req, res) => {
 
         // Vérifier si l'utilisateur a le grade viewer dans le workspace
         const userInWorkspace = workspace.users.find(userInWorkspace => userInWorkspace.userId.toString() === userId.toString());
-        if (!userInWorkspace || userInWorkspace.privilege < viewer_grade || userInWorkspace.hasJoined === false) {
+        
+        if (!userInWorkspace || userInWorkspace.privilege < viewer_grade) {
             return res.status(403).json({ message: "You don't have the required privileges to view the history" });
         }
 
-        // Récupérer toutes les collections du workspace
+        // Récupérer toutes les collections du workspace dans lequel l'utilisateur a au moins le grade viewer
         const collections = await Collection.find({ _id: { $in: workspace.collections } });
+        console.log(collections);
+        const filteredCollections = collections.filter(collection => {
+            const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
+            return (userInCollection && userInCollection.privilege && userInCollection.privilege >= viewer_grade) || !userInCollection;
+        });
 
         // Récupérer tous les requestIds des collections
-        const requestIds = collections.flatMap(collection => collection.requests);
+        const requestIds = filteredCollections.flatMap(collection => collection.requests);
 
-        // Récupérer toutes les réponses des requêtes
-        const responses = await Response.find({ requestId: { $in: requestIds } })
+        const paramRequestIds = await Request.find({ _id: { $in: requestIds } });
+        const filteredParamRequestIds = paramRequestIds.flatMap(request => Object.values(request.requests).map(req => req.paramRequestId));
+
+        // Récupérer toutes les réponses des requêtes pour l'utilisateur donné
+        const responses = await Response.find({ paramRequestId: { $in: filteredParamRequestIds } })
             .skip((page - 1) * perPage)
             .limit(parseInt(perPage));
 
-        res.status(200).json(responses);
+        return res.status(200).json(responses);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -60,18 +69,26 @@ export const getMyHistory = async (req, res) => {
             return res.status(403).json({ message: "You don't have the required privileges to view the history" });
         }
 
-        // Récupérer toutes les collections du workspace
+        // Récupérer toutes les collections du workspace dans lequel l'utilisateur a au moins le grade viewer
         const collections = await Collection.find({ _id: { $in: workspace.collections } });
 
+        const filteredCollections = collections.filter(collection => {
+            const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
+            return (userInCollection && userInCollection.privilege >= viewer_grade) || !userInCollection;
+        });
+
         // Récupérer tous les requestIds des collections
-        const requestIds = collections.flatMap(collection => collection.requests);
+        const requestIds = filteredCollections.flatMap(collection => collection.requests);
+
+        const paramRequestIds = await Request.find({ _id: { $in: requestIds } });
+        const filteredParamRequestIds = paramRequestIds.flatMap(request => Object.values(request.requests).map(req => req.paramRequestId));
 
         // Récupérer toutes les réponses des requêtes pour l'utilisateur donné
-        const responses = await Response.find({ requestId: { $in: requestIds }, userId })
+        const responses = await Response.find({ paramRequestId: { $in: filteredParamRequestIds }, userId})
             .skip((page - 1) * perPage)
             .limit(parseInt(perPage));
 
-        res.status(200).json(responses);
+        return res.status(200).json(responses);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

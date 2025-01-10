@@ -31,7 +31,7 @@ export const createCollection = async (req, res) => {
         workspace.collections.push(collection._id);
         await workspace.save();
         
-        return res.status(201).json({ message: "Collection created successfully" });
+        return res.status(201).json({ collection: collection, message: "Collection created successfully" });
     } catch (error) {
         return res.status(409).json({ message: error.message });
     }
