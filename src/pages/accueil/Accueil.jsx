@@ -25,15 +25,20 @@ const Accueil = () => {
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
 
-  // Stock height of panel
+  // Stock height of panel REQUEST
   const [requestPanelHeight, setRequestPanelHeight] = useState(0);
   const requestPanelRef = useRef(null);
+
+  // Stock height of panel RESPONSE
+  const [responsePanelHeight, setResponsePanelHeight] = useState(0);
+  const responsePanelRef = useRef(null);
+
 
   // Utilisation du hook useCollaborateurs
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "677f9c4367fbd0822692eeab";
+  const workspaceId = "677e5afac212fc2670aaece7";
 
 
 
@@ -61,7 +66,7 @@ const Accueil = () => {
 
   // ResponseHeader place-holders
   const dataResponseHeader = Array.from({
-    length: 100,
+    length: 10,
   }).map((_, i) => ({
     key: i,
     keyData: `Key ${i}`,
@@ -78,11 +83,24 @@ const Accueil = () => {
     setSelectedResponse(e.target.value);
   };
 
-  // Calculate real height of panel when splitter is changed
+  // Calculate real height of panel REQUEST when splitter is changed
   useEffect(() => {
     function handleResize() {
       if (requestPanelRef.current) {
         setRequestPanelHeight(requestPanelRef.current.clientHeight);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  // Calculate real height of panel RESPONSE when splitter is changed
+  useEffect(() => {
+    function handleResize() {
+      if (responsePanelRef.current) {
+        setResponsePanelHeight(responsePanelRef.current.clientHeight);
       }
     }
     window.addEventListener('resize', handleResize);
@@ -240,22 +258,26 @@ const Accueil = () => {
 
               <div style={{ flex: 1, overflow: 'auto' }}>
                 {selectedRequest === "param" && (<RequestParam containerHeight={requestPanelHeight - 60} />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} containerHeight={requestPanelHeight - 60}/>)}
+                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} containerHeight={requestPanelHeight - 60} />)}
                 {selectedRequest === "bodyRequest" && (<RequestBody />)}
               </div>
             </Splitter.Panel>
 
               {/* Block of response */}
               <Splitter.Panel
+                // Get clientHeight of panel
+                ref={responsePanelRef}
                 style={{
                   height: '50%',
                   background: "#d9ebe5",
-                  overflow: 'hidden'
-                }}>
-                {/* Ratio box: header, body */}
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
                 <Flex vertical gap="middle">
-                  <Radio.Group 
-                    onChange={onChangeResponse} 
+                  <Radio.Group
+                    onChange={onChangeResponse}
                     defaultValue="headerResponse"
                     style={{
                       marginBottom: '5px',
@@ -263,26 +285,19 @@ const Accueil = () => {
                       display: 'flex'
                     }}
                   >
-                    <Radio.Button 
-                    value="headerResponse"
-                    style={{
-                      flex: 0.1,
-                      textAlign: 'center'
-                    }}
-                    className="custom-radio-button"
-                    >Header</Radio.Button>
-                    <Radio.Button 
-                    value="bodyResponse"
-                    style={{
-                      flex: 0.1,
-                      textAlign: 'center'
-                    }}
-                    className="custom-radio-button"
-                    >Body</Radio.Button>
+                    <Radio.Button value="headerResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                      Header
+                    </Radio.Button>
+                    <Radio.Button value="bodyResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                      Body
+                    </Radio.Button>
                   </Radio.Group>
                 </Flex>
-                {selectedResponse === "headerResponse" && <ResponseHeader dataResponseHeader={dataResponseHeader} />}
-                {selectedResponse === "bodyResponse" && <ResponseBody text="here is an example to test" />}
+
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={dataResponseHeader} containerHeight={responsePanelHeight - 60} />)}
+                  {selectedResponse === "bodyResponse" && (<ResponseBody text="here is an example to test" />)}
+                </div>
               </Splitter.Panel>
             </Splitter>
         </Layout>

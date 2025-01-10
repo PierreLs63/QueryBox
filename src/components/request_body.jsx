@@ -9,7 +9,7 @@ const RequestBody = () => {
                 rows={4} 
                 style={{
                     width: '100%',
-                    height: '70%',
+                    height: '100%',
                     resize: 'none',
                   }}
                 placeholder="Enter body content here"/>

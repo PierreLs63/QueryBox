@@ -17,7 +17,7 @@ const ResponseHeader = ({ dataResponseHeader = [] }) => {
     <Table
       columns={tableResponseHeader}
       dataSource={dataResponseHeader}
-      pagination={{ pageSize: 5, showSizeChanger: false}}
+      pagination={false}
       size="small"
     />
   );
