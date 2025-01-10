@@ -3,6 +3,7 @@ import { Input, Button, Popover, Select } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import useInvite from '../../src/hooks/workspace/useInvite';
+import './inviteMenu.css'
 
 const InviteMenu = (workspaceId) => {
   const { inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite } = useInvite();
@@ -32,7 +33,7 @@ const InviteMenu = (workspaceId) => {
             type="primary" 
             onClick={handleInvite}
             disabled={!inviteUsername}
-            style={{ width: '40%', height: '30px' }}
+            className="invite-button"
         >
             Invite
         </Button>
