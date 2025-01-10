@@ -5,11 +5,14 @@ import './sider_menu.css'
 import useLogout from '../../src/hooks/auth/useLogout';
 import useCreate from '../../src/hooks/workspace/useCreate';
 import useDelete from '../../src/hooks/workspace/useDelete';
+import useCreateCollection from '../hooks/workspace/useCreateCollection';
+
 
 const SiderMenu = () => {
 
   const {createWorkspace} = useCreate();
   const {deleteWorkspace} = useDelete();
+  const {createCollection} = useCreateCollection();
   const {logout} = useLogout();
 
 
@@ -38,7 +41,7 @@ const SiderMenu = () => {
    * parentKey -> workspace
    * childKey -> workspace:<number>
    */
-  const addSubMenu = async(parentKey, event) => {
+  const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
 
@@ -80,8 +83,6 @@ const SiderMenu = () => {
   };
 
 
-
-
   /**
    * Delete child node of workspace
    */
@@ -116,30 +117,20 @@ const SiderMenu = () => {
   };
 
 
-
-
-
   /**
    * Add new item of collection/history (child node of workspace:<number>)
    * @param {Event} event
    * @param {string} type 'workspace:<number>-collection' or 'workspace:<number>-history'
    */
-  const addSubItem = (event, type) => {
+  const addCollection = async(event, type) => {
     event.stopPropagation();
 
     // Split workspaceKey from type
-    const workspaceKey = type.split('-')[0]; // 'workspace:<number>'
-    // Split category of node
-    const category = type.endsWith('collection') ? 'collection' : 'history';
+    const workspaceKey = type.split('-')[0];
 
-    // Read counterMap of this workspace
-    const counters = counterMap[workspaceKey];
-    if (!counters) return;
-
-    // Set counter of category
-    const newIndex = counters[category];
-    const newItemKey = `${workspaceKey}-${category}:${newIndex}`;
-    const newItemLabel = `${category.charAt(0).toUpperCase() + category.slice(1)} ${newIndex}`;
+    const newCollection = await createCollection(workspaceKey.split(":")[1]);
+    const newCollectionKey = `${workspaceKey}-collection:${newCollection.collection._id}`;
+    const newCollectionLabel = `${newCollection.collection._id}`;
 
 
     const recursiveUpdate = (items) =>
@@ -154,8 +145,8 @@ const SiderMenu = () => {
                   children: [
                     ...child.children,
                     {
-                      key: newItemKey,
-                      label: newItemLabel,
+                      key: newCollectionKey,
+                      label: newCollectionLabel,
                     },
                   ],
                 };
@@ -173,14 +164,6 @@ const SiderMenu = () => {
 
     setMenuItems((prev) => recursiveUpdate(prev));
 
-    // Update CounterMap
-    setCounterMap((prev) => ({
-      ...prev,
-      [workspaceKey]: {
-        ...prev[workspaceKey],
-        [category]: prev[workspaceKey][category] + 1,
-      },
-    }));
   };
 
 
@@ -263,7 +246,7 @@ const SiderMenu = () => {
                 {subChild.key.includes('-collection') || subChild.key.includes('-history') ? (
                   <Button
                     size="small"
-                    onClick={(e) => addSubItem(e, subChild.key)}
+                    onClick={(e) => addCollection(e, subChild.key)}
                     style={{
                       backgroundColor: 'transparent',
                       border: '1.5px solid #054d29',
@@ -323,7 +306,7 @@ const SiderMenu = () => {
             {item.key === 'workspaces' && (
               <Button
                 size="small"
-                onClick={(e) => addSubMenu(item.key, e)}
+                onClick={(e) => addWorkspace(item.key, e)}
                 style={{
                   backgroundColor: 'transparent',
                   border: '1.5px solid #054d29',
