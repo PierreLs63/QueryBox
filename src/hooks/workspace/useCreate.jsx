@@ -8,7 +8,7 @@ const useCreate = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const createWorkspace = async () => {
-        const api = `${baseURL}/workspace/create`;
+        const api = `${baseURL}/workspace`;
         try {
             setLoading(true);
             const response = await fetch(api, {

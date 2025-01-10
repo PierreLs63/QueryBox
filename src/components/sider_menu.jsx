@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Menu, Button } from 'antd';
 import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import './sider_menu.css'
-import useLogout from '../hooks/auth/useLogout';
+import useLogout from '../../src/hooks/auth/useLogout';
+import useCreate from '../../src/hooks/workspace/useCreate';
 
 
 const SiderMenu = () => {
-  
+
+  const {workspace,createWorkspace} = useCreate();
   const {logout} = useLogout();
 
   const initialItems = [
@@ -57,6 +59,7 @@ const SiderMenu = () => {
    */
   const addSubMenu = (parentKey, event) => {
     event.stopPropagation();
+    createWorkspace();
 
     const newWsKey = `workspace:${workspaceCounter}`;
 
