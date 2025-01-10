@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Menu, Button } from 'antd';
 import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import './sider_menu.css'
 import useLogout from '../../src/hooks/auth/useLogout';
 import useCreate from '../../src/hooks/workspace/useCreate';
-
+import useDelete from '../../src/hooks/workspace/useDelete';
 
 const SiderMenu = () => {
 
-  const {workspace,createWorkspace} = useCreate();
+  const {createWorkspace} = useCreate();
+  const {deleteWorkspace} = useDelete();
   const {logout} = useLogout();
+
 
   const initialItems = [
     {
@@ -22,46 +24,25 @@ const SiderMenu = () => {
       ],
     },
     {
-      key: 'workspace',
+      key: 'workspaces',
       icon: <DesktopOutlined />,
-      label: 'Workspace',
-      children: [{ 
-        key: 'workspace:1', 
-        label: 'Workspace 1',
-        children:[
-          {
-            key: 'workspace:1-collection',
-            icon: <FileOutlined />,
-            label: 'Collection',
-            children: [{ key: 'workspace:1-collection:1', label: 'Collection 1' }],
-          },
-          {
-            key: 'workspace:1-history',
-            icon: <HistoryOutlined />,
-            label: 'History',
-            children: [{ key: 'workspace:1-history:1', label: 'History 1' }],
-          },
-        ]}],
+      label: 'Workspaces',
+      children: [],
     },
   ];
 
   const [menuItems, setMenuItems] = useState(initialItems);
-  const [workspaceCounter, setWorkspaceCounter] = useState(2);
-  const [counterMap, setCounterMap] = useState({
-    'workspace:1': { collection: 2, history: 2 },
-  });
-
 
   /**
    * Add new child node for workspace
    * parentKey -> workspace
    * childKey -> workspace:<number>
    */
-  const addSubMenu = (parentKey, event) => {
+  const addSubMenu = async(parentKey, event) => {
     event.stopPropagation();
-    createWorkspace();
+    const newWorkspace = await createWorkspace();
 
-    const newWsKey = `workspace:${workspaceCounter}`;
+    const newWsKey = `workspace:${newWorkspace._id}`;
 
     setMenuItems((prev) =>
       prev.map((item) => {
@@ -71,30 +52,21 @@ const SiderMenu = () => {
             children: [
               ...item.children,
               {
+                //Workspace
                 key: newWsKey,
-                label: `Workspace ${workspaceCounter}`,
+                label: `${newWorkspace._id}`,
                 children: [
                   {
                     key: `${newWsKey}-collection`,
-                    label: 'Collection',
+                    label: 'Collections',
                     icon: <FileOutlined />,
-                    children: [
-                      {
-                        key: `${newWsKey}-collection:1`,
-                        label: 'Collection 1',
-                      },
-                    ],
+                    children: [],
                   },
                   {
                     key: `${newWsKey}-history`,
                     label: 'History',
                     icon: <HistoryOutlined />,
-                    children: [
-                      {
-                        key: `${newWsKey}-history:1`,
-                        label: 'History 1',
-                      },
-                    ],
+                    children: [],
                   },
                 ],
               },
@@ -105,14 +77,6 @@ const SiderMenu = () => {
       })
     );
 
-    // Update WorkspaceCounter
-    setWorkspaceCounter((c) => c + 1);
-
-    // Update CounterMap
-    setCounterMap((prev) => ({
-      ...prev,
-      [newWsKey]: { collection: 2, history: 2 },
-    }));
   };
 
 
@@ -121,8 +85,11 @@ const SiderMenu = () => {
   /**
    * Delete child node of workspace
    */
-  const deleteSubMenu = (subKey, event) => {
+  const deleteSubMenu = async(subKey, event) => {
     event.stopPropagation();
+
+    //Recuperate the workspace id from the subkey
+    await deleteWorkspace(subKey.split(":")[1]);
 
     const recursiveDelete = (items) =>
       items
@@ -146,14 +113,6 @@ const SiderMenu = () => {
 
     setMenuItems((prevItems) => recursiveDelete(prevItems));
 
-    // Delete CounterMap of this workspace removed
-    if (subKey.startsWith('workspace:')) {
-      setCounterMap((prev) => {
-        const next = { ...prev };
-        delete next[subKey];
-        return next;
-      });
-    }
   };
 
 
@@ -361,7 +320,7 @@ const SiderMenu = () => {
             }}
           >
             <span>{item.label}</span>
-            {item.key === 'workspace' && (
+            {item.key === 'workspaces' && (
               <Button
                 size="small"
                 onClick={(e) => addSubMenu(item.key, e)}
