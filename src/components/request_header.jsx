@@ -89,7 +89,7 @@ const RequestHeader = ({ headerData, setHeaderData }) => {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block className='button'>
-              Confirmer
+              Confirm
             </Button>
           </Form.Item>
         </Form>
