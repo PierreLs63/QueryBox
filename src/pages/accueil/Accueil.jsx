@@ -32,6 +32,7 @@ const Accueil = () => {
   const workspaceId = "677f9c4367fbd0822692eeab";
 
 
+
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
    // temporaire il faut récupérer l'id du workspace
@@ -55,16 +56,6 @@ const Accueil = () => {
     { key: 'Connection', value: 'value_connection', description: 'Description for Connection' },
   ]);
 
-  // ParamReq place-holders
-  const [paramReqData, setParamReqData] = useState(
-    Array.from({ length: 100 }).map((_, i) => ({
-      key: i.toString(),
-      keyData: `Param ${i}`,
-      value: `Value ${i}`,
-      description: `Description ${i}`,
-    }))
-  );
-
   // ResponseHeader place-holders
   const dataResponseHeader = Array.from({
     length: 100,
@@ -84,14 +75,6 @@ const Accueil = () => {
     setSelectedResponse(e.target.value);
   };
 
-
-  useEffect(() => {
-    document.body.style.fontFamily = "'Roboto', sans-serif";
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.documentElement.style.overflowX = 'hidden';
-    document.documentElement.style.setProperty('color-scheme', 'light');
-  }, []);
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
@@ -251,7 +234,7 @@ const Accueil = () => {
                     >Body</Radio.Button>
                   </Radio.Group>
                 </Flex>
-                {selectedRequest === "param" && <RequestParam paramReqData={paramReqData} setParamReqData={setParamReqData} />}
+                {selectedRequest === "param" && <RequestParam />}
                 {selectedRequest === "headerRequest" && <RequestHeader headerData={headerData} setHeaderData={setHeaderData} />}
                 {selectedRequest === "bodyRequest" && <RequestBody />}
               </Splitter.Panel>
