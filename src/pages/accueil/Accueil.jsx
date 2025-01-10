@@ -238,8 +238,8 @@ const Accueil = () => {
               </Flex>
 
               <div style={{ flex: 1, overflow: 'auto' }}>
-                {selectedRequest === "param" && (<RequestParam />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} setHeaderData={setHeaderData}/>)}
+                {selectedRequest === "param" && (<RequestParam containerHeight={requestPanelHeight - 60} />)}
+                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} containerHeight={requestPanelHeight - 60}/>)}
                 {selectedRequest === "bodyRequest" && (<RequestBody />)}
               </div>
             </Splitter.Panel>

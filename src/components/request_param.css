@@ -21,14 +21,3 @@
 .button:hover {
     background-color: #3a5a50;
 }
-
-
-.ant-pagination-item-active {
-  background-color: white !important;
-  border-color: #54877c !important;
-  color: #54877c !important;
-}
-
-.ant-pagination-item a {
-  color: #54877c !important;
-}

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd';
-import './request_param.css'
 
 const EditableCell = ({
   editing,
@@ -12,8 +11,8 @@ const EditableCell = ({
   ...restProps
 }) => {
   const inputNode = <Input />;
-  const rules = dataIndex === 'keyData' 
-    ? [{ required: true, message: `Please Input ${title}!` }] 
+  const rules = dataIndex === 'keyData'
+    ? [{ required: true, message: `Please Input ${title}!` }]
     : [];
 
   return (
@@ -33,7 +32,7 @@ const EditableCell = ({
   );
 };
 
-const RequestParam = () => {
+const RequestParam = ({ containerHeight = 300 }) => {
   const [form] = Form.useForm();
   const [paramReqData, setParamReqData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
@@ -74,15 +73,11 @@ const RequestParam = () => {
     }
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
+  const showModal = () => setIsModalOpen(true);
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
   };
-
   const handleAdd = (values) => {
     const newRow = {
       key: paramReqData.length.toString(),
@@ -126,16 +121,12 @@ const RequestParam = () => {
         if (record.key === 'add-row') {
           return null;
         }
-
         const editable = isEditing(record);
         return editable ? (
           <span>
             <Typography.Link
               onClick={() => save(record.key)}
-              style={{
-                marginInlineEnd: 8,
-                color: '#388E3C'
-              }}
+              style={{ marginInlineEnd: 8, color: '#388E3C' }}
             >
               Save
             </Typography.Link>
@@ -143,7 +134,6 @@ const RequestParam = () => {
               title="Sure to cancel?"
               onConfirm={cancel}
               okButtonProps={{
-                className: 'custom-ok-button',
                 style: {
                   backgroundColor: 'transparent',
                   borderColor: 'black',
@@ -151,7 +141,6 @@ const RequestParam = () => {
                 },
               }}
               cancelButtonProps={{
-                className: 'custom-cancel-button',
                 style: {
                   color: 'red',
                   borderColor: 'black',
@@ -163,21 +152,16 @@ const RequestParam = () => {
           </span>
         ) : (
           <span>
-            <Typography.Link 
-              disabled={editingKey !== ''} 
+            <Typography.Link
+              disabled={editingKey !== ''}
               onClick={() => edit(record)}
-              style={{
-                color: '#397d4b',
-              }}
+              style={{ color: '#397d4b' }}
             >
               Edit
             </Typography.Link>
-            <Typography.Link 
+            <Typography.Link
               onClick={() => deleteRow(record.key)}
-              style={{
-                marginInlineStart: 8,
-                color: 'red',
-              }}
+              style={{ marginInlineStart: 8, color: 'red' }}
             >
               Delete
             </Typography.Link>
@@ -191,7 +175,6 @@ const RequestParam = () => {
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record) => ({
@@ -203,13 +186,14 @@ const RequestParam = () => {
     };
   });
 
+  // Line + New Row
   const dataWithAddButton = [
     ...paramReqData,
     {
       key: 'add-row',
       keyData: (
         <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
-          + Add Row
+          + New Row
         </Typography.Link>
       ),
       value: '',
@@ -230,8 +214,8 @@ const RequestParam = () => {
           dataSource={dataWithAddButton}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={{ pageSize: 5, onChange: cancel, showSizeChanger: false }}
-          size='small'
+          size="small"
+          pagination={false}
         />
       </Form>
 
@@ -249,22 +233,14 @@ const RequestParam = () => {
           >
             <Input placeholder="Please enter a key" />
           </Form.Item>
-          <Form.Item
-            label="Value"
-            name="value"
-            rules={[]}
-          >
+          <Form.Item label="Value" name="value">
             <Input placeholder="Please enter a value" />
           </Form.Item>
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={[]}
-          >
+          <Form.Item label="Description" name="description">
             <Input placeholder="Please enter a description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block className='button'>
+            <Button type="primary" htmlType="submit" block>
               Confirm
             </Button>
           </Form.Item>

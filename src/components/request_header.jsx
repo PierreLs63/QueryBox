@@ -24,14 +24,14 @@ const RequestHeader = ({ headerData, setHeaderData }) => {
     form.resetFields();
   };
 
-  // 多插入一个 + Add Row
+  // Line + New Row
   const dataWithAddButton = [
     ...headerData,
     {
       key: `add-row-${Date.now()}`,
       keyData: (
         <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
-          + Add Row
+          + New Row
         </Typography.Link>
       ),
       value: '',
@@ -62,8 +62,6 @@ const RequestHeader = ({ headerData, setHeaderData }) => {
         columns={columns}
         dataSource={dataWithAddButton}
         pagination={false}
-
-        // 直接用父容器传来的高度，如果想再减一点可以 containerHeight - 50
         size="small"
       />
       <Modal title="Ajouter une ligne" open={isModalOpen} onCancel={handleCancel} footer={null}>
