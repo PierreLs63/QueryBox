@@ -1,4 +1,4 @@
-/* button style */
+/* Button style */
 .invite-button {
     width: 40%;
     height: 30px;
@@ -11,13 +11,14 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.invite-button:hover {
-    background-color: #3a5a50 !important;
-    color: white;
+.invite-button:not(:disabled):hover,
+.invite-button:not(:disabled):focus {
+    background-color: #A8D5BA !important;
+    color: #2E7D32 !important;
 }
 
 .invite-button:disabled {
     background-color: #bfbfbf;
     cursor: not-allowed;
-    color: white;
+    color: white !important;
 }
