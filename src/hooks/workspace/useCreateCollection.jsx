@@ -15,7 +15,7 @@ const useCreateCollection = () => {
         setError(null);
         setSuccess(null);
         try {
-            const response = await fetch(`${baseURL}/workspaces/${workspaceId}/collections`, {
+            const response = await fetch(`${baseURL}/workspace/${workspaceId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -27,6 +27,7 @@ const useCreateCollection = () => {
             }
             setWorkspaceId(workspaceId);
             setSuccess(data.message);
+            return data;
 
         }
         catch (error) {
