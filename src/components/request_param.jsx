@@ -219,25 +219,28 @@ const RequestParam = ({ containerHeight = 300 }) => {
         />
       </Form>
 
-      <Modal
-        title="Add New Row"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal title="Ajouter une ligne" open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form form={form} layout="vertical" onFinish={handleAdd}>
-          <Form.Item
+        <Form.Item
             label="Key"
             name="keyData"
-            rules={[{ required: true, message: 'Please enter a key!' }]}
+            rules={[{ required: true, message: 'Veuillez saisir une clé!' }]}
           >
-            <Input placeholder="Please enter a key" />
+            <Input placeholder="Veuillez saisir une clé" />
           </Form.Item>
-          <Form.Item label="Value" name="value">
-            <Input placeholder="Please enter a value" />
+          <Form.Item
+            label="Value"
+            name="value"
+            rules={[]}
+          >
+            <Input placeholder="Veuillez saisir une valeur" />
           </Form.Item>
-          <Form.Item label="Description" name="description">
-            <Input placeholder="Please enter a description" />
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[]}
+          >
+            <Input placeholder="Veuillez saisir une description" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block className='button'>
