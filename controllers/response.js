@@ -146,10 +146,17 @@ export const getParamRequest = async (req, res) => {
             return res.status(404).json({ message: "Collection not found" });
         }
 
-        const userInCollection = collection.users.find(userInCollection => userInCollection.UserId.toString() === userId.toString());
-        if (!userInCollection || userInCollection.privilege < viewer_grade) {
-            return res.status(403).json({ message: "You don't have the required privileges to view the paramRequest" });
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
         res.status(200).json(paramRequest);
     } catch (error) {
