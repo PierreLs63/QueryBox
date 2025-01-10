@@ -3,7 +3,7 @@ import { Card } from 'antd';
 const ResponseBody = ( {text} ) => (
   <Card
     style={{
-      height: '90%',
+      height: '100%',
       width: '100%',
     }}
   >
