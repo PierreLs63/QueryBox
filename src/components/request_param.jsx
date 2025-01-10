@@ -208,7 +208,7 @@ const RequestParam = () => {
     {
       key: 'add-row',
       keyData: (
-        <Typography.Link onClick={showModal} style={{ fontSize: '12px' }}>
+        <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
           + Add Row
         </Typography.Link>
       ),

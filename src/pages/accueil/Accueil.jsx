@@ -10,9 +10,9 @@ import NotificationMenu from '../../components/notificationMenu';
 import InviteMenu from '../../components/inviteMenu';
 import './Accueil.css';
 
-import { useState, useEffect } from 'react';
-import { SettingOutlined } from '@ant-design/icons';
+import { useState, useEffect, useRef } from 'react';
 import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
 import useInvite from '../../hooks/workspace/useInvite.jsx';
 
@@ -25,12 +25,15 @@ const Accueil = () => {
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
 
+  // Stock height of panel
+  const [requestPanelHeight, setRequestPanelHeight] = useState(0);
+  const requestPanelRef = useRef(null);
+
   // Utilisation du hook useCollaborateurs
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "677f9c4367fbd0822692eeab";
-
+  const workspaceId = "677e5afac212fc2670aaece7";
 
 
   // Récupérer les collaborateurs lors du montage du composant
@@ -46,8 +49,7 @@ const Accueil = () => {
     { id: 3, message: 'Place-holder 3' },
   ]);
 
-
-  // Header place-holders
+  // RequestHeader place-holders
   const [headerData, setHeaderData] = useState([
     { key: 'Host', value: 'value_host', description: 'Description for Host' },
     { key: 'User_Agent', value: 'value_userAgent', description: 'Description for User_Agent' },
@@ -75,6 +77,19 @@ const Accueil = () => {
     setSelectedResponse(e.target.value);
   };
 
+  // Calculate real height of panel when splitter is changed
+  useEffect(() => {
+    function handleResize() {
+      if (requestPanelRef.current) {
+        setRequestPanelHeight(requestPanelRef.current.clientHeight);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
@@ -89,7 +104,6 @@ const Accueil = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
 
           {/* Collaborateur Button with Popover for user list */}
-          
           <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} workspaceId={workspaceId}/>
 
           {/* User Add Icon with Popover for user invite */}
@@ -110,7 +124,7 @@ const Accueil = () => {
       <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
         <Sider
           width={400}
-          collapsible={false} // disable collapse
+          collapsible={false}
           breakpoint="md"
           collapsedWidth="0"
           style={{
@@ -170,7 +184,6 @@ const Accueil = () => {
             />
 
             {/* URL Input */}
-            
             <Input placeholder="URL" />
 
             {/* Send Button */}
@@ -182,62 +195,54 @@ const Accueil = () => {
             </Button>
           </div>
 
-            <Splitter
-              layout="vertical"
+          <Splitter
+            layout="vertical"
+            style={{
+              height: '100vh',
+              background: "#d9ebe5",
+              overflow: 'hidden'
+            }}
+          >
+            {/* Block of request */}
+            <Splitter.Panel
+              // Get clientHeight of panel
+              ref={requestPanelRef}
               style={{
-                height: '100vh',
+                height: '50%',
                 background: "#d9ebe5",
-                overflow: 'hidden'
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
-              {/* Block of request */}
-              <Splitter.Panel
-                style={{
-                  height: '50%',
-                  background: "#d9ebe5",
-                  overflow: 'hidden'
-                }}>
-                {/* Ratio box: param, header, body */}
-                <Flex vertical gap="middle">
-                  <Radio.Group 
-                    onChange={onChangeResquest}  
-                    defaultValue="param"
-                    style={{
-                      marginBottom: '5px',
-                      marginTop: '0px',
-                      display: 'flex'
-                    }}
-                  >
-                    <Radio.Button 
-                    value="param"
-                    style={{
-                      flex: 0.1,
-                      textAlign: 'center'
-                    }}
-                    className="custom-radio-button"
-                    >Param</Radio.Button>
-                    <Radio.Button 
-                    value="headerRequest"
-                    style={{
-                      flex: 0.1,
-                      textAlign: 'center'
-                    }}
-                    className="custom-radio-button"
-                    >Header</Radio.Button>
-                    <Radio.Button 
-                    value="bodyRequest"
-                    style={{
-                      flex: 0.1,
-                      textAlign: 'center'
-                    }}
-                    className="custom-radio-button"
-                    >Body</Radio.Button>
-                  </Radio.Group>
-                </Flex>
-                {selectedRequest === "param" && <RequestParam />}
-                {selectedRequest === "headerRequest" && <RequestHeader headerData={headerData} setHeaderData={setHeaderData} />}
-                {selectedRequest === "bodyRequest" && <RequestBody />}
-              </Splitter.Panel>
+              <Flex vertical gap="middle">
+                <Radio.Group
+                  onChange={onChangeResquest}
+                  defaultValue="param"
+                  style={{
+                    marginBottom: '5px',
+                    marginTop: '0px',
+                    display: 'flex'
+                  }}
+                >
+                  <Radio.Button value="param" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                    Param
+                  </Radio.Button>
+                  <Radio.Button value="headerRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                    Header
+                  </Radio.Button>
+                  <Radio.Button value="bodyRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                    Body
+                  </Radio.Button>
+                </Radio.Group>
+              </Flex>
+
+              <div style={{ flex: 1, overflow: 'auto' }}>
+                {selectedRequest === "param" && (<RequestParam />)}
+                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} setHeaderData={setHeaderData}/>)}
+                {selectedRequest === "bodyRequest" && (<RequestBody />)}
+              </div>
+            </Splitter.Panel>
 
               {/* Block of response */}
               <Splitter.Panel
