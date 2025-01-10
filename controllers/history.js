@@ -29,7 +29,6 @@ export const getHistory = async (req, res) => {
 
         // Récupérer toutes les collections du workspace dans lequel l'utilisateur a au moins le grade viewer
         const collections = await Collection.find({ _id: { $in: workspace.collections } });
-        console.log(collections);
         const filteredCollections = collections.filter(collection => {
             const userInCollection = collection.users.find(userInCollection => userInCollection.userId.toString() === userId.toString());
             return (userInCollection && userInCollection.privilege && userInCollection.privilege >= viewer_grade) || !userInCollection;

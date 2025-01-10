@@ -96,7 +96,6 @@ export const login = async (req, res) => {
   
       const user = await User.findOne({ $or: [{ username }, { email }] }).collation({ locale: 'en', strength: 2 })
       if (user) {
-        console.log(user.username.toLowerCase(), username.toLowerCase())
         if (user.username.toLowerCase() === username.toLowerCase()) {
           // Username is already in use
           return res.status(400).json({ error: "Nom d'utilisateur déjà utilisé" })
