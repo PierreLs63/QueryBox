@@ -240,7 +240,7 @@ const RequestParam = ({ containerHeight = 300 }) => {
             <Input placeholder="Please enter a description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block className='button'>
               Confirm
             </Button>
           </Form.Item>

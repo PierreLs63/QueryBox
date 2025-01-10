@@ -76,19 +76,19 @@ const RequestHeader = ({ headerData, setHeaderData }) => {
           <Form.Item
             label="Value"
             name="value"
-            rules={[{ required: true, message: 'Veuillez saisir une valeur!' }]}
+            rules={[]}
           >
             <Input placeholder="Veuillez saisir une valeur" />
           </Form.Item>
           <Form.Item
             label="Description"
             name="description"
-            rules={[{ required: true, message: 'Veuillez saisir une description!' }]}
+            rules={[]}
           >
             <Input placeholder="Veuillez saisir une description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block className='button'>
               Confirmer
             </Button>
           </Form.Item>
