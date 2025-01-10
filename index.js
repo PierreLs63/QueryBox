@@ -11,6 +11,7 @@ import authRoutes from "./routes/auth.js";
 import workspaceRoutes from "./routes/workspace.js";
 import collectionRoutes from "./routes/collection.js";
 import requestRoutes from "./routes/request.js";
+import responseRoutes from "./routes/response.js";
 import connectMongoDB from "./utils/connectMongoDB.js";
 import { xss } from "express-xss-sanitizer";
 
@@ -35,6 +36,7 @@ app.use(`/api/${api_version}/auth`, authRoutes);
 app.use(`/api/${api_version}/workspace`, workspaceRoutes);
 app.use(`/api/${api_version}/collection`, collectionRoutes);
 app.use(`/api/${api_version}/request`, requestRoutes);
+app.use(`/api/${api_version}/response`, responseRoutes);
 
 app.use("/assets", express.static(path.join(__dirname,'public/assets')));
 
