@@ -155,16 +155,18 @@ const RequestParam = () => {
             <Typography.Link
               disabled={editingKey !== ''}
               onClick={() => edit(record)}
-              style={{ color: '#397d4b' }}
+              style={{ marginRight: 8, color: '#397d4b' }}
             >
               Edit
             </Typography.Link>
-            <Typography.Link
-              onClick={() => deleteRow(record.key)}
-              style={{ marginInlineStart: 8, color: 'red' }}
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => deleteRow(record.key)}
+              okText="Yes"
+              cancelText="No"
             >
-              Delete
-            </Typography.Link>
+              <a style={{ color: 'red' }}>Delete</a>
+            </Popconfirm>
           </span>
         );
       },

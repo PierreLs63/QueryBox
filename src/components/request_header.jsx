@@ -88,7 +88,7 @@ const RequestHeader = () => {
 
   const handleAdd = (values) => {
     const newRow = {
-      key: `${headerData.length}-${Date.now()}`, // 确保 key 唯一
+      key: `${headerData.length}-${Date.now()}`,
       keyData: values.keyData,
       value: values.value || '',
       description: values.description || '',
@@ -139,7 +139,23 @@ const RequestHeader = () => {
             >
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm
+              title="Sure to cancel?"
+              onConfirm={cancel}
+              okButtonProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'black',
+                  color: '#388E3C',
+                },
+              }}
+              cancelButtonProps={{
+                style: {
+                  color: 'red',
+                  borderColor: 'black',
+                },
+              }}
+            >
               <a style={{ color: 'red' }}>Cancel</a>
             </Popconfirm>
           </span>
@@ -182,7 +198,6 @@ const RequestHeader = () => {
     };
   });
 
-  // 行选择配置
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedKeys) => {
@@ -190,11 +205,11 @@ const RequestHeader = () => {
     },
   };
 
-  // 添加 “+ New Row” 按钮
+  // Line + New Row
   const dataWithAddButton = [
     ...headerData,
     {
-      key: `add-row-${Date.now()}`, // 确保每次渲染时 key 唯一
+      key: `add-row-${Date.now()}`,
       keyData: (
         <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
           + New Row
