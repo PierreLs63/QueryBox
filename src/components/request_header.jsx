@@ -2,7 +2,6 @@ import { Table, Button, Input, Form, Modal, Typography, Popconfirm } from 'antd'
 import { useState } from 'react';
 import './request_header.css';
 
-
 const EditableCell = ({
   editing,
   dataIndex,
@@ -148,12 +147,14 @@ const RequestHeader = () => {
                   borderColor: 'black',
                   color: '#388E3C',
                 },
+                className: 'custom-ok-button'
               }}
               cancelButtonProps={{
                 style: {
                   color: 'red',
                   borderColor: 'black',
                 },
+                className: 'custom-cancel-button'
               }}
             >
               <a style={{ color: 'red' }}>Cancel</a>
@@ -173,6 +174,21 @@ const RequestHeader = () => {
               onConfirm={() => deleteRow(record.key)}
               okText="Yes"
               cancelText="No"
+              okButtonProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'black',
+                  color: '#388E3C',
+                },
+                className: 'custom-ok-button'
+              }}
+              cancelButtonProps={{
+                style: {
+                  color: 'red',
+                  borderColor: 'black',
+                },
+                className: 'custom-cancel-button'
+              }}
             >
               <a style={{ color: 'red' }}>Delete</a>
             </Popconfirm>
@@ -268,7 +284,7 @@ const RequestHeader = () => {
             <Input placeholder="Veuillez saisir une description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block className='button'>
+            <Button type="primary" htmlType="submit" block className='confirm-button'>
               Confirm
             </Button>
           </Form.Item>

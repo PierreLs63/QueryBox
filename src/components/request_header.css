@@ -1,4 +1,16 @@
-.button {
+.custom-ok-button:hover,
+.custom-ok-button:focus {
+    background-color: #e6f7e6 !important;
+  }  
+
+.custom-cancel-button:hover,
+.custom-cancel-button:focus {
+    background-color: #ffe3e3 !important;
+    color: red !important;
+  } 
+
+
+.confirm-button {
     border-radius: 24px;
     border: none;
     background-color: #54877c;
@@ -8,6 +20,6 @@
     transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.confirm-button:hover {
     background-color: #3a5a50;
 }

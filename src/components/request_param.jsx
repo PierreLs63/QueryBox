@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd';
+import './request_param.css'
 
 const EditableCell = ({
   editing,
@@ -34,9 +35,10 @@ const EditableCell = ({
 
 const RequestParam = () => {
   const [form] = Form.useForm();
-  const [paramReqData, setParamReqData] = useState([]);
+  const [paramData, setParamData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); 
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -57,7 +59,7 @@ const RequestParam = () => {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      const newData = [...paramReqData];
+      const newData = [...paramData];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
@@ -65,7 +67,7 @@ const RequestParam = () => {
           ...item,
           ...row,
         });
-        setParamReqData(newData);
+        setParamData(newData);
         setEditingKey('');
       }
     } catch (errInfo) {
@@ -80,19 +82,19 @@ const RequestParam = () => {
   };
   const handleAdd = (values) => {
     const newRow = {
-      key: paramReqData.length.toString(),
+      key: paramData.length.toString(),
       keyData: values.keyData,
       value: values.value || '',
       description: values.description || '',
     };
-    setParamReqData([...paramReqData, newRow]);
+    setParamData([...paramData, newRow]);
     setIsModalOpen(false);
     form.resetFields();
   };
 
   const deleteRow = (key) => {
-    const newData = paramReqData.filter(item => item.key !== key);
-    setParamReqData(newData);
+    const newData = paramData.filter(item => item.key !== key);
+    setParamData(newData);
   };
 
   const columns = [
@@ -139,12 +141,14 @@ const RequestParam = () => {
                   borderColor: 'black',
                   color: '#388E3C',
                 },
+                className: 'custom-ok-button'
               }}
               cancelButtonProps={{
                 style: {
                   color: 'red',
                   borderColor: 'black',
                 },
+                className: 'custom-cancel-button'
               }}
             >
               <a style={{ color: 'red' }}>Cancel</a>
@@ -164,6 +168,21 @@ const RequestParam = () => {
               onConfirm={() => deleteRow(record.key)}
               okText="Yes"
               cancelText="No"
+              okButtonProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'black',
+                  color: '#388E3C',
+                },
+                className: 'custom-ok-button'
+              }}
+              cancelButtonProps={{
+                style: {
+                  color: 'red',
+                  borderColor: 'black',
+                },
+                className: 'custom-cancel-button'
+              }}
             >
               <a style={{ color: 'red' }}>Delete</a>
             </Popconfirm>
@@ -188,9 +207,16 @@ const RequestParam = () => {
     };
   });
 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedKeys) => {
+      setSelectedRowKeys(selectedKeys);
+    },
+  };
+
   // Line + New Row
   const dataWithAddButton = [
-    ...paramReqData,
+    ...paramData,
     {
       key: 'add-row',
       keyData: (
@@ -206,19 +232,20 @@ const RequestParam = () => {
   return (
     <>
       <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={dataWithAddButton}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          size="small"
-          pagination={false}
-        />
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        bordered
+        dataSource={dataWithAddButton}
+        columns={mergedColumns}
+        rowClassName="editable-row"
+        size="small"
+        pagination={false}
+        rowSelection={rowSelection}
+      />
       </Form>
 
       <Modal title="Ajouter une ligne" open={isModalOpen} onCancel={handleCancel} footer={null}>
@@ -245,7 +272,7 @@ const RequestParam = () => {
             <Input placeholder="Veuillez saisir une description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block className='button'>
+            <Button type="primary" htmlType="submit" block className='confirm-button'>
               Confirm
             </Button>
           </Form.Item>
