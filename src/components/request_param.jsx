@@ -32,7 +32,7 @@ const EditableCell = ({
   );
 };
 
-const RequestParam = ({ containerHeight = 300 }) => {
+const RequestParam = () => {
   const [form] = Form.useForm();
   const [paramReqData, setParamReqData] = useState([]);
   const [editingKey, setEditingKey] = useState('');

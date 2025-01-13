@@ -38,7 +38,7 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "6780f2efb1979e308a72e7ae";
+  const workspaceId = "677e5afac212fc2670aaece7";
 
 
 
@@ -55,23 +55,6 @@ const Accueil = () => {
     { id: 3, message: 'Place-holder 3' },
   ]);
 
-  // RequestHeader place-holders
-  const [headerData, setHeaderData] = useState([
-    { key: 'Host', value: 'value_host', description: 'Description for Host' },
-    { key: 'User_Agent', value: 'value_userAgent', description: 'Description for User_Agent' },
-    { key: 'Accept', value: 'value_accept', description: 'Description for Accept' },
-    { key: 'Accept_Encoding', value: 'value_acceptEncoding', description: 'Description for Accept_Encoding' },
-    { key: 'Connection', value: 'value_connection', description: 'Description for Connection' },
-  ]);
-
-  // ResponseHeader place-holders
-  const dataResponseHeader = Array.from({
-    length: 10,
-  }).map((_, i) => ({
-    key: i,
-    keyData: `Key ${i}`,
-    value: `Value ${i}`,
-  }));
 
   // Event of request checked
   const onChangeResquest = (e) => {
@@ -257,8 +240,8 @@ const Accueil = () => {
               </Flex>
 
               <div style={{ flex: 1, overflow: 'auto' }}>
-                {selectedRequest === "param" && (<RequestParam containerHeight={requestPanelHeight - 60} />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} containerHeight={requestPanelHeight - 60} />)}
+                {selectedRequest === "param" && (<RequestParam />)}
+                {selectedRequest === "headerRequest" && (<RequestHeader />)}
                 {selectedRequest === "bodyRequest" && (<RequestBody />)}
               </div>
             </Splitter.Panel>
@@ -295,7 +278,7 @@ const Accueil = () => {
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
-                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={dataResponseHeader} containerHeight={responsePanelHeight - 60} />)}
+                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={[]} containerHeight={responsePanelHeight - 60} />)}
                   {selectedResponse === "bodyResponse" && (<ResponseBody text="here is an example to test" />)}
                 </div>
               </Splitter.Panel>
