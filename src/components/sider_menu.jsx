@@ -8,6 +8,7 @@ import useDelete from '../../src/hooks/workspace/useDelete';
 import useCreateCollection from '../hooks/workspace/useCreateCollection';
 import useChangeWorkspaceName from '../hooks/workspace/useChangeName';
 import useChangeCollectionName from '../hooks/collection/useChangeName'
+import useWorkspaces from '../hooks/workspace/useWorkspaces';
 
 
 const SiderMenu = () => {
@@ -16,6 +17,8 @@ const SiderMenu = () => {
   const {deleteWorkspace} = useDelete();
   const {createCollection} = useCreateCollection();
   const {logout} = useLogout();
+
+  const { workspaces, loadingWorkspaces, getWorkspaces } = useWorkspaces();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,6 +51,60 @@ const SiderMenu = () => {
       children: [],
     },
   ];
+  
+
+
+  // Fetch workspaces when the page loads (initial fetch)
+  useEffect(() => {
+    const fetchWorkspaces = async () => {
+      try {
+        await getWorkspaces(); // Fetch workspaces when the component mounts
+      } catch (error) {
+        console.error('Error fetching workspaces:', error);
+      }
+    };
+
+    fetchWorkspaces();
+  }, []); // Empty dependency array ensures this only runs once when the component mounts
+
+  // Update menu items after workspaces have been fetched
+  useEffect(() => {
+    if (workspaces && workspaces.length > 0) {
+      console.log('Fetched Workspaces:', workspaces); // Log workspaces after the state is updated
+      setMenuItems((prevItems) => {
+        const updatedItems = prevItems.map((item) => {
+          if (item.key === 'workspaces') {
+            return {
+              ...item,
+              children: workspaces
+                .map((workspace) => ({
+                  key: `workspace:${workspace.id}`,
+                  label: workspace.name,
+                  children: [
+                    {
+                      key: `workspace:${workspace.id}-collection`,
+                      label: 'Collections',
+                      icon: <FileOutlined />,
+                      children: [],
+                    },
+                    {
+                      key: `workspace:${workspace.id}-history`,
+                      label: 'History',
+                      icon: <HistoryOutlined />,
+                      children: [],
+                    },
+                  ],
+                })),
+            };
+          }
+          return item;
+        });
+        return updatedItems;
+      });
+    } else {
+      console.log('No workspaces available');
+    }
+  }, [workspaces]);
 
   const [menuItems, setMenuItems] = useState(initialItems);
 
@@ -69,7 +126,7 @@ const SiderMenu = () => {
               ...item.children,
               {
                 key: newWsKey,
-                label: `${newWorkspace._id}`,
+                label: `${newWorkspace.name}`,
                 children: [
                   {
                     key: `${newWsKey}-collection`,
@@ -138,7 +195,7 @@ const SiderMenu = () => {
 
     const newCollection = await createCollection(workspaceKey.split(":")[1]);
     const newCollectionKey = `${workspaceKey}-collection:${newCollection.collection._id}`;
-    const newCollectionLabel = `${newCollection.collection._id}`;
+    const newCollectionLabel = `${newCollection.collection.name}`;
 
 
     const recursiveUpdate = (items) =>
