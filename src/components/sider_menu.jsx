@@ -6,7 +6,8 @@ import useLogout from '../../src/hooks/auth/useLogout';
 import useCreate from '../../src/hooks/workspace/useCreate';
 import useDelete from '../../src/hooks/workspace/useDelete';
 import useCreateCollection from '../hooks/workspace/useCreateCollection';
-import useChangeName from '../hooks/workspace/useChangeName'; 
+import useChangeWorkspaceName from '../hooks/workspace/useChangeName';
+import useChangeCollectionName from '../hooks/collection/useChangeName'
 
 
 const SiderMenu = () => {
@@ -15,14 +16,21 @@ const SiderMenu = () => {
   const {deleteWorkspace} = useDelete();
   const {createCollection} = useCreateCollection();
   const {logout} = useLogout();
+
+  // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWorkspaceId, setEditingWorkspaceId] = useState(null);
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
+  const {loading: loadingWS, error: errorWS, success: successWS, changeName: changeWorkspaceName} = useChangeWorkspaceName();
 
-  // useChangeName hook
-  const { loading, error, success, changeName } = useChangeName();
+  // Edition for collection
+  const [isModalOpenColl, setIsModalOpenColl] = useState(false);
+  const [editingCollectionId, setEditingCollectionId] = useState(null);
+  const [newCollectionName, setNewCollectionName] = useState('');
+  const {loadingCollectionName, errorCollectionName, successCollectionName, changeName: changeCollectionName} = useChangeCollectionName();
 
 
+  // Initial menu
   const initialItems = [
     {
       key: 'account',
@@ -43,11 +51,9 @@ const SiderMenu = () => {
 
   const [menuItems, setMenuItems] = useState(initialItems);
 
-  /**
-   * Add new child node for workspace
-   * parentKey -> workspace
-   * childKey -> workspace:<number>
-   */
+
+
+  // Add new workspace
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
@@ -62,7 +68,6 @@ const SiderMenu = () => {
             children: [
               ...item.children,
               {
-                //Workspace
                 key: newWsKey,
                 label: `${newWorkspace._id}`,
                 children: [
@@ -90,9 +95,8 @@ const SiderMenu = () => {
   };
 
 
-  /**
-   * Delete child node of workspace
-   */
+
+  // Delete workspace
   const deleteSubMenu = async(subKey, event) => {
     event.stopPropagation();
 
@@ -124,11 +128,8 @@ const SiderMenu = () => {
   };
 
 
-  /**
-   * Add new item of collection/history (child node of workspace:<number>)
-   * @param {Event} event
-   * @param {string} type 'workspace:<number>-collection' or 'workspace:<number>-history'
-   */
+
+  // Add new collection
   const addCollection = async(event, type) => {
     event.stopPropagation();
 
@@ -175,11 +176,7 @@ const SiderMenu = () => {
 
 
 
-
-
-  /**
-   * Delete item of collection/history
-   */
+  // Delete collection/history
   const deleteSubItem = (subKey, event) => {
     event.stopPropagation();
 
@@ -200,13 +197,16 @@ const SiderMenu = () => {
     setMenuItems((prevItems) => recursiveDelete(prevItems));
   };
 
+
+
+  // Save edition pf workspace
   const handleEditNameOk = async () => {
     if (!editingWorkspaceId) {
       setIsModalOpen(false);
       return;
     }
 
-    await changeName(editingWorkspaceId, newWorkspaceName);
+    await changeWorkspaceName(editingWorkspaceId, newWorkspaceName);
 
     setMenuItems((prev) => {
       const wsKey = `workspace:${editingWorkspaceId}`;
@@ -231,6 +231,47 @@ const SiderMenu = () => {
 
     setIsModalOpen(false);
   };
+
+
+
+  // Save edition of collection
+  const handleEditCollectionOk = async () => {
+    if (!editingCollectionId) {
+      setIsModalOpenColl(false);
+      return;
+    }
+
+    await changeCollectionName(editingCollectionId, newCollectionName);
+
+    const searchPart = `-collection:${editingCollectionId}`;
+    setMenuItems((prev) => {
+      const recursiveUpdate = (items) =>
+        items.map((item) => ({
+          ...item,
+          children: item.children?.map((child) => ({
+            ...child,
+            children: child.children?.map((subChild) => ({
+              ...subChild,
+              children: subChild.children?.map((subItem) => {
+                if (subItem.key.includes(searchPart)) {
+                  return {
+                    ...subItem,
+                    label: newCollectionName
+                  };
+                }
+                return subItem;
+              })
+            }))
+          }))
+        }));
+      return recursiveUpdate(prev);
+    });
+
+    setIsModalOpenColl(false);
+  };
+
+
+
 
   return (
     <>
@@ -270,10 +311,29 @@ const SiderMenu = () => {
                       icon={<CloseOutlined />}
                     />
                   )}
+                  {subItem.key.includes('-collection:') && (
+                    <Button
+                      size="small"
+                      icon={<EditOutlined />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const collId = subItem.key.split(':')[2];
+                        setEditingCollectionId(collId);
+                        setNewCollectionName(subItem.label);
+                        setIsModalOpenColl(true);
+                      }}
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1.5px solid #054d29',
+                        color: '#054d29',
+                        width: '18px',
+                        height: '18px'
+                      }}
+                    />
+                  )}
                 </div>
               ),
             })),
-
             label: (
               <div
                 style={{
@@ -283,7 +343,7 @@ const SiderMenu = () => {
                 }}
               >
                 <span>{subChild.label}</span>
-                {subChild.key.includes('-collection') || subChild.key.includes('-history') ? (
+                {subChild.key.includes('-collection') ? (
                   <Button
                     size="small"
                     onClick={(e) => addCollection(e, subChild.key)}
@@ -394,22 +454,42 @@ const SiderMenu = () => {
         background: '#d9ebe5',
       }}
     />
+    {/* Edit Workspace Modal */}
     <Modal
-    title="Edit Workspace Name"
-    visible={isModalOpen}
-    onOk={handleEditNameOk}
-    onCancel={() => setIsModalOpen(false)}
-    confirmLoading={loading}  // 如果在等待后端返回，可用loading
-  >
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    {success && <p style={{ color: 'green' }}>{success}</p>}
-
-    <Input
-      value={newWorkspaceName}
-      onChange={(e) => setNewWorkspaceName(e.target.value)}
-      placeholder="Enter new workspace name"
-    />
-  </Modal>
+      title="Edit Workspace Name"
+      open={isModalOpen}
+      onOk={handleEditNameOk}
+      onCancel={() => setIsModalOpen(false)}
+      confirmLoading={loadingWS}
+    >
+      {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
+      {successWS && <p style={{ color: 'green' }}>{successWS}</p>}
+      <Input
+        value={newWorkspaceName}
+        onChange={(e) => setNewWorkspaceName(e.target.value)}
+        placeholder="Enter new workspace name"
+      />
+    </Modal>
+    {/* Edit Collection Modal */}
+    <Modal
+      title="Edit Collection Name"
+      open={isModalOpenColl}
+      onOk={handleEditCollectionOk}
+      onCancel={() => setIsModalOpenColl(false)}
+      confirmLoading={loadingCollectionName}
+    >
+      {errorCollectionName && (
+        <p style={{ color: 'red' }}>{errorCollectionName}</p>
+      )}
+      {successCollectionName && (
+        <p style={{ color: 'green' }}>{successCollectionName}</p>
+      )}
+      <Input
+        value={newCollectionName}
+        onChange={(e) => setNewCollectionName(e.target.value)}
+        placeholder="Enter new collection name"
+      />
+    </Modal>
   </>
   );
 };
