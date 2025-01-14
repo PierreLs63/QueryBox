@@ -9,6 +9,7 @@ import useCreateCollection from '../hooks/workspace/useCreateCollection';
 import useChangeWorkspaceName from '../hooks/workspace/useChangeName';
 import useChangeCollectionName from '../hooks/collection/useChangeName'
 import useWorkspaces from '../hooks/workspace/useWorkspaces';
+import useCollections from '../hooks/workspace/useCollections';
 
 
 const SiderMenu = () => {
@@ -19,6 +20,8 @@ const SiderMenu = () => {
   const {logout} = useLogout();
 
   const { workspaces, loadingWorkspaces, getWorkspaces } = useWorkspaces();
+  const { collections, loading, getCollections } = useCollections();
+
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,8 +36,7 @@ const SiderMenu = () => {
   const {loadingCollectionName, errorCollectionName, successCollectionName, changeName: changeCollectionName} = useChangeCollectionName();
 
 
-  // Initial menu
-  const initialItems = [
+  const [menuItems, setMenuItems] = useState([
     {
       key: 'account',
       icon: <UserOutlined />,
@@ -50,15 +52,20 @@ const SiderMenu = () => {
       label: 'Workspaces',
       children: [],
     },
-  ];
+  ]);
   
 
 
-  // Fetch workspaces when the page loads (initial fetch)
-  useEffect(() => {
+   // Fetch workspaces when the page loads (initial fetch)
+   useEffect(() => {
     const fetchWorkspaces = async () => {
       try {
-        await getWorkspaces(); // Fetch workspaces when the component mounts
+        const fetchedWorkspaces = await getWorkspaces(); // Fetch workspaces when the component mounts
+        if (fetchedWorkspaces && fetchedWorkspaces.length > 0) {
+          setWorkspaces(fetchedWorkspaces); // Update state with fetched workspaces
+        } else {
+          console.log('No workspaces fetched');
+        }
       } catch (error) {
         console.error('Error fetching workspaces:', error);
       }
@@ -69,44 +76,54 @@ const SiderMenu = () => {
 
   // Update menu items after workspaces have been fetched
   useEffect(() => {
-    if (workspaces && workspaces.length > 0) {
-      console.log('Fetched Workspaces:', workspaces); // Log workspaces after the state is updated
-      setMenuItems((prevItems) => {
-        const updatedItems = prevItems.map((item) => {
-          if (item.key === 'workspaces') {
-            return {
-              ...item,
-              children: workspaces
-                .map((workspace) => ({
-                  key: `workspace:${workspace.id}`,
-                  label: workspace.name,
-                  children: [
-                    {
-                      key: `workspace:${workspace.id}-collection`,
-                      label: 'Collections',
-                      icon: <FileOutlined />,
-                      children: [],
-                    },
-                    {
-                      key: `workspace:${workspace.id}-history`,
-                      label: 'History',
-                      icon: <HistoryOutlined />,
-                      children: [],
-                    },
-                  ],
-                })),
-            };
-          }
-          return item;
-        });
-        return updatedItems;
-      });
-    } else {
-      console.log('No workspaces available');
-    }
-  }, [workspaces]);
+    const updateMenuItemsWithCollections = async () => {
+      if (workspaces && workspaces.length > 0) {
+        console.log('Fetched Workspaces:', workspaces); // Log workspaces after the state is updated
 
-  const [menuItems, setMenuItems] = useState(initialItems);
+        // Fetch collections for each workspace and update the menu
+        const updatedMenuItems = await Promise.all(
+          workspaces.map(async (workspace) => {
+            const workspaceCollections = await getCollections(workspace.id); // Fetch collections for the workspace
+            const workspaceKey = `workspace:${workspace.id}`;
+            return {
+              key: `workspace:${workspace.id}`,
+              label: workspace.name,
+              children: [
+                {
+                  key: `workspace:${workspace.id}-collection`,
+                  label: 'Collections',
+                  icon: <FileOutlined />,
+                  children: workspaceCollections.map((collection) => ({
+                    key: `${workspaceKey}-collection:${collection._id}`,
+                    label: collection.name,
+                  })),
+                },
+                {
+                  key: `workspace:${workspace.id}-history`,
+                  label: 'History',
+                  icon: <HistoryOutlined />,
+                  children: [],
+                },
+              ],
+            };
+          })
+        );
+
+        // Update the menu items with fetched data
+        setMenuItems((prevItems) =>
+          prevItems.map((item) =>
+            item.key === 'workspaces'
+              ? { ...item, children: updatedMenuItems }
+              : item
+          )
+        );
+      } else {
+        console.log('No workspaces available');
+      }
+    };
+
+    updateMenuItemsWithCollections();
+  }, [workspaces]);
 
 
 

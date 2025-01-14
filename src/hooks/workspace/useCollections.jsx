@@ -15,7 +15,7 @@ const useCollections = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${baseURL}/workspaces/${workspaceId}/collections`, {
+            const response = await fetch(`${baseURL}/workspace/${workspaceId}/collections`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,7 +25,8 @@ const useCollections = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setCollections(data.collections);
+            setCollections(data);
+            return data;
         }
         catch (error) {
             setError(error.message);
