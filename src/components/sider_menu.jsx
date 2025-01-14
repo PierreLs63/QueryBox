@@ -1,11 +1,12 @@
 import React, { useState,useEffect } from 'react';
-import { Menu, Button } from 'antd';
-import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Menu, Button, Modal, Input } from 'antd';
+import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './sider_menu.css'
 import useLogout from '../../src/hooks/auth/useLogout';
 import useCreate from '../../src/hooks/workspace/useCreate';
 import useDelete from '../../src/hooks/workspace/useDelete';
 import useCreateCollection from '../hooks/workspace/useCreateCollection';
+import useChangeName from '../hooks/workspace/useChangeName'; 
 
 
 const SiderMenu = () => {
@@ -14,6 +15,12 @@ const SiderMenu = () => {
   const {deleteWorkspace} = useDelete();
   const {createCollection} = useCreateCollection();
   const {logout} = useLogout();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingWorkspaceId, setEditingWorkspaceId] = useState(null);
+  const [newWorkspaceName, setNewWorkspaceName] = useState('');
+
+  // useChangeName hook
+  const { loading, error, success, changeName } = useChangeName();
 
 
   const initialItems = [
@@ -193,7 +200,40 @@ const SiderMenu = () => {
     setMenuItems((prevItems) => recursiveDelete(prevItems));
   };
 
+  const handleEditNameOk = async () => {
+    if (!editingWorkspaceId) {
+      setIsModalOpen(false);
+      return;
+    }
+
+    await changeName(editingWorkspaceId, newWorkspaceName);
+
+    setMenuItems((prev) => {
+      const wsKey = `workspace:${editingWorkspaceId}`;
+      const recursiveUpdate = (items) =>
+        items.map((item) => {
+          if (item.key === wsKey) {
+            return {
+              ...item,
+              label: newWorkspaceName,
+            };
+          }
+          if (item.children) {
+            return {
+              ...item,
+              children: recursiveUpdate(item.children),
+            };
+          }
+          return item;
+        });
+      return recursiveUpdate(prev);
+    });
+
+    setIsModalOpen(false);
+  };
+
   return (
+    <>
     <Menu
       mode="inline"
       items={menuItems.map((item) => ({
@@ -274,6 +314,7 @@ const SiderMenu = () => {
             >
               <span>{child.label}</span>
               {child.key.startsWith('workspace:') && (
+                <div style={{ display: 'flex', gap: '4px' }}>
                 <Button
                   size="small"
                   onClick={(e) => deleteSubMenu(child.key, e)}
@@ -289,6 +330,28 @@ const SiderMenu = () => {
                   }}
                   icon={<CloseOutlined />}
                 />
+                <Button
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const workspaceId = child.key.split(':')[1];
+                    setEditingWorkspaceId(workspaceId);
+                    setNewWorkspaceName(child.label);
+                    setIsModalOpen(true);
+                  }}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '1.5px solid #054d29',
+                    color: '#054d29',
+                    width: '18px',
+                    height: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  icon={<EditOutlined />}
+                />
+                </div>
               )}
             </div>
           ),
@@ -331,6 +394,23 @@ const SiderMenu = () => {
         background: '#d9ebe5',
       }}
     />
+    <Modal
+    title="Edit Workspace Name"
+    visible={isModalOpen}
+    onOk={handleEditNameOk}
+    onCancel={() => setIsModalOpen(false)}
+    confirmLoading={loading}  // 如果在等待后端返回，可用loading
+  >
+    {error && <p style={{ color: 'red' }}>{error}</p>}
+    {success && <p style={{ color: 'green' }}>{success}</p>}
+
+    <Input
+      value={newWorkspaceName}
+      onChange={(e) => setNewWorkspaceName(e.target.value)}
+      placeholder="Enter new workspace name"
+    />
+  </Modal>
+  </>
   );
 };
 
