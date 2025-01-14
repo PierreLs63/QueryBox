@@ -1,42 +1,43 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { baseURL } from '../../utils/variables';
+import useResponseDataStore from '../../zustand/ResponseData';
+import useRequestInputStore from '../../zustand/RequestInput';
 
 const useCreateRequest = () => {
     const [loadingCreateRequest, setLoadingCreateRequest] = useState(false);
     const [errorCreateRequest, setErrorCreateRequest] = useState(null);
     const [successCreateRequest, setSuccessCreateRequest] = useState(null);
-    const [code, setCode] = useState(null);
-    const [body, setBody] = useState(null);
-    const [header, setHeader] = useState([]);
+    
+    const RequestInputs = useRequestInputStore();
+    const ResponseData = useResponseDataStore();
 
-    const CreateRequest = async (url, method, body, header, parameters) => {
+    const CreateRequest = async () => {
         setLoadingCreateRequest(true);
         setErrorCreateRequest(null);
         setSuccessCreateRequest(null);
 
         // Vérifier les types des paramètres
-        if (typeof url !== 'string') {
+        if (typeof RequestInputs.url !== 'string') {
             setErrorCreateRequest('Invalid URL');
             setLoadingCreateRequest(false);
             return;
         }
-        if (typeof method !== 'string') {
+        if (typeof RequestInputs.method !== 'string') {
             setErrorCreateRequest('Invalid method');
             setLoadingCreateRequest(false);
             return;
         }
-        if (typeof body !== 'string' && body !== null) {
+        if (typeof RequestInputs.body !== 'string' && RequestInputs.body !== null) {
             setErrorCreateRequest('Invalid body');
             setLoadingCreateRequest(false);
             return;
         }
-        if (!Array.isArray(header)) {
+        if (!Array.isArray(RequestInputs.headers)) {
             setErrorCreateRequest('Invalid header');
             setLoadingCreateRequest(false);
             return;
         }
-        if (!Array.isArray(parameters)) {
+        if (!Array.isArray(RequestInputs.params)) {
             setErrorCreateRequest('Invalid parameters');
             setLoadingCreateRequest(false);
             return;
@@ -44,25 +45,25 @@ const useCreateRequest = () => {
 
         // Préparer les en-têtes pour la requête
         const headers = {};
-        header.forEach(h => {
+        RequestInputs.headers.forEach(h => {
             headers[h.key] = h.value;
         });
 
         // Préparer les paramètres pour la requête
         const queryParams = new URLSearchParams();
-        parameters.forEach(p => {
+        RequestInputs.params.forEach(p => {
             queryParams.append(p.key, p.value);
         });
 
         // Construire l'URL avec les paramètres
-        const requestUrl = `${url}?${queryParams.toString()}`;
+        const requestUrl = `${RequestInputs.url}?${queryParams.toString()}`;
 
         try {
             // Envoyer la requête au serveur avec fetch
             const response = await fetch(requestUrl, {
-                method,
+                method: RequestInputs.method,
                 headers,
-                body: method !== 'GET' ? body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
+                body: RequestInputs.method !== 'GET' ? RequestInputs.body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
             });
 
             if (!response.ok) {
@@ -74,9 +75,9 @@ const useCreateRequest = () => {
             response.headers.forEach((value, key) => {
                 responseHeaders.push({ key, value });
             });
-            setCode(response.status);
-            setHeader(responseHeaders);
-            setBody(await response.text());
+            ResponseData.setCode(response.status);
+            ResponseData.setHeader(responseHeaders);
+            ResponseData.setBody(await response.text());
             setSuccessCreateRequest("Request sent successfully");
         } catch (error) {
             setErrorCreateRequest(error.message);
@@ -86,7 +87,7 @@ const useCreateRequest = () => {
         }
     };
 
-    return { loadingCreateRequest, errorCreateRequest, successCreateRequest, CreateRequest, code, body, header };
+    return { loadingCreateRequest, errorCreateRequest, successCreateRequest, CreateRequest };
 };
 
 export default useCreateRequest;

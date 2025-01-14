@@ -1,44 +1,41 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useRequestInputStore from '../../zustand/RequestInput';
+import useCreateRequest from './useCreateRequest';
 
 const useCreateParamRequest = () => {
     const [loadingreateParamRequest, setLoadingreateParamRequest] = useState(false);
     const [errorreateParamRequest, setErrorreateParamRequest] = useState(null);
     const [successreateParamRequest, setSuccessreateParamRequest] = useState(null);
-    const [requestId, setRequestId] = useState(null);
-    const [url, setUrl] = useState(null);
-    const [method, setMethod] = useState(null);
-    const [body, setBody] = useState(null);
-    const [header, setHeader] = useState(null);
-    const [parameters, setParameters] = useState(null);
-    const [responses, setResponses] = useState(null);
+    const [requestId, setRequestId] = useState("6780d4b7994d27f8df1ca425");
+    const RequestInputs = useRequestInputStore();
+    const {CreateRequest} = useCreateRequest();
 
-    const createParamRequest = async (requestId, url, method, body, header, parameters, responses) => {
+    const createParamRequest = async () => {
         setLoadingreateParamRequest(true);
         setErrorreateParamRequest(null);
         setSuccessreateParamRequest(null);
-        setRequestId(requestId);
-        setUrl(url);
-        setMethod(method);
-        setBody(body);
-        setHeader(header);
-        setParameters(parameters);
-        setResponses(responses);
-        const api = `${baseURL}/requests/${requestId}/paramRequest`;
+        const api = `${baseURL}/request/${requestId}/paramRequest`;
+        const { url, method, body, headers, params } = RequestInputs;
         try {
             const response = await fetch(api, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({url, method, body, header, parameters, responses})
+                body: JSON.stringify({url, method, body, header: headers, parameters: params})
             });
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
             }
+
+            CreateRequest();
+
+
             setSuccessreateParamRequest(data.message);
+            
         }
         catch (error) {
             setErrorreateParamRequest(error.message);
@@ -48,7 +45,7 @@ const useCreateParamRequest = () => {
             setLoadingreateParamRequest(false);
         }
     }
-    return { loadingreateParamRequest, errorreateParamRequest, successreateParamRequest, createParamRequest, requestId, url, method, body, header, parameters, responses }
+    return { loadingreateParamRequest, errorreateParamRequest, successreateParamRequest, createParamRequest }
 }
 
 export default useCreateParamRequest

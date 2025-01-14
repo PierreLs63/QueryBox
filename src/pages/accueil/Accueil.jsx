@@ -15,12 +15,17 @@ import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
 import useInvite from '../../hooks/workspace/useInvite.jsx';
+import useRequestInputStore from '../../zustand/RequestInput';
+import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
 
 // Overall page layout
 const { Header, Sider } = Layout;
 
 // Function application
 const Accueil = () => {
+
+  const RequestInputs = useRequestInputStore();
+  const {createParamRequest} = useCreateParamRequest();
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
   const [selectedResponse, setSelectedResponse] = useState("headerResponse");
@@ -38,7 +43,7 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "6780f2efb1979e308a72e7ae";
+  const workspaceId = "6763e72c9e59618f1b794204";
 
 
 
@@ -53,15 +58,6 @@ const Accueil = () => {
     { id: 1, message: 'Place-holder 1' },
     { id: 2, message: 'Multiple line place-holder beepbop 2' },
     { id: 3, message: 'Place-holder 3' },
-  ]);
-
-  // RequestHeader place-holders
-  const [headerData, setHeaderData] = useState([
-    { key: 'Host', value: 'value_host', description: 'Description for Host' },
-    { key: 'User_Agent', value: 'value_userAgent', description: 'Description for User_Agent' },
-    { key: 'Accept', value: 'value_accept', description: 'Description for Accept' },
-    { key: 'Accept_Encoding', value: 'value_acceptEncoding', description: 'Description for Accept_Encoding' },
-    { key: 'Connection', value: 'value_connection', description: 'Description for Connection' },
   ]);
 
   // ResponseHeader place-holders
@@ -166,7 +162,8 @@ const Accueil = () => {
           >
             {/* Method Dropdown */}
             <Select
-              defaultValue="GET"
+              defaultValue={RequestInputs.method}
+              onChange={(value) => RequestInputs.setMethod(value)}
               style={{
                 width: 120,
               }}
@@ -203,12 +200,13 @@ const Accueil = () => {
             />
 
             {/* URL Input */}
-            <Input placeholder="URL" />
+            <Input placeholder="URL" value={RequestInputs.url} onChange={(e) => RequestInputs.setUrl(e.target.value)} />
 
             {/* Send Button */}
             <Button
               onClick={(e) => {
                 e.currentTarget.blur();
+                createParamRequest();
               }}>
               Send
             </Button>
@@ -258,7 +256,7 @@ const Accueil = () => {
 
               <div style={{ flex: 1, overflow: 'auto' }}>
                 {selectedRequest === "param" && (<RequestParam containerHeight={requestPanelHeight - 60} />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader headerData={headerData} containerHeight={requestPanelHeight - 60} />)}
+                {selectedRequest === "headerRequest" && (<RequestHeader containerHeight={requestPanelHeight - 60} />)}
                 {selectedRequest === "bodyRequest" && (<RequestBody />)}
               </div>
             </Splitter.Panel>

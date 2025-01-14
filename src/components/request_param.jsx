@@ -1,5 +1,7 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd';
+import useRequestInputStore from '../zustand/RequestInput';
 
 const EditableCell = ({
   editing,
@@ -34,9 +36,14 @@ const EditableCell = ({
 
 const RequestParam = ({ containerHeight = 300 }) => {
   const [form] = Form.useForm();
-  const [paramReqData, setParamReqData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const RequestInputs = useRequestInputStore();
+
+  useEffect(() => {
+    RequestInputs.setParams(RequestInputs.params);
+  }, [RequestInputs.params]);
+    
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -57,7 +64,7 @@ const RequestParam = ({ containerHeight = 300 }) => {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      const newData = [...paramReqData];
+      const newData = [...RequestInputs.params];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
@@ -65,7 +72,7 @@ const RequestParam = ({ containerHeight = 300 }) => {
           ...item,
           ...row,
         });
-        setParamReqData(newData);
+        RequestInputs.setParams(newData);
         setEditingKey('');
       }
     } catch (errInfo) {
@@ -80,19 +87,19 @@ const RequestParam = ({ containerHeight = 300 }) => {
   };
   const handleAdd = (values) => {
     const newRow = {
-      key: paramReqData.length.toString(),
+      key: RequestInputs.params.length.toString(),
       keyData: values.keyData,
       value: values.value || '',
       description: values.description || '',
     };
-    setParamReqData([...paramReqData, newRow]);
+    RequestInputs.setParams([...RequestInputs.params, newRow]);
     setIsModalOpen(false);
     form.resetFields();
   };
 
   const deleteRow = (key) => {
-    const newData = paramReqData.filter(item => item.key !== key);
-    setParamReqData(newData);
+    const newData = RequestInputs.params.filter(item => item.key !== key);
+    RequestInputs.setParams(newData);
   };
 
   const columns = [
@@ -188,7 +195,7 @@ const RequestParam = ({ containerHeight = 300 }) => {
 
   // Line + New Row
   const dataWithAddButton = [
-    ...paramReqData,
+    ...RequestInputs.params,
     {
       key: 'add-row',
       keyData: (

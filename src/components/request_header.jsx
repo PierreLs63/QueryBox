@@ -1,19 +1,28 @@
 import { Table, Button, Input, Form, Modal, Typography } from 'antd';
 import { useState } from 'react';
 import './request_header.css';
+import useRequestInputStore from '../zustand/RequestInput.js';
 
-const RequestHeader = ({ headerData, setHeaderData }) => {
+const RequestHeader = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const RequestInputs = useRequestInputStore();
+
+  console.log(RequestInputs.headers);
+
 
   const handleAdd = (values) => {
     const newRow = {
-      key: `${headerData.length}-${Date.now()}`,
+      key: `${RequestInputs.headers.length}-${Date.now()}`,
       keyData: values.keyData,
       value: values.value,
       description: values.description,
     };
-    setHeaderData([...headerData, newRow]);
+
+    // RequestInputs.setHeaders([...RequestInputs.headers,]);
+
+    RequestInputs.setHeaders([...RequestInputs.headers, newRow]);
     setIsModalOpen(false);
     form.resetFields();
   };
@@ -26,7 +35,7 @@ const RequestHeader = ({ headerData, setHeaderData }) => {
 
   // Line + New Row
   const dataWithAddButton = [
-    ...headerData,
+    ...RequestInputs.headers,
     {
       key: `add-row-${Date.now()}`,
       keyData: (
