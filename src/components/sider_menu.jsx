@@ -10,6 +10,7 @@ import useChangeWorkspaceName from '../hooks/workspace/useChangeName';
 import useChangeCollectionName from '../hooks/collection/useChangeName'
 import useWorkspaces from '../hooks/workspace/useWorkspaces';
 import useCollections from '../hooks/workspace/useCollections';
+import useDeleteCollection from '../hooks/collection/useDeleteCollection';
 
 
 const SiderMenu = () => {
@@ -17,6 +18,7 @@ const SiderMenu = () => {
   const {createWorkspace} = useCreate();
   const {deleteWorkspace} = useDelete();
   const {createCollection} = useCreateCollection();
+  const {deleteCollection} = useDeleteCollection();
   const {logout} = useLogout();
 
   const { workspaces, loadingWorkspaces, getWorkspaces } = useWorkspaces();
@@ -251,8 +253,10 @@ const SiderMenu = () => {
 
 
   // Delete collection/history
-  const deleteSubItem = (subKey, event) => {
+  const deleteSubItem = async(subKey, event) => {
     event.stopPropagation();
+
+    await deleteCollection(subKey.split('-collection:')[1]);
 
     const recursiveDelete = (items) =>
       items
