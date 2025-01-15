@@ -353,16 +353,82 @@ const SiderMenu = () => {
 
   return (
     <>
-    <Menu
-      mode="inline"
-      items={menuItems.map((item) => ({
-        ...item,
-        children: item.children?.map((child) => ({
-          ...child,
-          children: child.children?.map((subChild) => ({
-            ...subChild,
-            children: subChild.children?.map((subItem) => ({
-              ...subItem,
+      <Menu
+        mode="inline"
+        items={menuItems.map((item) => ({
+          ...item,
+          children: item.children?.map((child) => ({
+            ...child,
+            children: child.children?.map((subChild) => ({
+              ...subChild,
+              children: subChild.children?.map((subItem) => ({
+                ...subItem,
+                label: (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span>{subItem.label}</span>
+                    {subItem.key.includes('-collection:') && (
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <Button
+                          size="small"
+                          onClick={(e) => deleteSubItem(subItem.key, e)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: '1.5px solid #054d29',
+                            color: '#054d29',
+                            width: '18px',
+                            height: '18px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          icon={<CloseOutlined />}
+                        />
+                        <Button
+                          size="small"
+                          icon={<EditOutlined />}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const collId = subItem.key.split(':')[2];
+                            setEditingCollectionId(collId);
+                            setNewCollectionName(subItem.label);
+                            setIsModalOpenColl(true);
+                          }}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: '1.5px solid #054d29',
+                            color: '#054d29',
+                            width: '18px',
+                            height: '18px',
+                          }}
+                        />
+                      </div>
+                    )}
+                    {subItem.key.includes('-history:') && (
+                      <Button
+                        size="small"
+                        onClick={(e) => deleteSubItem(subItem.key, e)}
+                        style={{
+                          backgroundColor: 'transparent',
+                          border: '1.5px solid #054d29',
+                          color: '#054d29',
+                          width: '18px',
+                          height: '18px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        icon={<CloseOutlined />}
+                      />
+                    )}
+                  </div>
+                ),
+              })),
               label: (
                 <div
                   style={{
@@ -371,11 +437,11 @@ const SiderMenu = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <span>{subItem.label}</span>
-                  {(subItem.key.includes('-collection:') || subItem.key.includes('-history:')) && (
+                  <span>{subChild.label}</span>
+                  {subChild.key.includes('-collection') && (
                     <Button
                       size="small"
-                      onClick={(e) => deleteSubItem(subItem.key, e)}
+                      onClick={(e) => addCollection(e, subChild.key)}
                       style={{
                         backgroundColor: 'transparent',
                         border: '1.5px solid #054d29',
@@ -386,27 +452,7 @@ const SiderMenu = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      icon={<CloseOutlined />}
-                    />
-                  )}
-                  {subItem.key.includes('-collection:') && (
-                    <Button
-                      size="small"
-                      icon={<EditOutlined />}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const collId = subItem.key.split(':')[2];
-                        setEditingCollectionId(collId);
-                        setNewCollectionName(subItem.label);
-                        setIsModalOpenColl(true);
-                      }}
-                      style={{
-                        backgroundColor: 'transparent',
-                        border: '1.5px solid #054d29',
-                        color: '#054d29',
-                        width: '18px',
-                        height: '18px'
-                      }}
+                      icon={<PlusOutlined />}
                     />
                   )}
                 </div>
@@ -420,28 +466,50 @@ const SiderMenu = () => {
                   alignItems: 'center',
                 }}
               >
-                <span>{subChild.label}</span>
-                {subChild.key.includes('-collection') ? (
-                  <Button
-                    size="small"
-                    onClick={(e) => addCollection(e, subChild.key)}
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: '1.5px solid #054d29',
-                      color: '#054d29',
-                      width: '18px',
-                      height: '18px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    icon={<PlusOutlined />}
-                  />
-                ) : null}
+                <span>{child.label}</span>
+                {child.key.startsWith('workspace:') && (
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    <Button
+                      size="small"
+                      onClick={(e) => deleteSubMenu(child.key, e)}
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1.5px solid #054d29',
+                        color: '#054d29',
+                        width: '18px',
+                        height: '18px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      icon={<CloseOutlined />}
+                    />
+                    <Button
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const workspaceId = child.key.split(':')[1];
+                        setEditingWorkspaceId(workspaceId);
+                        setNewWorkspaceName(child.label);
+                        setIsModalOpen(true);
+                      }}
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1.5px solid #054d29',
+                        color: '#054d29',
+                        width: '18px',
+                        height: '18px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      icon={<EditOutlined />}
+                    />
+                  </div>
+                )}
               </div>
             ),
           })),
-
           label: (
             <div
               style={{
@@ -450,12 +518,11 @@ const SiderMenu = () => {
                 alignItems: 'center',
               }}
             >
-              <span>{child.label}</span>
-              {child.key.startsWith('workspace:') && (
-                <div style={{ display: 'flex', gap: '4px' }}>
+              <span>{item.label}</span>
+              {item.key === 'workspaces' && (
                 <Button
                   size="small"
-                  onClick={(e) => deleteSubMenu(child.key, e)}
+                  onClick={(e) => addWorkspace(item.key, e)}
                   style={{
                     backgroundColor: 'transparent',
                     border: '1.5px solid #054d29',
@@ -466,110 +533,52 @@ const SiderMenu = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                  icon={<CloseOutlined />}
+                  icon={<PlusOutlined />}
                 />
-                <Button
-                  size="small"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const workspaceId = child.key.split(':')[1];
-                    setEditingWorkspaceId(workspaceId);
-                    setNewWorkspaceName(child.label);
-                    setIsModalOpen(true);
-                  }}
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '1.5px solid #054d29',
-                    color: '#054d29',
-                    width: '18px',
-                    height: '18px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  icon={<EditOutlined />}
-                />
-                </div>
               )}
             </div>
           ),
-        })),
-        
-        label: (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <span>{item.label}</span>
-            {item.key === 'workspaces' && (
-              <Button
-                size="small"
-                onClick={(e) => addWorkspace(item.key, e)}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: '1.5px solid #054d29',
-                  color: '#054d29',
-                  width: '18px',
-                  height: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                icon={<PlusOutlined />}
-              />
-            )}
-          </div>
-        ),
-      }))}
-      style={{
-        height: '100%',
-        borderRight: 0,
-        paddingTop: '15px',
-        paddingBottom: '20px',
-        background: '#d9ebe5',
-      }}
-    />
-    {/* Edit Workspace Modal */}
-    <Modal
-      title="Edit Workspace Name"
-      open={isModalOpen}
-      onOk={handleEditNameOk}
-      onCancel={() => setIsModalOpen(false)}
-      confirmLoading={loadingWS}
-    >
-      {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
-      {successWS && <p style={{ color: 'green' }}>{successWS}</p>}
-      <Input
-        value={newWorkspaceName}
-        onChange={(e) => setNewWorkspaceName(e.target.value)}
-        placeholder="Enter new workspace name"
+        }))}
+        style={{
+          height: '100%',
+          borderRight: 0,
+          paddingTop: '15px',
+          paddingBottom: '20px',
+          background: '#d9ebe5',
+        }}
       />
-    </Modal>
-    {/* Edit Collection Modal */}
-    <Modal
-      title="Edit Collection Name"
-      open={isModalOpenColl}
-      onOk={handleEditCollectionOk}
-      onCancel={() => setIsModalOpenColl(false)}
-      confirmLoading={loadingCollectionName}
-    >
-      {errorCollectionName && (
-        <p style={{ color: 'red' }}>{errorCollectionName}</p>
-      )}
-      {successCollectionName && (
-        <p style={{ color: 'green' }}>{successCollectionName}</p>
-      )}
-      <Input
-        value={newCollectionName}
-        onChange={(e) => setNewCollectionName(e.target.value)}
-        placeholder="Enter new collection name"
-      />
-    </Modal>
-  </>
+      <Modal
+        title="Edit Workspace Name"
+        open={isModalOpen}
+        onOk={handleEditNameOk}
+        onCancel={() => setIsModalOpen(false)}
+        confirmLoading={loadingWS}
+      >
+        {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
+        {successWS && <p style={{ color: 'green' }}>{successWS}</p>}
+        <Input
+          value={newWorkspaceName}
+          onChange={(e) => setNewWorkspaceName(e.target.value)}
+          placeholder="Enter new workspace name"
+        />
+      </Modal>
+      <Modal
+        title="Edit Collection Name"
+        open={isModalOpenColl}
+        onOk={handleEditCollectionOk}
+        onCancel={() => setIsModalOpenColl(false)}
+        confirmLoading={loadingCollectionName}
+      >
+        {errorCollectionName && <p style={{ color: 'red' }}>{errorCollectionName}</p>}
+        {successCollectionName && <p style={{ color: 'green' }}>{successCollectionName}</p>}
+        <Input
+          value={newCollectionName}
+          onChange={(e) => setNewCollectionName(e.target.value)}
+          placeholder="Enter new collection name"
+        />
+      </Modal>
+    </>
   );
-};
+}  
 
 export default SiderMenu;

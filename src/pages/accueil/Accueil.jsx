@@ -43,7 +43,7 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
-  const workspaceId = "6763e72c9e59618f1b794204";
+  const workspaceId = "67863b9c69ae6e442b52f3d8";
 
 
 
