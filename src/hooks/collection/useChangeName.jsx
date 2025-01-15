@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
-const useChangeName = () => {
+const useChangeCollectionName = () => {
     const [loadingChangeName, setLoadingChangeName] = useState(false);
     const [errorChangeName, setErrorChangeName] = useState(null);
     const [successChangeName, setSuccessChangeName] = useState(null);
@@ -36,4 +36,4 @@ const useChangeName = () => {
     return { loadingChangeName, errorChangeName, successChangeName, changeName }
 }
 
-export default useChangeName
+export default useChangeCollectionName

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
-const useDelete = () => {
+const useDeleteCollection = () => {
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [errorDelete, setErrorDelete] = useState(null);
     const [successDelete, setSuccessDelete] = useState(null);
@@ -25,7 +25,7 @@ const useDelete = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            setSuccess(data.message);
+            setSuccessDelete(data.message);
         }
         catch (error) {
             setErrorDelete(error.message);
@@ -38,4 +38,4 @@ const useDelete = () => {
     return { loadingDelete, errorDelete, successDelete, deleteCollection, collectionId }
 }
 
-export default useDelete
+export default useDeleteCollection

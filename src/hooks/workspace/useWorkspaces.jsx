@@ -12,7 +12,7 @@ const useWorkspaces = () => {
         setLoadingWorkspaces(true);
         setErrorWorkspaces(null);
         setSuccessWorkspaces(null);
-        const api = `${baseURL}/workspaces`;
+        const api = `${baseURL}/workspace`;
         try {
             const response = await fetch(api);
             const data = await response.json();
