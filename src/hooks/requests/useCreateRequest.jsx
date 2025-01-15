@@ -46,13 +46,13 @@ const useCreateRequest = () => {
         // Préparer les en-têtes pour la requête
         const headers = {};
         RequestInputs.headers.forEach(h => {
-            headers[h.key] = h.value;
+            headers[h.keyData] = h.value;
         });
 
         // Préparer les paramètres pour la requête
         const queryParams = new URLSearchParams();
         RequestInputs.params.forEach(p => {
-            queryParams.append(p.key, p.value);
+            queryParams.append(p.keyData, p.value);
         });
 
         // Construire l'URL avec les paramètres
