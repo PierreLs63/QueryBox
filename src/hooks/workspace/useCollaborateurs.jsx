@@ -1,18 +1,24 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useCollaborateurs = () => {
     const [loadingCollaborateurs, setLoadingCollaborateurs] = useState(false);
     const [errorCollaborateurs, setErrorCollaborateurs] = useState(null);
     const [successCollaborateurs, setSuccessCollaborateurs] = useState(null);
     const [collaborateurs, setCollaborateurs] = useState(null);
+    const CurrentState = useCurrentState();
 
-    const getCollaborateurs = async (workspaceId) => {
+    const getCollaborateurs = async () => {
         setLoadingCollaborateurs(true);
         setErrorCollaborateurs(null);
         setSuccessCollaborateurs(null);
-        const api = `${baseURL}/workspace/${workspaceId}/users`;
+        if (CurrentState.workspaceId === null) {
+            throw new Error('Invalid workspace ID');
+        }
+        
+        const api = `${baseURL}/workspace/${CurrentState.workspaceId}/users`;
         try {
             const response = await fetch(api, {
                 method: 'GET',

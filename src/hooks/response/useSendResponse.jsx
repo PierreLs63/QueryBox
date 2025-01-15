@@ -1,39 +1,47 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useCurrentState from '../../zustand/useCurrentState';
+import useResponseDataStore from '../../zustand/useResponseDataStore';
 
-const useGetResponse = () => {
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [responseId, setResponseId] = useState(null);
-    
+const useSendResponse = () => {
+    const [loadingSendResponse, setLoadingSendResponse] = useState(false);
+    const [errorSendResponse, setErrorSendResponse] = useState(null);
+    const CurrentState = useCurrentState();
+    const ResponseData = useResponseDataStore();
 
-    const getResponse = async (responseId) => {
-        setResponseId(responseId);
-        setLoading(true);
-        setError(null);
-        setResponse(null);
-        const api = `${baseURL}/response/${responseId}/paramRequest/`;
+
+    const SendResponse = async () => {
+        setLoadingSendResponse(true);
+        setErrorSendResponse(null);
+
+        if (CurrentState.paramRequestId === null) {
+            throw new Error('Invalid request ID');
+        }
+
+        const api = `${baseURL}/response/${CurrentState.paramRequestId}`;
         try {
             const response = await fetch(api, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify(ResponseData)
             });
             const data = await response.json();
-            setResponse(data);
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
         }
         catch (error) {
-            setError(error.message);
+            setErrorSendResponse(error.message);
             toast.error(error.message);
         }
         finally {
-            setLoading(false);
+            setLoadingSendResponse(false);
         }
     }
-    return { response, loading, error, getResponse, responseId }
+    return {loadingSendResponse, errorSendResponse, SendResponse}
 }
 
 export default useGetResponse
