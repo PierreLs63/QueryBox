@@ -40,6 +40,7 @@ const useGetAllHistory = () => {
             const data = await response.json();
             setHistory(data);
             setSuccessGetAllHistory(true);
+            return data;
         } catch (error) {
             setErrorGetAllHistory(error.message);
             toast.error(error.message);
