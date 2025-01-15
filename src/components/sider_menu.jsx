@@ -567,6 +567,22 @@ const SiderMenu = () => {
         onOk={handleEditNameOk}
         onCancel={() => setIsModalOpen(false)}
         confirmLoading={loadingWS}
+        okButtonProps={{
+          className:'okButton',
+          style:{
+            color:'green',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
+        cancelButtonProps={{
+          className:'cancelButton',
+          style:{
+            color:'red',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
       >
         {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
         {successWS && <p style={{ color: 'green' }}>{successWS}</p>}

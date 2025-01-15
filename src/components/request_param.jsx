@@ -219,6 +219,9 @@ const RequestParam = () => {
     onChange: (selectedKeys) => {
       setSelectedRowKeys(selectedKeys);
     },
+    getCheckboxProps: (record) => ({
+      disabled: record.key === 'add-row'
+    }),
   };
 
   // Line + New Row
