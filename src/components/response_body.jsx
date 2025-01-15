@@ -1,13 +1,19 @@
 import { Card } from 'antd';
-import useResponseDataStore from '../zustand/ResponseData'
+import useResponseDataStore from '../zustand/ResponseData';
 
 const ResponseBody = () => {
-  const ResponseData = useResponseDataStore();
 
-  return(
-    <Card style={{height: '100%', width: '100%', resize: 'none'}}>
+  const ResponseData = useResponseDataStore();
+  return (
+  <Card
+    style={{
+      height: '100%',
+      maxWidth: '100%',
+      wordWrap: 'break-word',
+      resize: 'none'
+    }}
+  >
     <p>{ResponseData.body}</p>
-    </Card>
-  )
+  </Card>);
 };
 export default ResponseBody;

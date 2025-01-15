@@ -2,11 +2,13 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useResponseDataStore from '../../zustand/ResponseData';
 import useRequestInputStore from '../../zustand/RequestInput';
+import useSendResponse from '../response/useSendResponse';
 
 const useCreateRequest = () => {
     const [loadingCreateRequest, setLoadingCreateRequest] = useState(false);
     const [errorCreateRequest, setErrorCreateRequest] = useState(null);
     const [successCreateRequest, setSuccessCreateRequest] = useState(null);
+    const { SendResponse } = useSendResponse();
     
     const RequestInputs = useRequestInputStore();
     const ResponseData = useResponseDataStore();
@@ -63,9 +65,11 @@ const useCreateRequest = () => {
                 method: RequestInputs.method,
                 headers,
                 body: RequestInputs.method !== 'GET' && RequestInputs.method !== 'HEAD' ? RequestInputs.body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
-            }, { mode: 'no-cors' });
+            })
 
+            const data = await response.text();
 
+            console.log(data);
             // Préparer les en-têtes de la réponse
             const responseHeaders = [];
             response.headers.forEach((value, key) => {
@@ -73,11 +77,19 @@ const useCreateRequest = () => {
             });
             ResponseData.setCode(response.status);
             ResponseData.setHeader(responseHeaders);
-            ResponseData.setBody(await response.text());
-            
+            ResponseData.setBody(data);
+            SendResponse(response.status, responseHeaders, data);
             setSuccessCreateRequest("Request sent successfully");
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de la requête fetch :", error);
+        
+            // Remplir les données d'erreur si nécessaire
+            ResponseData.setCode(500); // Exemple de code d'erreur par défaut
+            ResponseData.setHeader([]);
+            ResponseData.setBody("An error occurred during the fetch request.");
         } finally {
             setLoadingCreateRequest(false);
+
         }
     };
 

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
-import useCurrentState from '../../zustand/useCurrentState';
-import useResponseDataStore from '../../zustand/useResponseDataStore';
+import useCurrentState from '../../zustand/CurrentState';
+import useResponseDataStore from '../../zustand/ResponseData';
 
 const useSendResponse = () => {
     const [loadingSendResponse, setLoadingSendResponse] = useState(false);
@@ -11,7 +11,7 @@ const useSendResponse = () => {
     const ResponseData = useResponseDataStore();
 
 
-    const SendResponse = async () => {
+    const SendResponse = async (status, headers, body) => {
         setLoadingSendResponse(true);
         setErrorSendResponse(null);
 
@@ -26,7 +26,7 @@ const useSendResponse = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(ResponseData)
+                body: JSON.stringify({code: status, header: headers, body: body})
             });
             const data = await response.json();
             if (!response.ok) {
@@ -44,4 +44,4 @@ const useSendResponse = () => {
     return {loadingSendResponse, errorSendResponse, SendResponse}
 }
 
-export default useGetResponse
+export default useSendResponse
