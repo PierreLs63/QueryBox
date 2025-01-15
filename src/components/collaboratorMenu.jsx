@@ -127,7 +127,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
       </Popover>
       <Modal
         title="Edit Collaborator"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
         confirmLoading={loadingUpdatePrivileges}
