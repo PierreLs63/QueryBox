@@ -5,10 +5,11 @@ import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
 import useRemoveUser from '../hooks/workspace/useRemoveUser';
 import useLeave from '../hooks/workspace/useLeave';
 import { useAuthContext } from '../context/AuthContext';
+import useCurrentState from '../zustand/CurrentState';
 
 const { Option } = Select;
 
-const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
+const CollaboratorMenu = ({ collaborators, loading, error }) => {
   const { authUser } = useAuthContext();
   const { updatePrivileges, loadingUpdatePrivileges } = useUpdatePrivileges();
   const { removeUser, loadingRemoveUser } = useRemoveUser();
@@ -18,6 +19,7 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
   const [newPrivilege, setNewPrivilege] = useState(null);
   const [authUserPrivilege, setAuthUserPrivilege] = useState(null);
   const [localCollaborators, setLocalCollaborators] = useState(collaborators);
+  const CurrentState = useCurrentState();
 
   // Déterminer le grade de l'utilisateur connecté
   useEffect(() => {
@@ -32,17 +34,17 @@ const CollaboratorMenu = ({ collaborators, loading, error, workspaceId }) => {
   };
 
   const handleOk = async () => {
-    await updatePrivileges(workspaceId, selectedCollaborator.username, newPrivilege);
+    await updatePrivileges(CurrentState.workspaceId, selectedCollaborator.username, newPrivilege);
     setIsModalVisible(false);
   };
 
   const handleRemove = async (username) => {
-    await removeUser(workspaceId, username);
+    await removeUser(CurrentState.workspaceId, username);
     setLocalCollaborators(prevCollaborators => prevCollaborators.filter(collaborator => collaborator.username !== username));
   };
 
   const handleLeave = async () => {
-    await leave(workspaceId);
+    await leave(CurrentState.workspaceId);
   };
 
   const collaboratorContent = (

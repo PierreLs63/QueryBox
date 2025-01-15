@@ -4,12 +4,14 @@ import { UserAddOutlined } from '@ant-design/icons';
 import toast from 'react-hot-toast';
 import useInvite from '../../src/hooks/workspace/useInvite';
 import './inviteMenu.css'
+import useCurrentState from '../zustand/CurrentState';
 
-const InviteMenu = (workspaceId) => {
+const InviteMenu = () => {
   const { inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege, invite } = useInvite();
+  const CurrentState = useCurrentState();
 
   const handleInvite = () => {
-    invite(workspaceId, inviteUsername, invitePrivilege);
+    invite(CurrentState.workspaceId, inviteUsername, invitePrivilege);
     setInviteUsername("");
   };
 
