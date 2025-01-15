@@ -11,6 +11,7 @@ import useChangeCollectionName from '../hooks/collection/useChangeName'
 import useWorkspaces from '../hooks/workspace/useWorkspaces';
 import useCollections from '../hooks/workspace/useCollections';
 import useDeleteCollection from '../hooks/collection/useDeleteCollection';
+import useGetAllHistory from '../hooks/history/useGetAllHistory';
 
 
 const SiderMenu = () => {
@@ -21,8 +22,9 @@ const SiderMenu = () => {
   const {deleteCollection} = useDeleteCollection();
   const {logout} = useLogout();
 
-  const { workspaces, loadingWorkspaces, getWorkspaces } = useWorkspaces();
-  const { collections, loading, getCollections } = useCollections();
+  const { workspaces, getWorkspaces } = useWorkspaces();
+  const { collections, getCollections } = useCollections();
+  const { history, getAllHistory } = useGetAllHistory();
 
 
   // Edition for workspace
@@ -62,9 +64,9 @@ const SiderMenu = () => {
    useEffect(() => {
     const fetchWorkspaces = async () => {
       try {
-        const fetchedWorkspaces = await getWorkspaces(); // Fetch workspaces when the component mounts
+        const fetchedWorkspaces = await getWorkspaces(); 
         if (fetchedWorkspaces && fetchedWorkspaces.length > 0) {
-          setWorkspaces(fetchedWorkspaces); // Update state with fetched workspaces
+          console.log('Fetched Workspaces:', workspaces)
         } else {
           console.log('No workspaces fetched');
         }
@@ -74,18 +76,19 @@ const SiderMenu = () => {
     };
 
     fetchWorkspaces();
-  }, []); // Empty dependency array ensures this only runs once when the component mounts
+  }, []);
 
   // Update menu items after workspaces have been fetched
   useEffect(() => {
     const updateMenuItemsWithCollections = async () => {
       if (workspaces && workspaces.length > 0) {
-        console.log('Fetched Workspaces:', workspaces); // Log workspaces after the state is updated
+        console.log('Fetched Workspaces:', workspaces);
 
         // Fetch collections for each workspace and update the menu
         const updatedMenuItems = await Promise.all(
           workspaces.map(async (workspace) => {
-            const workspaceCollections = await getCollections(workspace.id); // Fetch collections for the workspace
+            const workspaceCollections = await getCollections(workspace.id);
+            const workspaceHistory = await getAllHistory(workspace.id);
             const workspaceKey = `workspace:${workspace.id}`;
             return {
               key: `workspace:${workspace.id}`,
@@ -104,7 +107,10 @@ const SiderMenu = () => {
                   key: `workspace:${workspace.id}-history`,
                   label: 'History',
                   icon: <HistoryOutlined />,
-                  children: [],
+                  children: workspaceHistory.map((history) => ({
+                    key: `${workspaceKey}-history:${history._id}`,
+                    label: history._id,
+                  })),
                 },
               ],
             };
