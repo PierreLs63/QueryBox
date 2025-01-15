@@ -196,7 +196,8 @@ const Accueil = () => {
               onClick={(e) => {
                 e.currentTarget.blur();
                 createParamRequest();
-              }}>
+              }}
+              className='sendButton'>
               Send
             </Button>
           </div>
@@ -282,8 +283,8 @@ const Accueil = () => {
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
-                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={[]} containerHeight={responsePanelHeight - 60} />)}
-                  {selectedResponse === "bodyResponse" && (<ResponseBody text="here is an example to test" />)}
+                  {selectedResponse === "headerResponse" && (<ResponseHeader />)}
+                  {selectedResponse === "bodyResponse" && (<ResponseBody />)}
                 </div>
               </Splitter.Panel>
             </Splitter>
