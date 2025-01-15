@@ -7,6 +7,8 @@ const { TextArea } = Input;
 const RequestBody = () => {
 
     const RequestInputs = useRequestInputStore();
+
+    
     const handleAdd = (e) => {
         RequestInputs.setBody(e.target.value);
     }
@@ -20,7 +22,7 @@ const RequestBody = () => {
                     height: '100%',
                     resize: 'none',
                   }}
-                placeholder="Enter body content here" value={RequestInputs.body} onChange={handleAdd}/>
+                placeholder="Enter body content here" value={RequestInputs.body} onChange={handleAdd} disabled={RequestInputs.method === "GET" || RequestInputs.method === "HEAD"}/>
         </>
     )
 }
