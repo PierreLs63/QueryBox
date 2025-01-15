@@ -20,6 +20,33 @@
     transition: background-color 0.3s ease;
 }
 
-.confirm-button:hover {
-    background-color: #3a5a50;
+.confirm-button:hover,
+.confirm-button:focus {
+    background-color: #87c1af !important;
+}
+
+
+.ant-table-tbody > tr.ant-table-row-selected > td {
+  background-color: #e6f7e6 !important;
+}
+
+.ant-table-tbody > tr.ant-table-row-selected .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: rgb(26, 79, 20) !important;
+}
+
+.ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #b7eb8f !important;
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: #b7eb8f !important; 
+}
+
+
+.ant-table-thead .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: rgb(26, 79, 20) !important;
+}
+
+.ant-table-thead .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+  background-color: rgb(26, 79, 20) !important;
 }

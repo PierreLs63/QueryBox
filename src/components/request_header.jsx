@@ -226,6 +226,9 @@ const RequestHeader = () => {
     onChange: (selectedKeys) => {
       setSelectedRowKeys(selectedKeys);
     },
+    getCheckboxProps: (record) => ({
+      disabled: record.key === 'add-row'
+    }),
   };
 
   // Line + New Row
@@ -255,7 +258,6 @@ const RequestHeader = () => {
           bordered
           dataSource={dataWithAddButton}
           columns={mergedColumns}
-          rowClassName="editable-row"
           size="small"
           pagination={false}
           rowSelection={rowSelection}
