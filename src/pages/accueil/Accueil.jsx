@@ -44,15 +44,10 @@ const Accueil = () => {
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
 
-  const workspaceId = "67877d4769ae6e442b52faea";
-
-
-
-
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
    // temporaire il faut récupérer l'id du workspace
-    getCollaborateurs(workspaceId);
+    getCollaborateurs();
   }, []);
 
   // Notifications place-holders
@@ -113,10 +108,10 @@ const Accueil = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
 
           {/* Collaborateur Button with Popover for user list */}
-          <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} workspaceId={workspaceId}/>
+          <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} />
 
           {/* User Add Icon with Popover for user invite */}
-          <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} workspaceId={workspaceId}/>
+          <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu notifications={notifications} setNotifications={setNotifications} />

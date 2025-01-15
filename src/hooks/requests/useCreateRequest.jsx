@@ -57,18 +57,14 @@ const useCreateRequest = () => {
 
         // Construire l'URL avec les paramètres
         const requestUrl = `${RequestInputs.url}?${queryParams.toString()}`;
-
         try {
             // Envoyer la requête au serveur avec fetch
             const response = await fetch(requestUrl, {
                 method: RequestInputs.method,
                 headers,
-                body: RequestInputs.method !== 'GET' ? RequestInputs.body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
-            });
+                body: RequestInputs.method !== 'GET' && RequestInputs.method !== 'HEAD' ? RequestInputs.body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
+            }, { mode: 'no-cors' });
 
-            if (!response.ok) {
-                throw new Error("Error while fetching the request");
-            }
 
             // Préparer les en-têtes de la réponse
             const responseHeaders = [];
@@ -78,10 +74,8 @@ const useCreateRequest = () => {
             ResponseData.setCode(response.status);
             ResponseData.setHeader(responseHeaders);
             ResponseData.setBody(await response.text());
+            
             setSuccessCreateRequest("Request sent successfully");
-        } catch (error) {
-            setErrorCreateRequest(error.message);
-            toast.error(error.message);
         } finally {
             setLoadingCreateRequest(false);
         }
