@@ -23,9 +23,8 @@ const SiderMenu = () => {
   const {logout} = useLogout();
 
   const { workspaces, getWorkspaces } = useWorkspaces();
-  const { collections, getCollections } = useCollections();
-  const { history, getAllHistory } = useGetAllHistory();
-
+  const { getCollections } = useCollections();
+  const { getAllHistory } = useGetAllHistory();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -183,6 +182,12 @@ const SiderMenu = () => {
     event.stopPropagation();
 
     //Recuperate the workspace id from the subkey
+    const collections = await getCollections(subKey.split(":")[1]);
+
+    for (const collection of collections) {
+      await deleteCollection(collection._id);
+    }
+
     await deleteWorkspace(subKey.split(":")[1]);
 
     const recursiveDelete = (items) =>
@@ -204,6 +209,7 @@ const SiderMenu = () => {
             .filter((ch) => ch.key !== subKey),
         }))
         .filter((it) => it.key !== subKey);
+      
 
     setMenuItems((prevItems) => recursiveDelete(prevItems));
 
@@ -260,7 +266,9 @@ const SiderMenu = () => {
 
   // Delete collection/history
   const deleteSubItem = async(subKey, event) => {
-    event.stopPropagation();
+    if(event != null){
+      event.stopPropagation();
+    }
 
     await deleteCollection(subKey.split('-collection:')[1]);
 
