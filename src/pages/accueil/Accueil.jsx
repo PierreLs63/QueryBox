@@ -196,7 +196,8 @@ const Accueil = () => {
               onClick={(e) => {
                 e.currentTarget.blur();
                 createParamRequest();
-              }}>
+              }}
+              className='sendButton'>
               Send
             </Button>
           </div>

@@ -25,3 +25,14 @@
   background-color: #d0f0d0 !important;
   color: #397d4b !important;
   }
+
+
+.okButton:hover,
+.okButton:focus {
+    background-color: #e6f7e6 !important;
+  }  
+
+.cancelButton:hover,
+.cancelButton:focus {
+    background-color: #ffe3e3 !important;
+  } 
