@@ -12,6 +12,7 @@ import useWorkspaces from '../hooks/workspace/useWorkspaces';
 import useCollections from '../hooks/workspace/useCollections';
 import useDeleteCollection from '../hooks/collection/useDeleteCollection';
 import useGetAllHistory from '../hooks/history/useGetAllHistory';
+import useGetRequests from '../hooks/requests/useGetRequests';
 
 
 const SiderMenu = () => {
@@ -25,6 +26,8 @@ const SiderMenu = () => {
   const { workspaces, getWorkspaces } = useWorkspaces();
   const { getCollections } = useCollections();
   const { getAllHistory } = useGetAllHistory();
+  const { getRequests } = useGetRequests();
+
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +61,6 @@ const SiderMenu = () => {
   ]);
   
 
-
    // Fetch workspaces when the page loads (initial fetch)
    useEffect(() => {
     const fetchWorkspaces = async () => {
@@ -89,6 +91,7 @@ const SiderMenu = () => {
             const workspaceCollections = await getCollections(workspace.id);
             const workspaceHistory = await getAllHistory(workspace.id);
             const workspaceKey = `workspace:${workspace.id}`;
+            
             return {
               key: `workspace:${workspace.id}`,
               label: workspace.name,
@@ -97,10 +100,16 @@ const SiderMenu = () => {
                   key: `workspace:${workspace.id}-collection`,
                   label: 'Collections',
                   icon: <FileOutlined />,
-                  children: workspaceCollections.map((collection) => ({
-                    key: `${workspaceKey}-collection:${collection._id}`,
-                    label: collection.name,
-                  })),
+                  children: await Promise.all( // Use Promise.all to resolve async operations inside map
+                    workspaceCollections.map(async (collection) => {
+                      const requests = await getRequests(collection._id);
+                      console.log(requests);
+                      return {
+                        key: `${workspaceKey}-collection:${collection._id}`,
+                        label: collection.name,
+                      };
+                    })
+                  ),
                 },
                 {
                   key: `workspace:${workspace.id}-history`,

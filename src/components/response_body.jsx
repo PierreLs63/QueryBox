@@ -9,7 +9,8 @@ const ResponseBody = () => {
     style={{
       height: '100%',
       maxWidth: '100%',
-      wordWrap: 'break-word'
+      wordWrap: 'break-word',
+      resize: 'none'
     }}
   >
     <p>{ResponseData.body}</p>

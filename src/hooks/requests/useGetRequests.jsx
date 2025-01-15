@@ -11,20 +11,33 @@ const useGetRequests = () => {
     const [page, setPage] = useState(null);
     const [perPage, setPerPage] = useState(null);
 
-    const getRequests = async (collectionId, page, perPage) => {
+    const getRequests = async (collectionId, page=null, perPage=null) => {
         setLoadingGetRequests(true);
         setErrorGetRequests(null);
         setSuccessGetRequests(null);
         setCollectionId(collectionId);
         setPage(page);
         setPerPage(perPage);
+
+        //Optional params
+        let api = `${baseURL}/collection/${collectionId}/requests/`;
+        const params = new URLSearchParams();
+        if (page !== null) params.append('page', page);
+        if (perPage !== null) params.append('perpage', perPage);
+
+        if (params.toString()) {
+            api += `?${params.toString()}`;
+        }
+
+
         try {
-            const response = await fetch(`${baseURL}/request/${collectionId}/requests?page=${page}&perpage=${perPage}`);
+            const response = await fetch(api);
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
             }
             setRequests(data);
+            return data;
         }
         catch (error) {
             setErrorGetRequests(error.message);
