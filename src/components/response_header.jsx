@@ -17,15 +17,6 @@ const ResponseHeader = () => {
 
   const ResponseData = useResponseDataStore();
 
-  const dataSource = ResponseData.header.map((item) => ({
-    keyData: item.key,
-    value: item.value,
-  }));
-  
-
-const ResponseHeader = () => {
-  const ResponseData = useResponseDataStore();
-
   const headers = Array.isArray(ResponseData.header) ? ResponseData.header.map((header, index) => ({
     key: index,
     keyData: header.key,
@@ -42,6 +33,6 @@ const ResponseHeader = () => {
       size="small"
     />
   );
-};
+}
 
 export default ResponseHeader;
