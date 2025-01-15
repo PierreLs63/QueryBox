@@ -44,7 +44,7 @@ const Accueil = () => {
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
 
-  const workspaceId = "6780f2efb1979e308a72e7ae";
+  const workspaceId = "67877d4769ae6e442b52faea";
 
 
 
