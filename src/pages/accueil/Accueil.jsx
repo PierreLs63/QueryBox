@@ -282,8 +282,8 @@ const Accueil = () => {
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
-                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={[]} containerHeight={responsePanelHeight - 60} />)}
-                  {selectedResponse === "bodyResponse" && (<ResponseBody text="here is an example to test" />)}
+                  {selectedResponse === "headerResponse" && (<ResponseHeader containerHeight={responsePanelHeight - 60} />)}
+                  {selectedResponse === "bodyResponse" && (<ResponseBody />)}
                 </div>
               </Splitter.Panel>
             </Splitter>
