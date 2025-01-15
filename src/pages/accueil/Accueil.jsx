@@ -60,14 +60,6 @@ const Accueil = () => {
     { id: 3, message: 'Place-holder 3' },
   ]);
 
-  // ResponseHeader place-holders
-  const dataResponseHeader = Array.from({
-    length: 10,
-  }).map((_, i) => ({
-    key: i,
-    keyData: `Key ${i}`,
-    value: `Value ${i}`,
-  }));
 
   // Event of request checked
   const onChangeResquest = (e) => {
@@ -255,8 +247,8 @@ const Accueil = () => {
               </Flex>
 
               <div style={{ flex: 1, overflow: 'auto' }}>
-                {selectedRequest === "param" && (<RequestParam containerHeight={requestPanelHeight - 60} />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader containerHeight={requestPanelHeight - 60} />)}
+                {selectedRequest === "param" && (<RequestParam />)}
+                {selectedRequest === "headerRequest" && (<RequestHeader />)}
                 {selectedRequest === "bodyRequest" && (<RequestBody />)}
               </div>
             </Splitter.Panel>
@@ -293,7 +285,7 @@ const Accueil = () => {
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
-                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={dataResponseHeader} containerHeight={responsePanelHeight - 60} />)}
+                  {selectedResponse === "headerResponse" && (<ResponseHeader dataResponseHeader={[]} containerHeight={responsePanelHeight - 60} />)}
                   {selectedResponse === "bodyResponse" && (<ResponseBody text="here is an example to test" />)}
                 </div>
               </Splitter.Panel>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd';
 import useRequestInputStore from '../zustand/RequestInput';
+import './request_param.css'
 
 const EditableCell = ({
   editing,
@@ -34,16 +35,17 @@ const EditableCell = ({
   );
 };
 
-const RequestParam = ({ containerHeight = 300 }) => {
+const RequestParam = () => {
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const RequestInputs = useRequestInputStore();
 
   useEffect(() => {
     RequestInputs.setParams(RequestInputs.params);
   }, [RequestInputs.params]);
-    
+     
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -146,12 +148,14 @@ const RequestParam = ({ containerHeight = 300 }) => {
                   borderColor: 'black',
                   color: '#388E3C',
                 },
+                className: 'custom-ok-button'
               }}
               cancelButtonProps={{
                 style: {
                   color: 'red',
                   borderColor: 'black',
                 },
+                className: 'custom-cancel-button'
               }}
             >
               <a style={{ color: 'red' }}>Cancel</a>
@@ -162,16 +166,33 @@ const RequestParam = ({ containerHeight = 300 }) => {
             <Typography.Link
               disabled={editingKey !== ''}
               onClick={() => edit(record)}
-              style={{ color: '#397d4b' }}
+              style={{ marginRight: 8, color: '#397d4b' }}
             >
               Edit
             </Typography.Link>
-            <Typography.Link
-              onClick={() => deleteRow(record.key)}
-              style={{ marginInlineStart: 8, color: 'red' }}
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => deleteRow(record.key)}
+              okText="Yes"
+              cancelText="No"
+              okButtonProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'black',
+                  color: '#388E3C',
+                },
+                className: 'custom-ok-button'
+              }}
+              cancelButtonProps={{
+                style: {
+                  color: 'red',
+                  borderColor: 'black',
+                },
+                className: 'custom-cancel-button'
+              }}
             >
-              Delete
-            </Typography.Link>
+              <a style={{ color: 'red' }}>Delete</a>
+            </Popconfirm>
           </span>
         );
       },
@@ -193,6 +214,13 @@ const RequestParam = ({ containerHeight = 300 }) => {
     };
   });
 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedKeys) => {
+      setSelectedRowKeys(selectedKeys);
+    },
+  };
+
   // Line + New Row
   const dataWithAddButton = [
     ...RequestInputs.params,
@@ -211,19 +239,20 @@ const RequestParam = ({ containerHeight = 300 }) => {
   return (
     <>
       <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={dataWithAddButton}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          size="small"
-          pagination={false}
-        />
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        bordered
+        dataSource={dataWithAddButton}
+        columns={mergedColumns}
+        rowClassName="editable-row"
+        size="small"
+        pagination={false}
+        rowSelection={rowSelection}
+      />
       </Form>
 
       <Modal title="Ajouter une ligne" open={isModalOpen} onCancel={handleCancel} footer={null}>
@@ -250,7 +279,7 @@ const RequestParam = ({ containerHeight = 300 }) => {
             <Input placeholder="Veuillez saisir une description" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block className='button'>
+            <Button type="primary" htmlType="submit" block className='confirm-button'>
               Confirm
             </Button>
           </Form.Item>
