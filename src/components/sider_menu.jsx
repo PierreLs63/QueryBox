@@ -12,7 +12,8 @@ import useWorkspaces from '../hooks/workspace/useWorkspaces';
 import useCollections from '../hooks/workspace/useCollections';
 import useDeleteCollection from '../hooks/collection/useDeleteCollection';
 import useGetAllHistory from '../hooks/history/useGetAllHistory';
-import useGetRequests from '../hooks/requests/useGetRequests';
+import useCreateRequest from '../hooks/collection/useCreateRequest';
+import useRequests from '../hooks/collection/useRequests';
 
 
 const SiderMenu = () => {
@@ -21,12 +22,13 @@ const SiderMenu = () => {
   const {deleteWorkspace} = useDelete();
   const {createCollection} = useCreateCollection();
   const {deleteCollection} = useDeleteCollection();
+  const {createRequest} = useCreateRequest();
   const {logout} = useLogout();
 
   const { workspaces, getWorkspaces } = useWorkspaces();
   const { getCollections } = useCollections();
   const { getAllHistory } = useGetAllHistory();
-  const { getRequests } = useGetRequests();
+  const { getRequests } = useRequests();
 
 
   // Edition for workspace
@@ -103,10 +105,17 @@ const SiderMenu = () => {
                   children: await Promise.all( // Use Promise.all to resolve async operations inside map
                     workspaceCollections.map(async (collection) => {
                       const requests = await getRequests(collection._id);
-                      console.log(requests);
                       return {
                         key: `${workspaceKey}-collection:${collection._id}`,
                         label: collection.name,
+                        children: await Promise.all(
+                          requests.map(async (request) => {
+                            return {
+                              key: `${workspaceKey}-collection:${collection._id}-request:${request._id}`,
+                              label: request.name,
+                            }
+                          })
+                        ),
                       };
                     })
                   ),
@@ -140,8 +149,6 @@ const SiderMenu = () => {
 
     updateMenuItemsWithCollections();
   }, [workspaces]);
-
-
 
   // Add new workspace
   const addWorkspace = async(parentKey, event) => {
@@ -300,6 +307,62 @@ const SiderMenu = () => {
 
 
 
+   // Add new request
+   const addRequest = async(event, type) => {
+    event.stopPropagation();
+
+    // Split collectionKey from type
+    const collectionKey = type.split('-')[1];
+    const workspaceKey = type.split('-')[0];
+
+    const newRequest = await createRequest(collectionKey.split(":")[1]);
+    const newRequestKey = `${workspaceKey}-${collectionKey}-request:${newRequest._id}`;
+    const newRequestLabel = `${newRequest.name}`;
+    const recursiveUpdate = (items) =>
+      items.map((item) => {
+        if (item.key === workspaceKey) {
+          return {
+            ...item,
+            children: item.children?.map((child) => {
+              if (child.key === type.split('-collection:')[0]+'-collection' ) {
+                return {
+                  ...child,
+                  children: child.children?.map((subchild) => {
+                    console.log(subchild.key)
+                    if (subchild.key === type) {
+                      return {
+                        ...subchild,
+                        children: [
+                          ...subchild.children,
+                          {
+                            key: newRequestKey,
+                            label: newRequestLabel,
+                          },
+                        ],
+                      };
+                    }
+                    return subchild;
+
+                  }),
+                };
+              }
+              return child;
+            }),
+          };
+        } else {
+          return {
+            ...item,
+            children: item.children ? recursiveUpdate(item.children) : item.children,
+          };
+        }
+      });
+
+    setMenuItems((prev) => recursiveUpdate(prev));
+      
+
+  };
+
+
   // Save edition pf workspace
   const handleEditNameOk = async () => {
     if (!editingWorkspaceId) {
@@ -386,6 +449,57 @@ const SiderMenu = () => {
               ...subChild,
               children: subChild.children?.map((subItem) => ({
                 ...subItem,
+                children: subItem.children?.map((subsubItem) => ({
+                  ...subsubItem,
+                  label: (
+                    <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                    >
+                      <span>{subsubItem.label}</span>
+                      {subsubItem.key.includes('-request:') && (
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          <Button
+                            size="small"
+                            onClick={(e) => deleteSubItem(subsubItem.key, e)}
+                            style={{
+                              backgroundColor: 'transparent',
+                              border: '1.5px solid #054d29',
+                              color: '#054d29',
+                              width: '18px',
+                              height: '18px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                            icon={<CloseOutlined />}
+                          />
+                          <Button
+                            size="small"
+                            icon={<EditOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const collId = subsubItem.key.split(':')[2];
+                              setEditingCollectionId(collId);
+                              setNewCollectionName(subItem.label);
+                              setIsModalOpenColl(true);
+                            }}
+                            style={{
+                              backgroundColor: 'transparent',
+                              border: '1.5px solid #054d29',
+                              color: '#054d29',
+                              width: '18px',
+                              height: '18px',
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                })),
                 label: (
                   <div
                     style={{
@@ -397,6 +511,21 @@ const SiderMenu = () => {
                     <span>{subItem.label}</span>
                     {subItem.key.includes('-collection:') && (
                       <div style={{ display: 'flex', gap: '4px' }}>
+                        <Button
+                          size="small"
+                          onClick={(e) => addRequest(e, subItem.key)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: '1.5px solid #054d29',
+                            color: '#054d29',
+                            width: '18px',
+                            height: '18px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          icon={<PlusOutlined />}
+                        />
                         <Button
                           size="small"
                           onClick={(e) => deleteSubItem(subItem.key, e)}

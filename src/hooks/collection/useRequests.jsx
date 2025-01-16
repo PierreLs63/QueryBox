@@ -28,6 +28,7 @@ const useRequests = () => {
             }
             setRequests(data.requests);
             setSuccessRequests('Requests fetched successfully');
+            return(data);
         }
         catch (error) {
             setErrorRequests(error.message);
