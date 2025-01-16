@@ -82,11 +82,13 @@ const useCreateRequest = () => {
             setSuccessCreateRequest("Request sent successfully");
         } catch (error) {
             console.error("Une erreur s'est produite lors de la requête fetch :", error);
-        
+            const errorCode = 500;
+            const errorBody = "Le serveur ne répond pas";
             // Remplir les données d'erreur si nécessaire
-            ResponseData.setCode(500); // Exemple de code d'erreur par défaut
+            ResponseData.setCode(errorCode); // Exemple de code d'erreur par défaut
             ResponseData.setHeader([]);
-            ResponseData.setBody("An error occurred during the fetch request.");
+            ResponseData.setBody(errorBody);
+            SendResponse(errorCode, [], errorBody);
         } finally {
             setLoadingCreateRequest(false);
 

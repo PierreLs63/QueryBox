@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useCollaboratorsDataStore from '../../zustand/Collaborators';
 
 const useInvite = () => {
     const [loadingInvite, setLoadingInvite] = useState(false);
@@ -8,8 +9,9 @@ const useInvite = () => {
     const [successInvite, setSuccessInvite] = useState(null);
     const [invitePrivilege, setInvitePrivilege] = useState(10); // 10 pour viewer par défaut
     const [inviteUsername, setInviteUsername] = useState(""); // état pour le username
+    const collaboratorsZustand = useCollaboratorsDataStore();
     
-    const invite = async ({workspaceId}, username, level) => {
+    const invite = async (workspaceId, username, level) => {
         setLoadingInvite(true);
         setErrorInvite(null);
         setSuccessInvite(null);
@@ -21,7 +23,7 @@ const useInvite = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({username, level})
+                body: JSON.stringify({username, privilege: level})
             });
             const data = await response.json();
 
@@ -32,6 +34,8 @@ const useInvite = () => {
 
             if(data.message !== undefined && response.ok) {
                 toast.success(data.message);
+                console.log(collaboratorsZustand.collaboratorsWorkspace);
+                collaboratorsZustand.setCollaboratorsWorkspace([...collaboratorsZustand.collaboratorsWorkspace, {username: inviteUsername, privilege: invitePrivilege, hasJoined: false}]);
             } else {
                 toast.error(data.message);
                 setErrorInvite(data.message);
