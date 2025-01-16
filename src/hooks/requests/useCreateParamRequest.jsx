@@ -28,8 +28,12 @@ const useCreateParamRequest = () => {
                 body: JSON.stringify({url, method, body, header: headers, parameters: params})
             });
             const data = await response.json();
-            if (data.error) {
+            if (data.error && !response.ok) {
                 throw new Error(data.error);
+            }
+
+            if(data.message !== undefined && !response.ok) {
+                throw new Error(data.message);
             }
             CurrentState.setParamRequestId(data.paramRequest._id);
             CreateRequest(data.paramRequest._id);
