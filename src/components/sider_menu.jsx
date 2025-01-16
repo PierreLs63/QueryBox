@@ -775,8 +775,8 @@ const SiderMenu = () => {
           borderRight: 0,
           paddingTop: '15px',
           paddingBottom: '20px',
-          background: '#d9ebe5',
         }}
+        className='menu'
       />
       <Modal
         title="Edit Workspace Name"

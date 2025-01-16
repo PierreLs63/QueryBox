@@ -127,15 +127,14 @@ const Accueil = () => {
         </div>
       </Header>
 
-      <Layout style={{ height: '100%', width: '100%', background: '#d9ebe5' }}>
+      <Layout style={{ height: '100%', width: '100%' }}>
         <Sider
           width={400}
           collapsible={false}
           breakpoint="md"
           collapsedWidth="0"
           style={{
-            background: '#d9ebe5',
-            overflowY: 'scroll',
+            overflowY: 'auto',
             height: '100%',
           }}
         >

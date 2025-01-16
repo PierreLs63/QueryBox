@@ -58,6 +58,7 @@ const RequestHeader = () => {
 
   const cancel = () => {
     setEditingKey('');
+    form.resetFields();
   };
 
   const save = async (key) => {
@@ -73,17 +74,23 @@ const RequestHeader = () => {
         });
         RequestInputs.setHeaders(newData);
         setEditingKey('');
+        form.resetFields();
       } else {
         newData.push(row);
         RequestInputs.setHeaders(newData);
         setEditingKey('');
+        form.resetFields();
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   };
 
-  const showModal = () => setIsModalOpen(true);
+  const showModal = () => {
+    setIsModalOpen(true);
+    form.resetFields();
+  }
+  
   const handleCancelModal = () => {
     setIsModalOpen(false);
     form.resetFields();
