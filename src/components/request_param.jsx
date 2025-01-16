@@ -61,6 +61,7 @@ const RequestParam = () => {
 
   const cancel = () => {
     setEditingKey('');
+    form.resetFields();
   };
 
   const save = async (key) => {
@@ -76,17 +77,23 @@ const RequestParam = () => {
         });
         RequestInputs.setParams(newData);
         setEditingKey('');
+        form.resetFields();
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   };
 
-  const showModal = () => setIsModalOpen(true);
+  const showModal = () => {
+    setIsModalOpen(true);
+    form.resetFields();
+  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
   };
+  
   const handleAdd = (values) => {
     const newRow = {
       key: RequestInputs.params.length.toString(),
