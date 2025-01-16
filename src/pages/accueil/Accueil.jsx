@@ -279,23 +279,23 @@ const Accueil = () => {
                     <Radio.Button value="bodyResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
                       Body
                     </Radio.Button>
-                    <div>
-                      {ResponseData.code !== null && ResponseData.code !== undefined && (
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <Badge
-                            color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
-                            style={{ marginRight: 8 }}
-                            text={`code: ${ResponseData.code}`}
-                          />
-                        </div>
-                      )}
-                    </div>
+
+                    {ResponseData.code !== null && ResponseData.code !== undefined && (
+                      <Radio.Button value="codeResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button-code" disabled='true'>
+                        <Badge
+                          color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
+                          style={{ marginRight: 8 }}
+                          text={`code: ${ResponseData.code}`}
+                        />
+                      </Radio.Button>
+                    )}
                   </Radio.Group>
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
                   {selectedResponse === "headerResponse" && (<ResponseHeader />)}
                   {selectedResponse === "bodyResponse" && (<ResponseBody />)}
+                  
                 </div>
               </Splitter.Panel>
             </Splitter>
