@@ -227,7 +227,7 @@ const RequestHeader = () => {
       setSelectedRowKeys(selectedKeys);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.key === 'add-row'
+      disabled: record.key.startsWith('add-row')
     }),
   };
 
