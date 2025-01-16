@@ -7,6 +7,7 @@ import useLeave from '../hooks/workspace/useLeave';
 import { useAuthContext } from '../context/AuthContext';
 import useCurrentState from '../zustand/CurrentState';
 import useCollaboratorsDataStore from '../zustand/Collaborators';
+import './collaboratorMenu.css'
 
 const { Option } = Select;
 
@@ -134,6 +135,21 @@ const CollaboratorMenu = ({ loading, error }) => {
         open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
+        okButtonProps={{
+          style: {
+            backgroundColor: 'transparent',
+            borderColor: 'black',
+            color: '#388E3C',
+          },
+          className: 'custom-ok-button'
+        }}
+        cancelButtonProps={{
+          style: {
+            color: 'red',
+            borderColor: 'black',
+          },
+          className: 'custom-cancel-button'
+        }}
         confirmLoading={loadingUpdatePrivileges}
       >
         <Select

@@ -42,8 +42,6 @@ const RequestHeader = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const RequestInputs = useRequestInputStore();
 
-  const protectedKeys = ['0', '1', '2', '3', '4'];
-
   console.log(RequestInputs.headers);
 
   const isEditing = (record) => record.key === editingKey;
@@ -135,7 +133,6 @@ const RequestHeader = () => {
       title: 'Operation',
       dataIndex: 'operation',
       render: (_, record) => {
-        const isProtected = protectedKeys.includes(record.key);
         if (record.key.startsWith('add-row')) {
           return null;
         }
@@ -173,20 +170,15 @@ const RequestHeader = () => {
         ) : (
           <span>
             <Typography.Link
-              disabled={editingKey !== '' || isProtected}
-              onClick={() => {if (!isProtected) edit(record)}}
-              style={{ 
-                marginRight: 10, 
-                color: isProtected ? 'grey' : '#397d4b', 
-                cursor: isProtected ? 'not-allowed' : 'pointer' 
-              }}
+              disabled={editingKey !== ''}
+              onClick={() => edit(record)}
+              style={{ marginRight: 8, color: '#397d4b' }}
             >
               Edit
             </Typography.Link>
             <Popconfirm
               title="Sure to delete?"
-              disabled={isProtected}
-              onConfirm={() => {if (!isProtected) deleteRow(record.key)}}
+              onConfirm={() => deleteRow(record.key)}
               okText="Yes"
               cancelText="No"
               okButtonProps={{
@@ -205,10 +197,7 @@ const RequestHeader = () => {
                 className: 'custom-cancel-button'
               }}
             >
-              <a style={{
-                color: isProtected ? 'grey':'red',
-                cursor: isProtected ? 'not-allowed' : 'pointer'
-               }}>Delete</a>
+              <a style={{ color: 'red' }}>Delete</a>
             </Popconfirm>
           </span>
         );
