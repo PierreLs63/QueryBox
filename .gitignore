@@ -24,3 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+
+# zustand CurrentState
+src/zustand/CurrentState.js
