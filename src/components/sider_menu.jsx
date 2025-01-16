@@ -14,6 +14,7 @@ import useDeleteCollection from '../hooks/collection/useDeleteCollection';
 import useGetAllHistory from '../hooks/history/useGetAllHistory';
 import useCreateRequest from '../hooks/collection/useCreateRequest';
 import useRequests from '../hooks/collection/useRequests';
+import useDeleteRequest from '../hooks/requests/useDeleteRequest';
 
 
 const SiderMenu = () => {
@@ -23,6 +24,7 @@ const SiderMenu = () => {
   const {createCollection} = useCreateCollection();
   const {deleteCollection} = useDeleteCollection();
   const {createRequest} = useCreateRequest();
+  const {deleteRequest} = useDeleteRequest();
   const {logout} = useLogout();
 
   const { workspaces, getWorkspaces } = useWorkspaces();
@@ -328,7 +330,6 @@ const SiderMenu = () => {
                 return {
                   ...child,
                   children: child.children?.map((subchild) => {
-                    console.log(subchild.key)
                     if (subchild.key === type) {
                       return {
                         ...subchild,
@@ -357,13 +358,43 @@ const SiderMenu = () => {
         }
       });
 
-    setMenuItems((prev) => recursiveUpdate(prev));
-      
+    setMenuItems((prev) => recursiveUpdate(prev));  
 
   };
 
 
-  // Save edition pf workspace
+  // Delete request
+  const deleteReq = async(subKey, event) => {
+    if(event != null){
+      event.stopPropagation();
+    }
+
+    await deleteRequest(subKey.split('-request:')[1]);
+
+
+
+    const recursiveDelete = (items) =>
+      items.map((item) => ({
+          ...item,
+          children: item.children?.map((child) => ({
+            ...child,
+            children: child.children?.map((subChild) => ({
+              ...subChild,
+              children: subChild.children?.map((subsubChild) => ({
+                ...subsubChild,
+                children: subsubChild.children?.filter((subItem) => subItem.key !== subKey),
+              })),
+            })),
+          })),
+        }))
+        .filter((i) => i.key !== subKey);
+
+    setMenuItems((prevItems) => recursiveDelete(prevItems));
+  };
+
+
+
+  // Save edition of workspace
   const handleEditNameOk = async () => {
     if (!editingWorkspaceId) {
       setIsModalOpen(false);
@@ -464,7 +495,7 @@ const SiderMenu = () => {
                         <div style={{ display: 'flex', gap: '4px' }}>
                           <Button
                             size="small"
-                            onClick={(e) => deleteSubItem(subsubItem.key, e)}
+                            onClick={(e) => deleteReq(subsubItem.key, e)}
                             style={{
                               backgroundColor: 'transparent',
                               border: '1.5px solid #054d29',
