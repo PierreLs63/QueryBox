@@ -31,6 +31,7 @@ const useCreateRequest = () => {
                 throw new Error(data.error);
             }
             setSuccessCreateRequest(data.message);
+            return(data);
         }
         catch (error) {
             setErrorCreateRequest(error.message);

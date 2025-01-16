@@ -1,10 +1,10 @@
 import {create} from "zustand";
 
 const useCurrentState = create((set) => ({
-    workspaceId: "6788b5044b477e52f68747a6",
+    workspaceId: "6788d9a569ae6e442b530e83",
     collectionId: null,
-    requestId: "6788c9abffc7135030c0128d",
-    paramRequestId: null,
+    requestId: null,
+    paramRequestId: "67877dd469ae6e442b52fb29",
     responseId: null,
     setWorkspaceId: (workspaceId) => {set({ workspaceId: workspaceId }), console.log("Workspace ID set to : ", workspaceId)},
     setCollectionId: (collectionId) => {set({ collectionId: collectionId }), console.log("Collection ID set to : ", collectionId)},
