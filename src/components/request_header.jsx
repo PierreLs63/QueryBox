@@ -54,7 +54,6 @@ const RequestHeader = () => {
       ...record,
     });
     setEditingKey(record.key);
-    form.resetFields();
   };
 
   const cancel = () => {
