@@ -8,6 +8,7 @@ const useDelete = () => {
     const [success, setSuccess] = useState(null);
     const [workspaceId, setWorkspaceId] = useState(null);
     
+    
     const deleteWorkspace = async (workspaceId) => {
         setWorkspaceId(workspaceId);
         setLoading(true);

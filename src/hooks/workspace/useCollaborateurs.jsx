@@ -2,13 +2,14 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 import useCurrentState from '../../zustand/CurrentState';
+import useCollaboratorsDataStore from '../../zustand/Collaborators';
 
 const useCollaborateurs = () => {
     const [loadingCollaborateurs, setLoadingCollaborateurs] = useState(false);
     const [errorCollaborateurs, setErrorCollaborateurs] = useState(null);
     const [successCollaborateurs, setSuccessCollaborateurs] = useState(null);
-    const [collaborateurs, setCollaborateurs] = useState(null);
     const CurrentState = useCurrentState();
+    const collaboratorsZustand = useCollaboratorsDataStore();
 
     const getCollaborateurs = async () => {
         setLoadingCollaborateurs(true);
@@ -34,7 +35,7 @@ const useCollaborateurs = () => {
                 toast.error(data.message);
                 setErrorCollaborateurs(data.message);
             }
-            setCollaborateurs(data);
+            collaboratorsZustand.setCollaboratorsWorkspace(data);
         }
         catch (error) {
             setErrorCollaborateurs(error.message);
@@ -44,7 +45,7 @@ const useCollaborateurs = () => {
             setLoadingCollaborateurs(false);
         }
     }
-    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs, collaborateurs }
+    return { loadingCollaborateurs, errorCollaborateurs, successCollaborateurs, getCollaborateurs }
 }
 
 

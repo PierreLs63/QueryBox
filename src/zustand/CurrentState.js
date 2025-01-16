@@ -4,7 +4,7 @@ const useCurrentState = create((set) => ({
     workspaceId: "6780f2efb1979e308a72e7ae",
     collectionId: null,
     requestId: null,
-    paramRequestId: null,
+    paramRequestId: "6780d4cd994d27f8df1ca432",
     responseId: null,
     setWorkspaceId: (workspaceId) => {set({ workspaceId: workspaceId }), console.log("Workspace ID set to : ", workspaceId)},
     setCollectionId: (collectionId) => {set({ collectionId: collectionId }), console.log("Collection ID set to : ", collectionId)},

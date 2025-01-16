@@ -11,15 +11,15 @@ const useSendResponse = () => {
     const ResponseData = useResponseDataStore();
 
 
-    const SendResponse = async (status, headers, body) => {
+    const SendResponse = async (paramRequestId, status, headers, body) => {
         setLoadingSendResponse(true);
         setErrorSendResponse(null);
 
-        if (CurrentState.paramRequestId === null) {
+        if (paramRequestId === null) {
             throw new Error('Invalid request ID');
         }
 
-        const api = `${baseURL}/response/${CurrentState.paramRequestId}`;
+        const api = `${baseURL}/response/${paramRequestId}`;
         try {
             const response = await fetch(api, {
                 method: 'POST',

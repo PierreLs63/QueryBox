@@ -3,20 +3,21 @@ import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 import useRequestInputStore from '../../zustand/RequestInput';
 import useCreateRequest from './useCreateRequest';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useCreateParamRequest = () => {
     const [loadingreateParamRequest, setLoadingreateParamRequest] = useState(false);
     const [errorreateParamRequest, setErrorreateParamRequest] = useState(null);
     const [successreateParamRequest, setSuccessreateParamRequest] = useState(null);
-    const [requestId, setRequestId] = useState("6780d4b7994d27f8df1ca425");
     const RequestInputs = useRequestInputStore();
+    const CurrentState = useCurrentState();
     const {CreateRequest} = useCreateRequest();
 
     const createParamRequest = async () => {
         setLoadingreateParamRequest(true);
         setErrorreateParamRequest(null);
         setSuccessreateParamRequest(null);
-        const api = `${baseURL}/request/${requestId}/paramRequest`;
+        const api = `${baseURL}/request/${CurrentState.requestId}/paramRequest`;
         const { url, method, body, headers, params } = RequestInputs;
         try {
             const response = await fetch(api, {
@@ -27,12 +28,15 @@ const useCreateParamRequest = () => {
                 body: JSON.stringify({url, method, body, header: headers, parameters: params})
             });
             const data = await response.json();
-            if (data.error) {
+            if (data.error && !response.ok) {
                 throw new Error(data.error);
             }
 
-            CreateRequest();
-
+            if(data.message !== undefined && !response.ok) {
+                throw new Error(data.message);
+            }
+            CurrentState.setParamRequestId(data.paramRequest._id);
+            CreateRequest(data.paramRequest._id);
 
             setSuccessreateParamRequest(data.message);
             

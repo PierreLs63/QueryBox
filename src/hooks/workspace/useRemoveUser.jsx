@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
+import useCollaborateurs from './useCollaborateurs';
 
 
 const useRemoveUser = () => {
@@ -8,12 +10,13 @@ const useRemoveUser = () => {
     const [errorRemoveUser, setErrorRemoveUser] = useState(null);
     const [successRemoveUser, setSuccessRemoveUser] = useState(null);
     const [userId, setUserId] = useState(null);
-    const removeUser = async (workspaceId, username) => {
-        setUserId(userId);
+    const CurrentState = useCurrentState();
+    const getCollaborateurs = useCollaborateurs();
+    const removeUser = async (username) => {
         setLoadingRemoveUser(true);
         setErrorRemoveUser(null);
         setSuccessRemoveUser(null);
-        const api = `${baseURL}/workspace/${workspaceId}/removeUser`;
+        const api = `${baseURL}/workspace/${CurrentState.workspaceId}/removeUser`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
@@ -26,10 +29,16 @@ const useRemoveUser = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-            if(data.message !== undefined) {
+            if(data.message !== undefined && !response.ok) {
                 toast.error(data.message);
                 setErrorRemoveUser(data.message);
             }
+
+            if (data.message !== undefined && response.ok) {
+                toast.success(data.message);
+                getCollaborateurs.getCollaborateurs();
+            }
+            
             setSuccessRemoveUser(data.message);
         }
         catch (error) {

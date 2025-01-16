@@ -736,6 +736,22 @@ const SiderMenu = () => {
         onOk={handleEditCollectionOk}
         onCancel={() => setIsModalOpenColl(false)}
         confirmLoading={loadingCollectionName}
+        okButtonProps={{
+          className:'okButton',
+          style:{
+            color:'green',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
+        cancelButtonProps={{
+          className:'cancelButton',
+          style:{
+            color:'red',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
       >
         {errorCollectionName && <p style={{ color: 'red' }}>{errorCollectionName}</p>}
         {successCollectionName && <p style={{ color: 'green' }}>{successCollectionName}</p>}

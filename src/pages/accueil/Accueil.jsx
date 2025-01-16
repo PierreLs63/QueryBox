@@ -42,7 +42,7 @@ const Accueil = () => {
 
 
   // Utilisation du hook useCollaborateurs
-  const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
+  const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
 
@@ -110,7 +110,7 @@ const Accueil = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
 
           {/* Collaborateur Button with Popover for user list */}
-          <CollaboratorMenu collaborators={collaborateurs || []} loading={loadingCollaborateurs} error={errorCollaborateurs} />
+          <CollaboratorMenu loading={loadingCollaborateurs} error={errorCollaborateurs} />
 
           {/* User Add Icon with Popover for user invite */}
           <InviteMenu inviteUsername={inviteUsername} setInviteUsername={setInviteUsername} invitePrivilege={invitePrivilege} setInvitePrivilege={setInvitePrivilege} invite={invite} />
@@ -213,11 +213,10 @@ const Accueil = () => {
             }}
           >
             {/* Block of request */}
-            <Splitter.Panel
+            <Splitter.Panel defaultSize="50%" min="5%" max="93%"
               // Get clientHeight of panel
               ref={requestPanelRef}
               style={{
-                height: '50%',
                 background: "#d9ebe5",
                 overflow: 'hidden',
                 display: 'flex',
@@ -258,7 +257,6 @@ const Accueil = () => {
                 // Get clientHeight of panel
                 ref={responsePanelRef}
                 style={{
-                  height: '50%',
                   background: "#d9ebe5",
                   overflow: 'hidden',
                   display: 'flex',
@@ -281,23 +279,23 @@ const Accueil = () => {
                     <Radio.Button value="bodyResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
                       Body
                     </Radio.Button>
-                    <div>
-                      {ResponseData.code !== null && ResponseData.code !== undefined && (
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <Badge
-                            color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
-                            style={{ marginRight: 8 }}
-                          />
-                          <span>code: {ResponseData.code}</span>
-                        </div>
-                      )}
-                    </div>
+
+                    {ResponseData.code !== null && ResponseData.code !== undefined && (
+                      <Radio.Button value="codeResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button-code" disabled='true'>
+                        <Badge
+                          color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
+                          style={{ marginRight: 8 }}
+                          text={`code: ${ResponseData.code}`}
+                        />
+                      </Radio.Button>
+                    )}
                   </Radio.Group>
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
                   {selectedResponse === "headerResponse" && (<ResponseHeader />)}
                   {selectedResponse === "bodyResponse" && (<ResponseBody />)}
+                  
                 </div>
               </Splitter.Panel>
             </Splitter>

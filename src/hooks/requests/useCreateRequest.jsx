@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import useResponseDataStore from '../../zustand/ResponseData';
 import useRequestInputStore from '../../zustand/RequestInput';
 import useSendResponse from '../response/useSendResponse';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useCreateRequest = () => {
     const [loadingCreateRequest, setLoadingCreateRequest] = useState(false);
@@ -12,8 +13,9 @@ const useCreateRequest = () => {
     
     const RequestInputs = useRequestInputStore();
     const ResponseData = useResponseDataStore();
+    const CurrentState = useCurrentState();
 
-    const CreateRequest = async () => {
+    const CreateRequest = async (paramRequestId) => {
         setLoadingCreateRequest(true);
         setErrorCreateRequest(null);
         setSuccessCreateRequest(null);
@@ -78,15 +80,17 @@ const useCreateRequest = () => {
             ResponseData.setCode(response.status);
             ResponseData.setHeader(responseHeaders);
             ResponseData.setBody(data);
-            SendResponse(response.status, responseHeaders, data);
+            SendResponse(paramRequestId, response.status, responseHeaders, data);
             setSuccessCreateRequest("Request sent successfully");
         } catch (error) {
             console.error("Une erreur s'est produite lors de la requête fetch :", error);
-        
+            const errorCode = 500;
+            const errorBody = "Le serveur ne répond pas";
             // Remplir les données d'erreur si nécessaire
-            ResponseData.setCode(500); // Exemple de code d'erreur par défaut
+            ResponseData.setCode(errorCode); // Exemple de code d'erreur par défaut
             ResponseData.setHeader([]);
-            ResponseData.setBody("An error occurred during the fetch request.");
+            ResponseData.setBody(errorBody);
+            SendResponse(paramRequestId, errorCode, [], errorBody);
         } finally {
             setLoadingCreateRequest(false);
 
