@@ -285,8 +285,8 @@ const Accueil = () => {
                           <Badge
                             color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
                             style={{ marginRight: 8 }}
+                            text={`code: ${ResponseData.code}`}
                           />
-                          <span>code: {ResponseData.code}</span>
                         </div>
                       )}
                     </div>
