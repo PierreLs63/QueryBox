@@ -11,11 +11,12 @@ import InviteMenu from '../../components/inviteMenu';
 import './Accueil.css';
 
 import { useState, useEffect, useRef } from 'react';
-import { Layout, Button, Input, Radio, Flex, Splitter, Select } from 'antd';
+import { Layout, Button, Input, Radio, Flex, Splitter, Select, Badge } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
 import useInvite from '../../hooks/workspace/useInvite.jsx';
 import useRequestInputStore from '../../zustand/RequestInput';
+import useResponseDataStore from '../../zustand/ResponseData';
 import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
 
 // Overall page layout
@@ -25,6 +26,7 @@ const { Header, Sider } = Layout;
 const Accueil = () => {
 
   const RequestInputs = useRequestInputStore();
+  const ResponseData = useResponseDataStore();
   const {createParamRequest} = useCreateParamRequest();
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
@@ -140,7 +142,7 @@ const Accueil = () => {
           <SiderMenu />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
+        <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
           <div
             style={{
               display: 'flex',
@@ -211,11 +213,10 @@ const Accueil = () => {
             }}
           >
             {/* Block of request */}
-            <Splitter.Panel
+            <Splitter.Panel defaultSize="50%" min="5%" max="93%"
               // Get clientHeight of panel
               ref={requestPanelRef}
               style={{
-                height: '50%',
                 background: "#d9ebe5",
                 overflow: 'hidden',
                 display: 'flex',
@@ -256,7 +257,6 @@ const Accueil = () => {
                 // Get clientHeight of panel
                 ref={responsePanelRef}
                 style={{
-                  height: '50%',
                   background: "#d9ebe5",
                   overflow: 'hidden',
                   display: 'flex',
@@ -279,6 +279,17 @@ const Accueil = () => {
                     <Radio.Button value="bodyResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
                       Body
                     </Radio.Button>
+                    <div>
+                      {ResponseData.code !== null && ResponseData.code !== undefined && (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Badge
+                            color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
+                            style={{ marginRight: 8 }}
+                          />
+                          <span>code: {ResponseData.code}</span>
+                        </div>
+                      )}
+                    </div>
                   </Radio.Group>
                 </Flex>
 
