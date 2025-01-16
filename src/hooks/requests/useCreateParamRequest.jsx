@@ -31,9 +31,8 @@ const useCreateParamRequest = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
-
-            CreateRequest();
-
+            CurrentState.setParamRequestId(data.paramRequest._id);
+            CreateRequest(data.paramRequest._id);
 
             setSuccessreateParamRequest(data.message);
             

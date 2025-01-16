@@ -51,7 +51,7 @@ const CollaboratorMenu = ({ loading, error }) => {
   };
 
   const collaboratorContent = (
-    <div style={{ maxHeight: '200px', overflowY: 'scroll', width: '200px' }}>
+    <div style={{ maxHeight: '200px', overflowY: 'auto', paddingLeft: '15px', paddingRight: '15px', scrollbarWidth: 'thin' }}>
       {loading ? (
         <Spin />
       ) : error ? (
@@ -66,6 +66,7 @@ const CollaboratorMenu = ({ loading, error }) => {
                   width: '100%',
                   color: collaborator.hasJoined ? 'inherit' : 'gray',
                   cursor: collaborator.hasJoined ? 'pointer' : 'not-allowed',
+                  paddingRight: 10
                 }}
               >
                 {collaborator.username}
@@ -107,7 +108,7 @@ const CollaboratorMenu = ({ loading, error }) => {
       )}
     </div>
   );
-  console.log(authUserPrivilege)
+
   return (
     <>
       <Popover

@@ -42,7 +42,7 @@ const Accueil = () => {
 
 
   // Utilisation du hook useCollaborateurs
-  const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs, collaborateurs } = useCollaborateurs();
+  const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
 
@@ -286,7 +286,7 @@ const Accueil = () => {
                             color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
                             style={{ marginRight: 8 }}
                           />
-                          <span>code: {ResponseData.code}</span>
+                          <span>code : {ResponseData.code}</span>
                         </div>
                       )}
                     </div>
