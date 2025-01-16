@@ -135,7 +135,7 @@ const Accueil = () => {
           collapsedWidth="0"
           style={{
             background: '#d9ebe5',
-            overflowY: 'scroll',
+            overflowY: 'auto',
             height: '100%',
           }}
         >
