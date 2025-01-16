@@ -2,11 +2,11 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
-const useChangeName = () => {
+const useChangeRequestName = () => {
     const [loadingChangeName, setLoadingChangeName] = useState(false);
     const [errorChangeName, setErrorChangeName] = useState(null);
     const [successChangeName, setSuccessChangeName] = useState(null);
-    const [requestId, setRequestId] = useState("6780d4b7994d27f8df1ca425");
+    const [requestId, setRequestId] = useState(null);
     const [newRequestName, setNewRequestName] = useState(null);
 
     const changeName = async (requestId, newRequestName) => {
@@ -15,7 +15,7 @@ const useChangeName = () => {
         setSuccessChangeName(null);
         setRequestId(requestId);
         setNewRequestName(newRequestName);
-        const api = `${baseURL}/requests/${requestId}/name`;
+        const api = `${baseURL}/request/${requestId}/name`;
         try {
             const response = await fetch(api, {
                 method: 'PUT',
@@ -41,4 +41,4 @@ const useChangeName = () => {
     return { loadingChangeName, errorChangeName, successChangeName, changeName, requestId, newRequestName }
 }
 
-export default useChangeName
+export default useChangeRequestName

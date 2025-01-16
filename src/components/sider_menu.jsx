@@ -15,6 +15,7 @@ import useGetAllHistory from '../hooks/history/useGetAllHistory';
 import useCreateRequest from '../hooks/collection/useCreateRequest';
 import useRequests from '../hooks/collection/useRequests';
 import useDeleteRequest from '../hooks/requests/useDeleteRequest';
+import useChangeRequestName from '../hooks/requests/useChangeRequestName';
 
 
 const SiderMenu = () => {
@@ -44,6 +45,12 @@ const SiderMenu = () => {
   const [editingCollectionId, setEditingCollectionId] = useState(null);
   const [newCollectionName, setNewCollectionName] = useState('');
   const {loadingCollectionName, errorCollectionName, successCollectionName, changeName: changeCollectionName} = useChangeCollectionName();
+
+  // Edition for request
+  const [isModalOpenReq, setIsModalOpenReq] = useState(false);
+  const [editingRequestId, setEditingRequestId] = useState(null);
+  const [newRequestName, setNewRequestName] = useState('');
+  const {loadingRequestName, errorRequestName, successRequestName, changeName: changeRequestName} = useChangeRequestName();
 
 
   const [menuItems, setMenuItems] = useState([
@@ -467,6 +474,47 @@ const SiderMenu = () => {
 
 
 
+  // Save edition of request
+  const handleEditRequestOk = async () => {
+    if (!editingRequestId) {
+      setIsModalOpenReq(false);
+      return;
+    }
+
+    await changeRequestName(editingRequestId, newRequestName);
+
+    const searchPart = `-request:${editingRequestId}`;
+    setMenuItems((prev) => {
+      const recursiveUpdate = (items) =>
+        items.map((item) => ({
+          ...item,
+          children: item.children?.map((child) => ({
+            ...child,
+            children: child.children?.map((subChild) => ({
+              ...subChild,
+              children: subChild.children?.map((subItem) => ({
+                ...subItem,
+                children: subItem.children?.map((subsubItem) => {
+                  if (subsubItem.key.includes(searchPart)) {
+                    return {
+                      ...subsubItem,
+                      label: newRequestName
+                    };
+                  }
+                  return subsubItem;
+                })
+              }))
+            }))
+          }))
+        }));
+      return recursiveUpdate(prev);
+    });
+
+    setIsModalOpenReq(false);
+  };
+
+
+
 
   return (
     <>
@@ -513,10 +561,10 @@ const SiderMenu = () => {
                             icon={<EditOutlined />}
                             onClick={(e) => {
                               e.stopPropagation();
-                              const collId = subsubItem.key.split(':')[2];
-                              setEditingCollectionId(collId);
-                              setNewCollectionName(subItem.label);
-                              setIsModalOpenColl(true);
+                              const reqId = subsubItem.key.split(':')[3];
+                              setEditingRequestId(reqId);
+                              setNewRequestName(subsubItem.label);
+                              setIsModalOpenReq(true);
                             }}
                             style={{
                               backgroundColor: 'transparent',
@@ -790,6 +838,37 @@ const SiderMenu = () => {
           value={newCollectionName}
           onChange={(e) => setNewCollectionName(e.target.value)}
           placeholder="Enter new collection name"
+        />
+      </Modal>
+      <Modal
+        title="Edit Request Name"
+        open={isModalOpenReq}
+        onOk={handleEditRequestOk}
+        onCancel={() => setIsModalOpenReq(false)}
+        confirmLoading={loadingRequestName}
+        okButtonProps={{
+          className:'okButton',
+          style:{
+            color:'green',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
+        cancelButtonProps={{
+          className:'cancelButton',
+          style:{
+            color:'red',
+            backgroundColor:'white',
+            borderColor:'black'
+          }
+        }}
+      >
+        {errorRequestName && <p style={{ color: 'red' }}>{errorRequestName}</p>}
+        {successRequestName && <p style={{ color: 'green' }}>{successRequestName}</p>}
+        <Input
+          value={newRequestName}
+          onChange={(e) => setNewRequestName(e.target.value)}
+          placeholder="Enter new request name"
         />
       </Modal>
     </>
