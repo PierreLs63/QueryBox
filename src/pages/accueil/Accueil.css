@@ -1,4 +1,6 @@
 /* Ratio button style */
+.custom-radio-button-code,
+.custom-radio-button-code:hover,
 .custom-radio-button {
   color: #000;
   background-color: #fff;
