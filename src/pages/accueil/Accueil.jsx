@@ -142,7 +142,7 @@ const Accueil = () => {
           <SiderMenu />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '100vw', height: '100%', background: '#d9ebe5' }}>
+        <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
           <div
             style={{
               display: 'flex',
