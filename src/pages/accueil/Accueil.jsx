@@ -213,11 +213,10 @@ const Accueil = () => {
             }}
           >
             {/* Block of request */}
-            <Splitter.Panel
+            <Splitter.Panel defaultSize="50%" min="5%" max="93%"
               // Get clientHeight of panel
               ref={requestPanelRef}
               style={{
-                height: '50%',
                 background: "#d9ebe5",
                 overflow: 'hidden',
                 display: 'flex',
@@ -258,7 +257,6 @@ const Accueil = () => {
                 // Get clientHeight of panel
                 ref={responsePanelRef}
                 style={{
-                  height: '50%',
                   background: "#d9ebe5",
                   overflow: 'hidden',
                   display: 'flex',
