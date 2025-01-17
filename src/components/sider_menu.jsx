@@ -163,8 +163,13 @@ const SiderMenu = () => {
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
+    console.log('New Workspace:', newWorkspace);
 
-    const newWsKey = `workspace:${newWorkspace._id}`;
+    if (!newWorkspace.success) {
+      return;
+    }
+
+    const newWsKey = `workspace:${newWorkspace.data._id}`;
 
     setMenuItems((prev) =>
       prev.map((item) => {
@@ -175,7 +180,7 @@ const SiderMenu = () => {
               ...item.children,
               {
                 key: newWsKey,
-                label: `${newWorkspace.name}`,
+                label: `${newWorkspace.data.name}`,
                 children: [
                   {
                     key: `${newWsKey}-collection`,
@@ -206,14 +211,12 @@ const SiderMenu = () => {
   const deleteSubMenu = async(subKey, event) => {
     event.stopPropagation();
 
-    //Recuperate the workspace id from the subkey
-    const collections = await getCollections(subKey.split(":")[1]);
 
-    for (const collection of collections) {
-      await deleteCollection(collection._id);
+    const deleteWorkspaceData = await deleteWorkspace(subKey.split(":")[1]);
+    
+    if (!deleteWorkspaceData.success) {
+      return;
     }
-
-    await deleteWorkspace(subKey.split(":")[1]);
 
     const recursiveDelete = (items) =>
       items
@@ -250,6 +253,11 @@ const SiderMenu = () => {
     const workspaceKey = type.split('-')[0];
 
     const newCollection = await createCollection(workspaceKey.split(":")[1]);
+
+    if (!newCollection.success) {
+      return;
+    }
+    
     const newCollectionKey = `${workspaceKey}-collection:${newCollection.collection._id}`;
     const newCollectionLabel = `${newCollection.collection.name}`;
 
@@ -376,9 +384,11 @@ const SiderMenu = () => {
       event.stopPropagation();
     }
 
-    await deleteRequest(subKey.split('-request:')[1]);
+    const deleteRequestData = await deleteRequest(subKey.split('-request:')[1]);
 
-
+    if (!deleteRequestData.success) {
+      return;
+    }
 
     const recursiveDelete = (items) =>
       items.map((item) => ({
@@ -408,7 +418,11 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeWorkspaceName(editingWorkspaceId, newWorkspaceName);
+    const changeWorkspaceNameData = await changeWorkspaceName(editingWorkspaceId, newWorkspaceName);
+
+    if (!changeWorkspaceNameData.success) {
+      return;
+    }
 
     setMenuItems((prev) => {
       const wsKey = `workspace:${editingWorkspaceId}`;

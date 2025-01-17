@@ -6,11 +6,9 @@ const useDelete = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
     
     
     const deleteWorkspace = async (workspaceId) => {
-        setWorkspaceId(workspaceId);
         setLoading(true);
         setError(null);
         setSuccess(null);
@@ -23,20 +21,23 @@ const useDelete = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccess(data.message);
+            toast.success(data.message);
+            return {success: true, message: data.message};
         }
         catch (error) {
             setError(error.message);
             toast.error(error.message);
+            return {success: false, message: error.message};
         }
         finally {
             setLoading(false);
         }
     }
-    return { loading, error, success, deleteWorkspace, workspaceId }
+    return { loading, error, success, deleteWorkspace }
 }
 
 export default useDelete
