@@ -2,7 +2,7 @@ import {create} from "zustand";
 
 const useCurrentState = create((set) => ({
 
-    workspaceId: "6763e72c9e59618f1b794204",
+    workspaceId: null,
     collectionId: null,
     requestId: null,
     paramRequestId: null,
