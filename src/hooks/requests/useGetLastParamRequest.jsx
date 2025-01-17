@@ -4,16 +4,16 @@ import toast from 'react-hot-toast';
 
 import {baseURL} from '../../utils/variables';
 
-const useCreateCollection = () => {
+const useGetLastParamRequest = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
-    const createCollection = async (workspaceId) => {
+    const GetLastParamRequest = async (requestId) => {
         setLoading(true);
         try {
-            const response = await fetch(`${baseURL}/workspace/${workspaceId}`, {
-                method: 'POST',
+            const response = await fetch(`${baseURL}/request/${requestId}/lastParamRequest`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -23,8 +23,7 @@ const useCreateCollection = () => {
                 throw new Error(data.message);
             }
             setSuccess(data.message);
-            toast.success(data.message);
-            return {success: true, collection: data.collection, message: data.message};
+            return {success: true, paramRequest: data.paramRequest};
 
         }
         catch (error) {
@@ -36,7 +35,7 @@ const useCreateCollection = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, createCollection}
+    return { loading, error, success, GetLastParamRequest}
 }
 
-export default useCreateCollection
+export default useGetLastParamRequest;

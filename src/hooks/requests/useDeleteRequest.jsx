@@ -6,10 +6,8 @@ const useDeleteRequest = () => {
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [errorDelete, setErrorDelete] = useState(null);
     const [successDelete, setSuccessDelete] = useState(null);
-    const [requestId, setRequestId] = useState(null);
 
     const deleteRequest = async (requestId) => {
-        setRequestId(requestId);
         setLoadingDelete(true);
         setErrorDelete(null);
         setSuccessDelete(null);
@@ -22,20 +20,23 @@ const useDeleteRequest = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccessDelete(data.message);
+            toast.success(data.message);
+            return { success: true, message: data.message };
         }
         catch (error) {
             setErrorDelete(error.message);
             toast.error(error.message);
+            return { success: false, message: error.message };
         }
         finally {
             setLoadingDelete(false);
         }
     }
-    return { loadingDelete, errorDelete, successDelete, deleteRequest, requestId }
+    return { loadingDelete, errorDelete, successDelete, deleteRequest }
 }
 
 export default useDeleteRequest

@@ -20,14 +20,18 @@ const useChangeWorkspaceName = () => {
                 body: JSON.stringify({name: newName})
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            console.log(data);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccess(data.message);
+            toast.success(data.message);
+            return {success: true, message: data.message};
         }
         catch (error) {
             setError(error.message);
             toast.error(error.message);
+            return {success: false, message: error.message};
         }
         finally {
             setLoading(false);
