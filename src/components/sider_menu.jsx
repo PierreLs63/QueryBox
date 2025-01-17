@@ -832,7 +832,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newWorkspaceName}
-          onChange={(e) => setNewWorkspaceName(e.target.value)}
+          onChange={(e) => e.target.value.length < 30 && setNewWorkspaceName(e.target.value)}
           placeholder="Enter new workspace name"
         />
       </Modal>
@@ -862,7 +862,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newCollectionName}
-          onChange={(e) => setNewCollectionName(e.target.value)}
+          onChange={(e) => e.target.value.length < 25 && setNewCollectionName(e.target.value)}
           placeholder="Enter new collection name"
         />
       </Modal>
@@ -892,7 +892,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newRequestName}
-          onChange={(e) => setNewRequestName(e.target.value)}
+          onChange={(e) => e.target.value.length < 25 && setNewRequestName(e.target.value)}
           placeholder="Enter new request name"
         />
       </Modal>
