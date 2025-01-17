@@ -18,6 +18,7 @@ import useInvite from '../../hooks/workspace/useInvite.jsx';
 import useRequestInputStore from '../../zustand/RequestInput';
 import useResponseDataStore from '../../zustand/ResponseData';
 import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
+import useCurrentState from '../../zustand/CurrentState';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -27,6 +28,7 @@ const Accueil = () => {
 
   const RequestInputs = useRequestInputStore();
   const ResponseData = useResponseDataStore();
+  const CurrentState = useCurrentState();
   const {createParamRequest} = useCreateParamRequest();
   // State variables
   const [selectedRequest, setSelectedRequest] = useState("param");
@@ -50,7 +52,7 @@ const Accueil = () => {
   useEffect(() => {
    // temporaire il faut récupérer l'id du workspace
     getCollaborateurs();
-  }, []);
+  }, [CurrentState.workspaceId]);
 
   // Notifications place-holders
   const [notifications, setNotifications] = useState([
