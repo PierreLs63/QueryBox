@@ -801,14 +801,13 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
-        {successWS && <p style={{ color: 'green' }}>{successWS}</p>}
         <Input
           value={newWorkspaceName}
           onChange={(e) => setNewWorkspaceName(e.target.value)}
           placeholder="Enter new workspace name"
         />
       </Modal>
+
       <Modal
         title="Edit Collection Name"
         open={isModalOpenColl}
@@ -832,14 +831,13 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorCollectionName && <p style={{ color: 'red' }}>{errorCollectionName}</p>}
-        {successCollectionName && <p style={{ color: 'green' }}>{successCollectionName}</p>}
         <Input
           value={newCollectionName}
           onChange={(e) => setNewCollectionName(e.target.value)}
           placeholder="Enter new collection name"
         />
       </Modal>
+
       <Modal
         title="Edit Request Name"
         open={isModalOpenReq}
@@ -863,8 +861,6 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorRequestName && <p style={{ color: 'red' }}>{errorRequestName}</p>}
-        {successRequestName && <p style={{ color: 'green' }}>{successRequestName}</p>}
         <Input
           value={newRequestName}
           onChange={(e) => setNewRequestName(e.target.value)}
