@@ -141,3 +141,106 @@ npm run
 
 -   **Frontend:**  Open your browser and go to  `http://localhost:5173`.
 -   **Backend:**  The API will run on  `http://localhost:5001`.
+
+## 5. Project Structure
+
+The project is structured into various directories and files to ensure maintainability and scalability. Below is a description of the main components:
+
+### Frontend directory 
+
+### Root Directory
+- `.env`: Contains the environment variables needed for the application, such as API keys, database URLs, and other configurations.
+- `.gitignore`: Specifies files and directories to be ignored by Git.
+- `package.json`: Manages dependencies, scripts, and project metadata.
+- `package-lock.json`: Automatically generated file to lock dependency versions.
+- `vite.config.js`: Configuration file for Vite, used to optimize and build the frontend.
+
+### Directories
+
+#### **public**
+Contains static assets that do not need processing by the bundler. These files are directly served as they are.
+
+- `vite.svg`: A sample static asset used in the project.
+
+#### **src**
+This is the main source folder containing all the application code and resources. It is further divided into subdirectories:
+  
+- **`assets`**: Stores images, fonts, and other static resources used in the application.
+- **`components`**: Houses reusable React components to build the user interface.
+- **`context`**: Contains context providers for managing global states using React Context API.
+- **`hooks`**: Custom hooks to encapsulate and reuse logic across components.
+- **`pages`**: Represents individual pages or views of the application.
+- **`utils`**: Includes utility functions and helpers, such as `variables.js`.
+- **`zustand`**: A folder that appears to store configurations or files related to the `zustand` state management library.
+
+### Key Files in `src`
+- `variables.js`: A utility file that might define constants or configuration variables used throughout the app.
+
+### Other Key Files
+- `App.jsx`: The main application component that defines the overall structure of the app.
+- `main.jsx`: The entry point of the React application, where the root component is rendered.
+- `index.html`: The HTML template file used by Vite to inject the bundled JavaScript.
+
+This structured organization ensures clarity, making the codebase easy to understand and modify.
+
+### Backtend directory 
+
+The backend of the application is organized to ensure clarity and maintainability. Below is the detailed structure and purpose of each directory and file:
+
+### Root Directory
+- `.Dockerfile`: The Docker configuration file used to containerize the backend application.
+- `.env`: Contains environment variables required for the backend (e.g., database URI, JWT secret, API keys).
+- `.gitignore`: Specifies files and directories to exclude from version control.
+- `index.js`: The main entry point of the backend application.
+- `package.json`: Manages the backend dependencies, scripts, and metadata.
+- `package-lock.json`: Locks the exact dependency versions for consistency.
+- `README.md`: Documentation file for the backend.
+
+### Directories
+
+#### **controllers**
+Contains the logic for handling various API requests. Each file corresponds to a specific feature:
+- `auth.js`: Handles authentication-related operations (e.g., login, signup).
+- `collection.js`: Manages operations related to collections.
+- `history.js`: Handles request or response history-related logic.
+- `request.js`: Processes API requests.
+- `response.js`: Manages API responses.
+- `workspace.js`: Handles operations related to workspaces.
+
+#### **middleware**
+This folder contains middleware functions used to intercept and process requests:
+- `protectRoute.js`: Ensures routes are accessible only to authenticated users.
+- `verifiedUser.js`: Confirms if a user is verified before granting access.
+
+#### **models**
+Defines the data models used by the application to interact with the database:
+- `Collection.js`: Represents a collection entity in the database.
+- `ParamRequest.js`: Defines parameters for API requests.
+- `Request.js`: Represents API requests stored in the database.
+- `Response.js`: Represents API responses stored in the database.
+- `User.js`: Represents user information.
+- `Workspace.js`: Represents a workspace entity.
+
+#### **routes**
+Defines the API endpoints and their respective controllers:
+- `auth.js`: Routes related to authentication (e.g., `/login`, `/signup`).
+- `collection.js`: Routes for managing collections.
+- `history.js`: Routes for accessing request/response history.
+- `request.js`: Routes for API request management.
+- `response.js`: Routes for managing API responses.
+- `workspace.js`: Routes for workspace management.
+
+#### **utils**
+Contains utility functions to support the backend:
+- `connectMongoDB.js`: Handles the connection to the MongoDB database.
+- `generateToken.js`: Generates JWT tokens for user authentication.
+- `sendMail.js`: Handles sending emails (e.g., verification, password reset).
+
+#### **public**
+A placeholder directory for static files that might be served by the backend.
+
+#### **node_modules**
+Contains all the installed dependencies for the backend project.
+
+
+
