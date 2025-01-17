@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
 
-const useDelete = () => {
+const useDeleteResponse = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -38,4 +38,4 @@ const useDelete = () => {
     return { loading, error, success, deleteResponse, responseId }
 }
 
-export default useDelete
+export default useDeleteResponse

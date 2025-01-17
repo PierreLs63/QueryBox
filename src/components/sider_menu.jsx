@@ -18,6 +18,7 @@ import useRequests from '../hooks/collection/useRequests';
 import useDeleteRequest from '../hooks/requests/useDeleteRequest';
 import useChangeRequestName from '../hooks/requests/useChangeRequestName';
 import useCurrentState from '../zustand/CurrentState';
+import useDeleteResponse from '../hooks/response/useDeleteResponse';
 
 
 const SiderMenu = () => {
@@ -34,6 +35,7 @@ const SiderMenu = () => {
   const { getCollections } = useCollections();
   const { getAllHistory } = useGetAllHistory();
   const { getRequests } = useRequests();
+  const { deleteResponse } = useDeleteResponse();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -290,6 +292,7 @@ const SiderMenu = () => {
     setMenuItems((prev) => recursiveUpdate(prev));
 
   };
+  
 
 
 
@@ -299,7 +302,12 @@ const SiderMenu = () => {
       event.stopPropagation();
     }
 
-    await deleteCollection(subKey.split('-collection:')[1]);
+    if (subKey.includes("-collection:")){
+      await deleteCollection(subKey.split('-collection:')[1]);
+    }
+    else {
+      await deleteResponse(subKey.split('-history:')[1])
+    }
 
     const recursiveDelete = (items) =>
       items
@@ -535,6 +543,11 @@ const SiderMenu = () => {
     if (key.includes("-request:")){
       const requestId = key.split("-request:")[1];
       currentState.setRequestId(requestId);
+    }
+
+    if (key.includes("-history:")){
+      const responseId = key.split("-history:")[1];
+      currentState.setResponseId(responseId);
     }
 
   };
