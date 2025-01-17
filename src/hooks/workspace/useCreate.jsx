@@ -3,10 +3,8 @@ import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
 
 const useCreate = () => {
-    const [workspace, setWorkspace] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
     const createWorkspace = async () => {
         const api = `${baseURL}/workspace`;
         try {
@@ -18,22 +16,22 @@ const useCreate = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
+            if (data.message && !response.ok) {
                 throw new Error(data.error);
-            }
-            setWorkspace(data);
-            setSuccess(data.message);
-            return data;
+            };
+            toast.success("Workspace created successfully");
+            return {success: true, data};
         }
         catch (error) {
             setError(error.message);
             toast.error(error.message);
+            return {success: false, message: error.message};
         }
         finally {
             setLoading(false);
         }
     }
-    return { workspace, loading, error, success, createWorkspace }
+    return { loading, error, createWorkspace }
 }
 
 export default useCreate
