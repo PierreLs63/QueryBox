@@ -111,10 +111,10 @@ Create a  `.env`  file in the  `backend`  directory and include the following [v
 
 #### Frontend  `.env`  File
 
-Create a  `.env`  file in the  `frontend`  directory and include the following variable:
+Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable:
 
 ```plaintext
-REACT_APP_API_BASE_URL=http://localhost:5137/api/v1`
+BaseURL=http://localhost:5137/api/v1`
 ```
 
 ### Step 4: Run the Application
@@ -139,5 +139,5 @@ npm run
 
 ### Access the Application
 
--   **Frontend:**  Open your browser and go to  `http://localhost:3000`.
+-   **Frontend:**  Open your browser and go to  `http://localhost:5173`.
 -   **Backend:**  The API will run on  `http://localhost:5001`.
