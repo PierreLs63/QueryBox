@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Button, Typography, Flex } from 'antd';
 import SiderMenu from '../../components/sider_menu';

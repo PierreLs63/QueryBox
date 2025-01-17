@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Menu, Button, Modal, Input } from 'antd';
 import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './sider_menu.css'
+
 import useLogout from '../../src/hooks/auth/useLogout';
 import useCreate from '../../src/hooks/workspace/useCreate';
 import useDelete from '../../src/hooks/workspace/useDelete';
@@ -16,6 +17,7 @@ import useCreateRequest from '../hooks/collection/useCreateRequest';
 import useRequests from '../hooks/collection/useRequests';
 import useDeleteRequest from '../hooks/requests/useDeleteRequest';
 import useChangeRequestName from '../hooks/requests/useChangeRequestName';
+import useCurrentState from '../zustand/CurrentState';
 
 
 const SiderMenu = () => {
@@ -32,7 +34,6 @@ const SiderMenu = () => {
   const { getCollections } = useCollections();
   const { getAllHistory } = useGetAllHistory();
   const { getRequests } = useRequests();
-
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +52,9 @@ const SiderMenu = () => {
   const [editingRequestId, setEditingRequestId] = useState(null);
   const [newRequestName, setNewRequestName] = useState('');
   const {loadingRequestName, errorRequestName, successRequestName, changeName: changeRequestName} = useChangeRequestName();
+
+  // Current State
+  const currentState = useCurrentState()
 
 
   const [menuItems, setMenuItems] = useState([
@@ -529,6 +533,28 @@ const SiderMenu = () => {
 
 
 
+  const handleTabClick = async(key) => {
+    if (key.includes("workspace:")){
+      const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
+      currentState.setWorkspaceId(workspaceId);
+    }
+
+    
+    if (key.includes("-collection:")){
+      const collectionId = key.split("-collection:")[1].split("-request:")[0];
+      currentState.setCollectionId(collectionId);
+    }
+
+    
+    if (key.includes("-request:")){
+      const requestId = key.split("-request:")[1];
+      currentState.setRequestId(requestId);
+    }
+
+  };
+
+
+
 
   return (
     <>
@@ -551,6 +577,7 @@ const SiderMenu = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                     }}
+                    onClick={() => handleTabClick(subsubItem.key)}
                     >
                       <span>{subsubItem.label}</span>
                       {subsubItem.key.includes('-request:') && (
@@ -600,6 +627,7 @@ const SiderMenu = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                     }}
+                    onClick={() => handleTabClick(subItem.key)}
                   >
                     <span>{subItem.label}</span>
                     {subItem.key.includes('-collection:') && (
@@ -710,6 +738,7 @@ const SiderMenu = () => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}
+                onClick={() => handleTabClick(child.key)}
               >
                 <span>{child.label}</span>
                 {child.key.startsWith('workspace:') && (
@@ -815,14 +844,13 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorWS && <p style={{ color: 'red' }}>{errorWS}</p>}
-        {successWS && <p style={{ color: 'green' }}>{successWS}</p>}
         <Input
           value={newWorkspaceName}
           onChange={(e) => setNewWorkspaceName(e.target.value)}
           placeholder="Enter new workspace name"
         />
       </Modal>
+
       <Modal
         title="Edit Collection Name"
         open={isModalOpenColl}
@@ -846,14 +874,13 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorCollectionName && <p style={{ color: 'red' }}>{errorCollectionName}</p>}
-        {successCollectionName && <p style={{ color: 'green' }}>{successCollectionName}</p>}
         <Input
           value={newCollectionName}
           onChange={(e) => setNewCollectionName(e.target.value)}
           placeholder="Enter new collection name"
         />
       </Modal>
+
       <Modal
         title="Edit Request Name"
         open={isModalOpenReq}
@@ -877,8 +904,6 @@ const SiderMenu = () => {
           }
         }}
       >
-        {errorRequestName && <p style={{ color: 'red' }}>{errorRequestName}</p>}
-        {successRequestName && <p style={{ color: 'green' }}>{successRequestName}</p>}
         <Input
           value={newRequestName}
           onChange={(e) => setNewRequestName(e.target.value)}

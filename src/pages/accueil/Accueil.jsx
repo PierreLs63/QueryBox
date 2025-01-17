@@ -127,7 +127,7 @@ const Accueil = () => {
         </div>
       </Header>
 
-      <Layout style={{ height: '100%', width: '100%' }}>
+      <Layout style={{ height: '100%', width: '100%', color: '#cae4db' }}>
         <Sider
           width={400}
           collapsible={false}
@@ -136,6 +136,8 @@ const Accueil = () => {
           style={{
             overflowY: 'auto',
             height: '100%',
+            color: '#cae4db',
+            backgroundColor: '#cae4db'
           }}
         >
           <SiderMenu />
