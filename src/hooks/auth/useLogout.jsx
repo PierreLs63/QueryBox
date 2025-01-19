@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useAuthContext } from '../../context/AuthContext';
 import { baseURL } from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useLogout = () => {
     const [loading, setLoading] = useState(false);
     const {setAuthUser} = useAuthContext();
+    const CurrentState = useCurrentState();
     
     const api = `${baseURL}/auth/logout`;
     const logout = async () => {
@@ -24,6 +26,7 @@ const useLogout = () => {
             }
 
             localStorage.removeItem('user');
+            CurrentState.clearAll();
             setAuthUser(null);
         } catch (error) {
             toast.error(error.message || 'An error occurred');

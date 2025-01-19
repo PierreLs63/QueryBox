@@ -15,9 +15,14 @@ const useInvite = () => {
         setLoadingInvite(true);
         setErrorInvite(null);
         setSuccessInvite(null);
-        console.log(workspaceId);
+        
+
         const api = `${baseURL}/workspace/${workspaceId}/invite`;
         try {
+            if (!workspaceId) throw new Error('Please select a workspace');
+            if (!username) throw new Error('Username is required');
+            if (!level) throw new Error('Privilege level is required');
+
             const response = await fetch(api, {
                 method: 'POST',
                 headers: {
@@ -27,14 +32,9 @@ const useInvite = () => {
             });
             const data = await response.json();
 
-            console.log(data);
-            if (data.error) {
-                throw new Error(data.error);
-            }
 
-            if(data.message !== undefined && response.ok) {
+            if(data.message !== undefined || response.ok) {
                 toast.success(data.message);
-                console.log(collaboratorsZustand.collaboratorsWorkspace);
                 collaboratorsZustand.setCollaboratorsWorkspace([...collaboratorsZustand.collaboratorsWorkspace, {username: inviteUsername, privilege: invitePrivilege, hasJoined: false}]);
             } else {
                 toast.error(data.message);
