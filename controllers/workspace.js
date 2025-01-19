@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Workspace from "../models/Workspace.js";
+import Collection from "../models/Collection.js";
 import User from "../models/User.js";
 import dotenv from "dotenv";
 
@@ -70,6 +71,8 @@ export const deleteWorkspace = async (req, res) => {
         }
 
         await Workspace.deleteOne({ _id: workspaceId });
+        await User.updateMany({ "workspaces.workspaceId": workspaceId }, { $pull: { workspaces: { workspaceId } } });
+        await Collection.deleteMany({ workspaceId });
         res.status(200).json({ message: "Workspace deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });

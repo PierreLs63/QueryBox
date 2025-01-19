@@ -234,6 +234,31 @@ export const deleteParamRequest = async (req, res) => {
     }
 }
 
+export const getLastParamRequest = async (req, res) => {
+    try {
+        const { requestId } = req.params;
+
+        if (!requestId) {
+            return res.status(400).json({ message: "Request ID is required" });
+        }
+
+        const request = await Request.findById(requestId);
+        if (!request) {
+            return res.status(404).json({ message: "Request not found" });
+        }
+
+        const lastParamRequest = await ParamRequest.findOne({ requestId }).sort({ createdAt: -1 });
+        if (!lastParamRequest) {
+            return res.status(404).json({ message: "ParamRequest not found" });
+        }
+
+        return res.status(200).json({ paramRequest: lastParamRequest });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 const executeRequest = async (request, paramRequest) => {
     const { url, method, body, header, parameters } = paramRequest;
 
