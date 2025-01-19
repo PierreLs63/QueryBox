@@ -17,12 +17,11 @@ const useCreateParamRequest = () => {
         setLoadingreateParamRequest(true);
         setErrorreateParamRequest(null);
         setSuccessreateParamRequest(null);
-        if (CurrentState.requestId === null) {
-            throw new Error('Invalid request ID');
-        }
         const api = `${baseURL}/request/${CurrentState.requestId}/paramRequest`;
         const { url, method, body, headers, params } = RequestInputs;
         try {
+            if (!CurrentState.requestId) throw new Error('Please select a request');
+            
             const response = await fetch(api, {
                 method: 'POST',
                 headers: {
