@@ -19,6 +19,7 @@ import useRequestInputStore from '../../zustand/RequestInput';
 import useResponseDataStore from '../../zustand/ResponseData';
 import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
 import useCurrentState from '../../zustand/CurrentState';
+import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -47,12 +48,49 @@ const Accueil = () => {
   const { loadingCollaborateurs, errorCollaborateurs, getCollaborateurs } = useCollaborateurs();
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
+  const { GetLastParamRequest } = useGetLastParamRequest();
+  const [showParamPage, setShowParamPage] = useState(false);
+  const [paramRequest, setParamRequest] = useState(null);
+
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
    // temporaire il faut récupérer l'id du workspace
     getCollaborateurs();
   }, [CurrentState.workspaceId]);
+
+  useEffect(() => {
+    const fetchLastParam = async () => {
+      if (CurrentState.requestId != null) {
+        try {
+          const {success, paramRequest} = await GetLastParamRequest(CurrentState.requestId);
+          if (paramRequest != null) {
+            RequestInputs.setMethod(paramRequest.method);
+            RequestInputs.setUrl(paramRequest.url);
+            RequestInputs.setParams(paramRequest.parameters);
+            RequestInputs.setHeaders(paramRequest.header);
+            RequestInputs.setBody(paramRequest.body);
+            console.log('lastparamreq:' ,paramRequest)
+          }
+          else {
+            RequestInputs.resetToDefault();
+          }
+          if (success) {
+            setShowParamPage(true);
+          }
+        } catch (error) {
+          console.error('Error fetching last param:', error);
+        }
+      }
+      else {
+        setShowParamPage(false);
+        setParamRequest(null);
+      }
+    };
+  
+    fetchLastParam();
+  }, [CurrentState.workspaceId, CurrentState.collectionId, CurrentState.requestId, CurrentState.responseId]);
+  
 
   // Notifications place-holders
   const [notifications, setNotifications] = useState([
@@ -145,125 +183,110 @@ const Accueil = () => {
           <SiderMenu />
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              margin: '16px 0',
-            }}
-          >
-            {/* Method Dropdown */}
-            <Select
-              defaultValue={RequestInputs.method}
-              onChange={(value) => RequestInputs.setMethod(value)}
+        {showParamPage && (
+          <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
+            <div
               style={{
-                width: 120,
-              }}
-              options={[
-                {
-                  value: 'GET',
-                  label: 'GET',
-                },
-                {
-                  value: 'POST',
-                  label: 'POST',
-                },
-                {
-                  value: 'PUT',
-                  label: 'PUT',
-                },
-                {
-                  value: 'PATCH',
-                  label: 'PATCH',
-                },
-                {
-                  value: 'DELETE',
-                  label: 'DELETE',
-                },
-                {
-                  value: 'HEAD',
-                  label: 'HEAD',
-                },
-                {
-                  value: 'OPTIONS',
-                  label: 'OPTIONS',
-                },
-              ]}
-            />
-
-            {/* URL Input */}
-            <Input placeholder="URL" value={RequestInputs.url} onChange={(e) => RequestInputs.setUrl(e.target.value)} />
-
-            {/* Send Button */}
-            <Button
-              onClick={(e) => {
-                e.currentTarget.blur();
-                createParamRequest();
-              }}
-              className='sendButton'>
-              Send
-            </Button>
-          </div>
-
-          <Splitter
-            layout="vertical"
-            style={{
-              height: '100vh',
-              background: "#d9ebe5",
-              overflow: 'hidden'
-            }}
-          >
-            {/* Block of request */}
-            <Splitter.Panel defaultSize="50%" min="5%" max="93%"
-              // Get clientHeight of panel
-              ref={requestPanelRef}
-              style={{
-                background: "#d9ebe5",
-                overflow: 'hidden',
                 display: 'flex',
-                flexDirection: 'column'
+                alignItems: 'center',
+                gap: '16px',
+                margin: '16px 0',
               }}
             >
-              <Flex vertical gap="middle">
-                <Radio.Group
-                  onChange={onChangeResquest}
-                  defaultValue="param"
-                  style={{
-                    marginBottom: '5px',
-                    marginTop: '0px',
-                    display: 'flex'
-                  }}
-                >
-                  <Radio.Button value="param" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
-                    Param
-                  </Radio.Button>
-                  <Radio.Button value="headerRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
-                    Header
-                  </Radio.Button>
-                  <Radio.Button value="bodyRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
-                    Body
-                  </Radio.Button>
-                </Radio.Group>
-              </Flex>
+              {/* Method Dropdown */}
+              <Select
+                defaultValue={RequestInputs.method}
+                onChange={(value) => RequestInputs.setMethod(value)}
+                style={{
+                  width: 120,
+                }}
+                options={[
+                  { value: 'GET', label: 'GET' },
+                  { value: 'POST', label: 'POST' },
+                  { value: 'PUT', label: 'PUT' },
+                  { value: 'PATCH', label: 'PATCH' },
+                  { value: 'DELETE', label: 'DELETE' },
+                  { value: 'HEAD', label: 'HEAD' },
+                  { value: 'OPTIONS', label: 'OPTIONS' },
+                ]}
+              />
 
-              <div style={{ flex: 1, overflow: 'auto' }}>
-                {selectedRequest === "param" && (<RequestParam />)}
-                {selectedRequest === "headerRequest" && (<RequestHeader />)}
-                {selectedRequest === "bodyRequest" && (<RequestBody />)}
-              </div>
-            </Splitter.Panel>
+              {/* URL Input */}
+              <Input placeholder="URL" value={RequestInputs.url} onChange={(e) => RequestInputs.setUrl(e.target.value)} />
+
+
+              {/* Send Button */}
+              <Button
+                onClick={(e) => {
+                  e.currentTarget.blur();
+                  createParamRequest();
+                }}
+                className="sendButton"
+              >
+                Send
+              </Button>
+            </div>
+
+            <Splitter
+              layout="vertical"
+              style={{
+                height: '100vh',
+                background: '#d9ebe5',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Block of request */}
+              <Splitter.Panel
+                defaultSize="50%"
+                min="5%"
+                max="93%"
+                // Get clientHeight of panel
+                ref={requestPanelRef}
+                style={{
+                  background: '#d9ebe5',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Flex vertical gap="middle">
+                  <Radio.Group
+                    onChange={onChangeResquest}
+                    defaultValue="param"
+                    style={{
+                      marginBottom: '5px',
+                      marginTop: '0px',
+                      display: 'flex',
+                    }}
+                  >
+                    <Radio.Button value="param" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                      Param
+                    </Radio.Button>
+                    <Radio.Button value="headerRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                      Header
+                    </Radio.Button>
+                    <Radio.Button value="bodyRequest" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
+                      Body
+                    </Radio.Button>
+                  </Radio.Group>
+                </Flex>
+
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  {selectedRequest === 'param' && <RequestParam />}
+                  {selectedRequest === 'headerRequest' && <RequestHeader />}
+                  {selectedRequest === 'bodyRequest' && <RequestBody />}
+                </div>
+              </Splitter.Panel>
 
               {/* Block of response */}
               <Splitter.Panel
                 // Get clientHeight of panel
                 ref={responsePanelRef}
                 style={{
-                  background: "#d9ebe5",
+                  background: '#d9ebe5',
                   overflow: 'hidden',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
                 }}
               >
                 <Flex vertical gap="middle">
@@ -273,7 +296,7 @@ const Accueil = () => {
                     style={{
                       marginBottom: '5px',
                       marginTop: '15px',
-                      display: 'flex'
+                      display: 'flex',
                     }}
                   >
                     <Radio.Button value="headerResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button">
@@ -284,7 +307,12 @@ const Accueil = () => {
                     </Radio.Button>
 
                     {ResponseData.code !== null && ResponseData.code !== undefined && (
-                      <Radio.Button value="codeResponse" style={{ flex: 0.1, textAlign: 'center' }} className="custom-radio-button-code" disabled='true'>
+                      <Radio.Button
+                        value="codeResponse"
+                        style={{ flex: 0.1, textAlign: 'center' }}
+                        className="custom-radio-button-code"
+                        disabled
+                      >
                         <Badge
                           color={ResponseData.code >= 0 && ResponseData.code <= 399 ? 'green' : 'red'}
                           style={{ marginRight: 8 }}
@@ -296,13 +324,14 @@ const Accueil = () => {
                 </Flex>
 
                 <div style={{ flex: 1, overflow: 'auto' }}>
-                  {selectedResponse === "headerResponse" && (<ResponseHeader />)}
-                  {selectedResponse === "bodyResponse" && (<ResponseBody />)}
-                  
+                  {selectedResponse === 'headerResponse' && <ResponseHeader />}
+                  {selectedResponse === 'bodyResponse' && <ResponseBody />}
                 </div>
               </Splitter.Panel>
             </Splitter>
-        </Layout>
+          </Layout>
+        )}
+
       </Layout>
     </Layout>
   );

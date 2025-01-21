@@ -544,8 +544,18 @@ const SiderMenu = () => {
 
   const handleTabClick = async(key) => {
     if (key.includes("workspace:")){
-      const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
-      currentState.setWorkspaceId(workspaceId);
+      if (key.includes("-collection")){
+        const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
+        currentState.setWorkspaceId(workspaceId);
+      }
+      else {
+        const workspaceId = key.split("workspace:")[1].split("-history:")[0];
+        currentState.setWorkspaceId(workspaceId);
+      }
+      
+    }
+    else{
+      currentState.setWorkspaceId(null);
     }
 
     
@@ -553,16 +563,25 @@ const SiderMenu = () => {
       const collectionId = key.split("-collection:")[1].split("-request:")[0];
       currentState.setCollectionId(collectionId);
     }
+    else{
+      currentState.setCollectionId(null);
+    }
 
     
     if (key.includes("-request:")){
       const requestId = key.split("-request:")[1];
       currentState.setRequestId(requestId);
     }
+    else{
+      currentState.setRequestId(null);
+    }
 
     if (key.includes("-history:")){
       const responseId = key.split("-history:")[1];
       currentState.setResponseId(responseId);
+    }
+    else{
+      currentState.setResponseId(null);
     }
 
   };
