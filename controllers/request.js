@@ -305,3 +305,26 @@ const executeRequest = async (request, paramRequest) => {
 
     await response.save();
 };
+
+export const getRequestById = async (req, res) => {
+    const { requestId }= req.params;
+    const { userId } = req.user;
+    const request = await Request.findById(requestId);
+    if (!request) {
+        return res.status(404).json({ message: "Request not found" });
+    }
+    const collection = await Collection.findById(request.collectionId);
+    if (!collection) {
+        return res.status(404).json({ message: "Collection not found" });
+    }
+    var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+    const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": userId });
+    if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+    if (!userConnectedInCollection) {
+        userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
+    }
+    if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+    if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+    const paramRequests = await ParamRequest.find({ requestId });
+    return res.status(200).json({ request, paramRequests });
+}
