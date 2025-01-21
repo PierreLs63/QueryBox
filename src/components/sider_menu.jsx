@@ -469,7 +469,10 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeCollectionName(editingCollectionId, newCollectionName);
+    const changeCollectionNameData = await changeCollectionName(editingCollectionId, newCollectionName);
+    if (!changeCollectionNameData.success) {
+      return;
+    }
 
     const searchPart = `-collection:${editingCollectionId}`;
     setMenuItems((prev) => {

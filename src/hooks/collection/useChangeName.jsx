@@ -20,14 +20,17 @@ const useChangeCollectionName = () => {
                 body: JSON.stringify({name: newName})
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccessChangeName(data.message);
+            toast.success(data.message);
+            return {success: true};
         }
         catch (error) {
             setErrorChangeName(error.message);
             toast.error(error.message);
+            return {success: false};
         }
         finally {
             setLoadingChangeName(false);
