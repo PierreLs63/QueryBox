@@ -1,6 +1,6 @@
 import React from 'react';
-import { List, Button, Popover } from 'antd';
-import { CloseOutlined, BellOutlined } from '@ant-design/icons';
+import { List, Button, Popover, Badge } from 'antd';
+import { CloseOutlined, BellOutlined, CheckOutlined } from '@ant-design/icons';
 
 const NotificationMenu = ({ notifications, setNotifications }) => {
   // Function to handle removing a notification
@@ -26,6 +26,12 @@ const NotificationMenu = ({ notifications, setNotifications }) => {
             <div style={{ flex: 1, marginRight: '10px' }}>{item.message}</div>
             <Button
               type="link"
+              icon={<CheckOutlined style={{ color: 'green' }} />}
+              onClick={() => handleRemoveNotification(item.id)}
+              style={{ padding: 0 }}
+            />
+            <Button
+              type="link"
               icon={<CloseOutlined style={{ color: 'red' }} />}
               onClick={() => handleRemoveNotification(item.id)}
               style={{ padding: 0 }}
@@ -41,11 +47,13 @@ const NotificationMenu = ({ notifications, setNotifications }) => {
       content={notificationContent}
       title={<div style={{ textAlign: 'center', width: '100%' }}>Notifications</div>}
       trigger="click">
-      <Button
-        type="text"
-        icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
-        style={{ padding: 0 }}
-      />
+      <Badge count={notifications.length}>
+        <Button
+          type="text"
+          icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+          style={{ padding: 0 }}
+        />
+      </Badge>
     </Popover>
   );
 };

@@ -56,7 +56,7 @@ const Accueil = () => {
 
   // Notifications place-holders
   const [notifications, setNotifications] = useState([
-    { id: 1, message: 'Place-holder 1' },
+    { id: 1, message: 'You got an invitation to join the workspace : Untitled Workspace' },
     { id: 2, message: 'Multiple line place-holder beepbop 2' },
     { id: 3, message: 'Place-holder 3' },
   ]);

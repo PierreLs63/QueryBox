@@ -169,7 +169,6 @@ const SiderMenu = () => {
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
-    console.log('New Workspace:', newWorkspace);
 
     if (!newWorkspace.success) {
       return;
