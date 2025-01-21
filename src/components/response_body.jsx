@@ -10,7 +10,8 @@ const ResponseBody = () => {
       height: '100%',
       maxWidth: '100%',
       wordWrap: 'break-word',
-      resize: 'none'
+      resize: 'none',
+      color: 'white',
     }}
   >
     <p>{ResponseData.body}</p>
