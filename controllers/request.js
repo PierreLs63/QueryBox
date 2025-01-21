@@ -31,7 +31,7 @@ export const createRequest = async (req, res) => {
         }
         if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
         
-        if (userConnectedInCollection.privilege < viewer_grade) {
+        if (userConnectedInCollection.privilege < admin_grade) {
             return res.status(401).json({ message: "User not authorized" });
         }
 
@@ -42,7 +42,7 @@ export const createRequest = async (req, res) => {
         // Ajouter la requête à la collection
         collection.requests.push(request._id);
         await collection.save();
-        return res.status(201).json(request);
+        return res.status(201).json({message: "Request created successfully", ...request._doc});
     } catch (error) {
         return res.status(409).json({ message: error.message }); 
     }
@@ -80,7 +80,7 @@ export const changeName = async (req, res) => {
         if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
 
 
-        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         if (request.name !== name) {
             request.name = name;
