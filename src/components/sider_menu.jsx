@@ -517,7 +517,9 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeRequestName(editingRequestId, newRequestName);
+    const changeRequestNameData = await changeRequestName(editingRequestId, newRequestName);
+    if (!changeRequestNameData.success) return;
+
 
     const searchPart = `-request:${editingRequestId}`;
     setMenuItems((prev) => {
