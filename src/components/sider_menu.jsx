@@ -58,6 +58,12 @@ const SiderMenu = () => {
   // Current State
   const currentState = useCurrentState()
 
+  // State of menu opened
+  const [openKeys, setOpenKeys] = useState([]);
+  const handleOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
+
 
   const [menuItems, setMenuItems] = useState([
     {
@@ -579,14 +585,20 @@ const SiderMenu = () => {
     <>
       <Menu
         mode="inline"
+        openKeys={openKeys}
+        onOpenChange={handleOpenChange}
         items={menuItems.map((item) => ({
           ...item,
+          className: openKeys.includes(item.key) ? 'item-open' : '',
           children: item.children?.map((child) => ({
             ...child,
+            className: openKeys.includes(child.key) ? 'child-open' : '',
             children: child.children?.map((subChild) => ({
               ...subChild,
+              className: openKeys.includes(subChild.key) ? 'subchild-open' : '',
               children: subChild.children?.map((subItem) => ({
                 ...subItem,
+                className: openKeys.includes(subItem.key) ? 'subitem-open' : '',
                 children: subItem.children?.map((subsubItem) => ({
                   ...subsubItem,
                   label: (
