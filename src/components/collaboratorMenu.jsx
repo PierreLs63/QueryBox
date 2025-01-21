@@ -42,9 +42,9 @@ const CollaboratorMenu = ({ loading, error }) => {
 
   const handleRemove = async (username) => {
     await removeUser(username);
-    collaboratorsZustand.set((state) => ({
-      collaboratorsWorkspace: state.collaboratorsWorkspace.filter(collaborator => collaborator.username !== username)
-    }));
+    collaboratorsZustand.setCollaboratorsWorkspace(
+      collaboratorsZustand.collaboratorsWorkspace.filter(collaborator => collaborator.username !== username)
+    );
   };
 
   const handleLeave = async () => {

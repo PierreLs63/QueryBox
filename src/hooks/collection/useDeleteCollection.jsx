@@ -22,14 +22,17 @@ const useDeleteCollection = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccessDelete(data.message);
+            toast.success(data.message);
+            return {success: true};
         }
         catch (error) {
             setErrorDelete(error.message);
             toast.error(error.message);
+            return {success: false};
         }
         finally {
             setLoadingDelete(false);

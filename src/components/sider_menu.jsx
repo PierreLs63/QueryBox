@@ -311,7 +311,10 @@ const SiderMenu = () => {
     }
 
     if (subKey.includes("-collection:")){
-      await deleteCollection(subKey.split('-collection:')[1]);
+      const deleteCollectionData = await deleteCollection(subKey.split('-collection:')[1]);
+      if (!deleteCollectionData.success) {
+        return;
+      }
     }
     else {
       await deleteResponse(subKey.split('-history:')[1])
@@ -469,7 +472,10 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeCollectionName(editingCollectionId, newCollectionName);
+    const changeCollectionNameData = await changeCollectionName(editingCollectionId, newCollectionName);
+    if (!changeCollectionNameData.success) {
+      return;
+    }
 
     const searchPart = `-collection:${editingCollectionId}`;
     setMenuItems((prev) => {
