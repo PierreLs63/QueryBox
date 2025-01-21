@@ -311,7 +311,10 @@ const SiderMenu = () => {
     }
 
     if (subKey.includes("-collection:")){
-      await deleteCollection(subKey.split('-collection:')[1]);
+      const deleteCollectionData = await deleteCollection(subKey.split('-collection:')[1]);
+      if (!deleteCollectionData.success) {
+        return;
+      }
     }
     else {
       await deleteResponse(subKey.split('-history:')[1])
