@@ -11,8 +11,6 @@ const useDeleteResponse = () => {
     const deleteResponse = async (responseId) => {
         setResponseId(responseId);
         setLoading(true);
-        setError(null);
-        setSuccess(null);
         const api = `${baseURL}/response/${responseId}`;
         try {
             const response = await fetch(api, {
@@ -22,14 +20,19 @@ const useDeleteResponse = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            console.log(data);
+            
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccess(data.message);
+            toast.success(data.message);
+            return {success: true};
         }
         catch (error) {
             setError(error.message);
             toast.error(error.message);
+            return {success: false};
         }
         finally {
             setLoading(false);

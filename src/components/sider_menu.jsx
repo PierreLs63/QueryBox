@@ -317,7 +317,10 @@ const SiderMenu = () => {
       }
     }
     else {
-      await deleteResponse(subKey.split('-history:')[1])
+      const deleteResponseData = await deleteResponse(subKey.split('-history:')[1])
+      if (!deleteResponseData.success){
+        return;
+      }
     }
 
     const recursiveDelete = (items) =>
