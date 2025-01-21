@@ -27,15 +27,17 @@ const useCreateRequest = () => {
                 body: JSON.stringify({name, requests})
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccessCreateRequest(data.message);
-            return(data);
+            toast.success(data.message);
+            return {success: true, ...data};
         }
         catch (error) {
             setErrorCreateRequest(error.message);
             toast.error(error.message);
+            return {success: false};
         }
         finally {
             setLoadingCreateRequest(false);

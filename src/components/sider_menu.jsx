@@ -175,7 +175,6 @@ const SiderMenu = () => {
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
-    console.log('New Workspace:', newWorkspace);
 
     if (!newWorkspace.success) {
       return;
@@ -323,7 +322,10 @@ const SiderMenu = () => {
       }
     }
     else {
-      await deleteResponse(subKey.split('-history:')[1])
+      const deleteResponseData = await deleteResponse(subKey.split('-history:')[1])
+      if (!deleteResponseData.success){
+        return;
+      }
     }
 
     const recursiveDelete = (items) =>
@@ -354,6 +356,10 @@ const SiderMenu = () => {
     const workspaceKey = type.split('-')[0];
 
     const newRequest = await createRequest(collectionKey.split(":")[1]);
+    if (!newRequest.success) {
+      return;
+    }
+
     const newRequestKey = `${workspaceKey}-${collectionKey}-request:${newRequest._id}`;
     const newRequestLabel = `${newRequest.name}`;
     const recursiveUpdate = (items) =>
@@ -519,7 +525,9 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeRequestName(editingRequestId, newRequestName);
+    const changeRequestNameData = await changeRequestName(editingRequestId, newRequestName);
+    if (!changeRequestNameData.success) return;
+
 
     const searchPart = `-request:${editingRequestId}`;
     setMenuItems((prev) => {
