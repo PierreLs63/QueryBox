@@ -282,6 +282,7 @@ const SiderMenu = () => {
                     {
                       key: newCollectionKey,
                       label: newCollectionLabel,
+                      children: [],
                     },
                   ],
                 };
