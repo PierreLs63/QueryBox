@@ -11,7 +11,8 @@ import {
     joinWorkspace,
     leaveWorkspace,
     getUsersInWorkspace,
-    getWorkspaces
+    getWorkspaces,
+    getWorkspaceById,
 } from "../controllers/workspace.js";
 import {
     getHistory,
@@ -33,7 +34,7 @@ router.post("/:workspaceId/invite", protectRoute, inviteUserByUsername); // Invi
 router.put("/:workspaceId/join", protectRoute, joinWorkspace); // Mise à jour pour rejoindre un workspace
 router.put("/:workspaceId/leave", protectRoute, leaveWorkspace); // Route pour quitter un workspace
 router.get("/:workspaceId/users", protectRoute, getUsersInWorkspace); // Obtenir la liste des utilisateurs d'un workspace
-
+router.get("/:workspaceId", protectRoute, getWorkspaceById); // Obtenir un workspace par son id
 // Routes pour l'historique
 router.get("/:workspaceId/history", protectRoute, getHistory); // Obtenir l'historique complet
 router.get("/:workspaceId/history/me", protectRoute, getMyHistory); // Obtenir l'historique de l'utilisateur courant

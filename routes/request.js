@@ -6,7 +6,8 @@ import {
     createParamRequestAndUpdateRequest,
     deleteRequest,
     deleteParamRequest,
-    getLastParamRequest
+    getLastParamRequest,
+    getRequestById
 } from "../controllers/request.js";
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.post("/:requestId/paramRequest", protectRoute, createParamRequestAndUpdat
 router.delete("/:requestId", protectRoute, deleteRequest); // Supprimer une requête
 router.delete("/paramRequests/:paramRequestId", protectRoute, deleteParamRequest); // Supprimer un ParamRequest
 router.get("/:requestId/lastParamRequest", protectRoute, getLastParamRequest); // Créer une nouvelle requête
+router.get("/:requestId", protectRoute, getRequestById); // Obtenir une requête par son id
 
 export default router;
