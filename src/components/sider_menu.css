@@ -1,19 +1,20 @@
-.ant-menu-submenu-selected > .ant-menu-submenu-title {
+  .ant-menu-submenu-selected > .ant-menu-submenu-title {
     color: #397d4b !important;
     font-weight: bold;
   }
   
   .ant-menu-submenu-selected > .ant-menu-submenu-title:hover {
-    background-color: #d0f0d0 !important;
+    background-color: #90ae902c !important;
   }
   
   .ant-menu-item-selected {
-    background-color: #d0f0d0 !important;
+    background-color: #90ae90e0 !important;
     color: #397d4b !important;
+    font-weight: bold;
   }
   
   .ant-menu-item:hover {
-    background-color: #d9ebe5;
+    background-color: #90ae902c;
   }
   
   .ant-menu-item-selected:hover {
@@ -22,7 +23,7 @@
 
   .ant-menu-item:active, 
   .ant-menu-submenu-title:active {
-  background-color: #d0f0d0 !important;
+  background-color: #90ae90c5 !important;
   color: #397d4b !important;
   }
 
@@ -40,4 +41,20 @@
 
 .menu {
   background-color: #cae4db;
+}
+
+.item-open > .ant-menu-submenu-title {
+  background-color: #90ae902c !important;
+}
+
+.child-open > .ant-menu-submenu-title {
+  background-color: #90ae9050 !important;
+}
+
+.subchild-open > .ant-menu-submenu-title {
+  background-color: #90ae9081 !important;
+}
+
+.subitem-open > .ant-menu-submenu-title {
+  background-color: #90ae90a5 !important;
 }

@@ -11,8 +11,6 @@ const useChangeRequestName = () => {
 
     const changeName = async (requestId, newRequestName) => {
         setLoadingChangeName(true);
-        setErrorChangeName(null);
-        setSuccessChangeName(null);
         setRequestId(requestId);
         setNewRequestName(newRequestName);
         const api = `${baseURL}/request/${requestId}/name`;
@@ -25,14 +23,17 @@ const useChangeRequestName = () => {
                 body: JSON.stringify({name: newRequestName})
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
             setSuccessChangeName(data.message);
+            toast.success(data.message);
+            return {success: true};
         }
         catch (error) {
             setErrorChangeName(error.message);
             toast.error(error.message);
+            return {success: false};
         }
         finally {
             setLoadingChangeName(false);

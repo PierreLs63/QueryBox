@@ -58,6 +58,12 @@ const SiderMenu = () => {
   // Current State
   const currentState = useCurrentState()
 
+  // State of menu opened
+  const [openKeys, setOpenKeys] = useState([]);
+  const handleOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
+
 
   const [menuItems, setMenuItems] = useState([
     {
@@ -169,7 +175,6 @@ const SiderMenu = () => {
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
-    console.log('New Workspace:', newWorkspace);
 
     if (!newWorkspace.success) {
       return;
@@ -312,10 +317,16 @@ const SiderMenu = () => {
     }
 
     if (subKey.includes("-collection:")){
-      await deleteCollection(subKey.split('-collection:')[1]);
+      const deleteCollectionData = await deleteCollection(subKey.split('-collection:')[1]);
+      if (!deleteCollectionData.success) {
+        return;
+      }
     }
     else {
-      await deleteResponse(subKey.split('-history:')[1])
+      const deleteResponseData = await deleteResponse(subKey.split('-history:')[1])
+      if (!deleteResponseData.success){
+        return;
+      }
     }
 
     const recursiveDelete = (items) =>
@@ -346,6 +357,10 @@ const SiderMenu = () => {
     const workspaceKey = type.split('-')[0];
 
     const newRequest = await createRequest(collectionKey.split(":")[1]);
+    if (!newRequest.success) {
+      return;
+    }
+
     const newRequestKey = `${workspaceKey}-${collectionKey}-request:${newRequest._id}`;
     const newRequestLabel = `${newRequest.name}`;
     const recursiveUpdate = (items) =>
@@ -470,7 +485,10 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeCollectionName(editingCollectionId, newCollectionName);
+    const changeCollectionNameData = await changeCollectionName(editingCollectionId, newCollectionName);
+    if (!changeCollectionNameData.success) {
+      return;
+    }
 
     const searchPart = `-collection:${editingCollectionId}`;
     setMenuItems((prev) => {
@@ -508,7 +526,9 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeRequestName(editingRequestId, newRequestName);
+    const changeRequestNameData = await changeRequestName(editingRequestId, newRequestName);
+    if (!changeRequestNameData.success) return;
+
 
     const searchPart = `-request:${editingRequestId}`;
     setMenuItems((prev) => {
@@ -593,14 +613,20 @@ const SiderMenu = () => {
     <>
       <Menu
         mode="inline"
+        openKeys={openKeys}
+        onOpenChange={handleOpenChange}
         items={menuItems.map((item) => ({
           ...item,
+          className: openKeys.includes(item.key) ? 'item-open' : '',
           children: item.children?.map((child) => ({
             ...child,
+            className: openKeys.includes(child.key) ? 'child-open' : '',
             children: child.children?.map((subChild) => ({
               ...subChild,
+              className: openKeys.includes(subChild.key) ? 'subchild-open' : '',
               children: subChild.children?.map((subItem) => ({
                 ...subItem,
+                className: openKeys.includes(subItem.key) ? 'subitem-open' : '',
                 children: subItem.children?.map((subsubItem) => ({
                   ...subsubItem,
                   label: (
