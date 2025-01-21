@@ -348,6 +348,10 @@ const SiderMenu = () => {
     const workspaceKey = type.split('-')[0];
 
     const newRequest = await createRequest(collectionKey.split(":")[1]);
+    if (!newRequest.success) {
+      return;
+    }
+
     const newRequestKey = `${workspaceKey}-${collectionKey}-request:${newRequest._id}`;
     const newRequestLabel = `${newRequest.name}`;
     const recursiveUpdate = (items) =>
