@@ -9,11 +9,11 @@ const useRequestNameById = () => {
     const [succeseRequestNameById, setSucceseRequestNameById] = useState(null);
     const CurrentState = useCurrentState();
 
-    const geeRequestNameById = async () => {
+    const geeRequestNameById = async (requestId) => {
         setLoadineRequestNameById(true);
         setErroeRequestNameById(null);
         setSucceseRequestNameById(null);
-        const api = `${baseURL}/request/${CurrentState.requestId}`;
+        const api = `${baseURL}/request/${requestId}`;
         try {
             const response = await fetch(api);
             const data = await response.json();

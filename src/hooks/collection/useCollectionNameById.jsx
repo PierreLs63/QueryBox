@@ -9,11 +9,11 @@ const useCollectionNameById = () => {
     const [successCollectionNameById, setSuccessCollectionNameById] = useState(null);
     const CurrentState = useCurrentState();
 
-    const getCollectionNameById = async () => {
+    const getCollectionNameById = async (collectionId) => {
         setLoadingCollectionNameById(true);
         setErrorCollectionNameById(null);
         setSuccessCollectionNameById(null);
-        const api = `${baseURL}/collection/${CurrentState.collectionId}`;
+        const api = `${baseURL}/collection/${collectionId}`;
         try {
             const response = await fetch(api);
             const data = await response.json();

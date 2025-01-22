@@ -9,11 +9,11 @@ const useWorkspaceNameById = () => {
     const [successWorkspaceNameById, setSuccessWorkspaceNameById] = useState(null);
     const CurrentState = useCurrentState();
 
-    const getWorkspaceNameById = async () => {
+    const getWorkspaceNameById = async (workspaceId) => {
         setLoadingWorkspaceNameById(true);
         setErrorWorkspaceNameById(null);
         setSuccessWorkspaceNameById(null);
-        const api = `${baseURL}/workspace/${CurrentState.workspaceId}`;
+        const api = `${baseURL}/workspace/${workspaceId}`;
         try {
             const response = await fetch(api);
             const data = await response.json();
