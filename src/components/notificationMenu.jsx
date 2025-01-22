@@ -3,6 +3,10 @@ import { List, Button, Popover, Badge } from 'antd';
 import { CloseOutlined, BellOutlined, CheckOutlined } from '@ant-design/icons';
 
 const NotificationMenu = ({ notifications, setNotifications }) => {
+
+  //const { leave } = useLeave(); // leave a workspace = refuse an invitation
+  //const { join } = useAccept(); // accept an invitation to a workspace
+
   // Function to handle removing a notification
   const handleRemoveNotification = (id) => {
     setNotifications(notifications.filter((notification) => notification.id !== id));

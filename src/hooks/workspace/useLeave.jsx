@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
-
+import useCurrentState from '../../zustand/CurrentState';
+import useCollaboratorsDataStore from '../../zustand/Collaborators';
 
 const useLeave = () => {
     const [loadingLeave, setLoadingLeave] = useState(false);
     const [errorLeave, setErrorLeave] = useState(null);
     const [successLeave, setSuccessLeave] = useState(null);
+    const CurrentState = useCurrentState();
+    const CollaboratorsZustand = useCollaboratorsDataStore();
 
     const leave = async (workspaceId) => {
         setLoadingLeave(true);
@@ -21,14 +24,15 @@ const useLeave = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
-            if(data.message !== undefined) {
-                toast.error(data.message);
-                setErrorLeave(data.message);
-            }
+            
+            toast.success(data.message);
             setSuccessLeave(data.message);
+            CurrentState.clearAll();
+            CollaboratorsZustand.clearAll();
+            
         }
         catch (error) {
             setErrorLeave(error.message);

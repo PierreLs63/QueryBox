@@ -42,9 +42,15 @@ const InviteMenu = () => {
     </div>
   );
 
+  const inviteEmpty = (
+    <div style={{ textAlign: 'center', padding: '10px' }}>
+      <span style={{ color: 'gray' }}>Select a workspace</span>
+    </div>
+  );
+
   return (
     <Popover
-      content={inviteContent}
+      content={CurrentState.workspaceId ? inviteContent : inviteEmpty}
       title={<div style={{ textAlign: 'center', width: '100%' }}>Inviter Collaborateur</div>} 
       trigger="click">
       <Button
