@@ -20,7 +20,7 @@ export const createCollection = async (req, res) => {
 
 
         // Si l'utilisateur n'a pas les droits de lecture et écriture dans le workspace
-        if (user.users.find(u => u.userId.toString() === userId.toString()).privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        if (user.users.find(u => u.userId.toString() === userId.toString()).privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
         const collection = new Collection({ name: "Untitled Collection", workspaceId: workspaceId, users: [{ userId: userId, privilege: 20 }] });
         await collection.save();
@@ -190,6 +190,30 @@ export const updatePrivileges = async (req, res) => {
 
         return res.status(200).json({ message: "User privileges updated successfully" });
     } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const getCollectionById = async (req, res) => {
+    try {
+        const { collectionId } = req.params;
+        const { userId } = req.user;
+        const userConnectedInCollection = await User.findOne({ _id: userId }).collation({ locale: 'en', strength: 2 });
+        const collection = await Collection
+        .findOne({ _id: collectionId })
+        .populate('requests')
+        .populate('users.userId')
+        .populate('workspaceId')
+        .exec();
+        if (!collection) return res.status(404).json({ message: "Collection not found" });
+        if (collection.workspaceId.hasJoined === undefined) return res.status(403).json({ message: "User not authorized" });
+        const userConnectedInWorkspace = collection.workspaceId.users.find(u => u.userId.toString() === userId.toString());
+        if (!userConnectedInWorkspace) return res.status(404).json({ message: "User not found in workspace" });
+        if (userConnectedInWorkspace.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+        return res.status(200).json(collection);
+    }
+    catch (error) {
         return res.status(500).json({ message: error.message });
     }
 }
