@@ -13,6 +13,7 @@ import {
     getUsersInWorkspace,
     getWorkspaces,
     getWorkspaceById,
+    getWorkspacesInvited,
 } from "../controllers/workspace.js";
 import {
     getHistory,
@@ -31,6 +32,7 @@ router.put("/:workspaceId/removeUser", protectRoute, removeUserBFromWorkspaceFro
 router.put("/:workspaceId/updatePrivileges", protectRoute, updatePrivileges); // Mise à jour des privilèges
 router.get("/:workspaceId/collections", protectRoute, getAllCollection);
 router.post("/:workspaceId/invite", protectRoute, inviteUserByUsername); // Invitation d'un utilisateur
+router.get("/invites", protectRoute, getWorkspacesInvited); // Obtenir la liste des invitations
 router.put("/:workspaceId/join", protectRoute, joinWorkspace); // Mise à jour pour rejoindre un workspace
 router.put("/:workspaceId/leave", protectRoute, leaveWorkspace); // Route pour quitter un workspace
 router.get("/:workspaceId/users", protectRoute, getUsersInWorkspace); // Obtenir la liste des utilisateurs d'un workspace

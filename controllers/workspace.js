@@ -340,21 +340,32 @@ export const getUsersInWorkspace = async (req, res) => {
             privilege: user.privilege,
             hasJoined: user.hasJoined
         }));
-        res.status(200).json(users);
+        return res.status(200).json(users);
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
 export const getWorkspaces = async (req, res) => {
     try {
         const { userId } = req.user;
-        const workspaces = await Workspace.find({"users.userId": userId});
+        const workspaces = await Workspace.find({"users.userId": userId, "users.hasJoined": true});
         const filteredWorkspaces = workspaces.map(workspace => ({ id: workspace._id, name: workspace.name}));
-        res.status(200).json(filteredWorkspaces);
+        return res.status(200).json(filteredWorkspaces);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+}
+
+export const getWorkspacesInvited = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const workspaces = await Workspace.find({"users.userId": userId, "users.hasJoined": false});
+        const filteredWorkspaces = workspaces.map(workspace => ({ id: workspace._id, name: workspace.name}));
+        return res.status(200).json(filteredWorkspaces);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
     
@@ -370,8 +381,8 @@ export const getWorkspaceById = async (req, res) => {
         if (!userInWorkspace) {
             return res.status(404).json({ message: "User not found in workspace" });
         }
-        res.status(200).json(workspace);
+        return res.status(200).json(workspace);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
