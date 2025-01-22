@@ -24,8 +24,8 @@ const useRequestNameById = () => {
                 toast.error(data.message);
                 setErroeRequestNameById(data.message);
             }
-            CurrentState.setCollectionName(data.name)
-            setSucceseRequestNameById(data.name);
+            CurrentState.setRequestName(data.request.name)
+            setSucceseRequestNameById(data.request.name);
         }
         catch (error) {
             setErroeRequestNameById(error.message);
