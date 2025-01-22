@@ -50,8 +50,6 @@ const Accueil = () => {
 
   const { GetLastParamRequest } = useGetLastParamRequest();
   const [showParamPage, setShowParamPage] = useState(false);
-  const [paramRequest, setParamRequest] = useState(null);
-
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
@@ -68,7 +66,15 @@ const Accueil = () => {
             RequestInputs.setMethod(paramRequest.method);
             RequestInputs.setUrl(paramRequest.url);
             RequestInputs.setParams(paramRequest.parameters);
-            RequestInputs.setHeaders(paramRequest.header);
+
+            //Adds key element to headers from paramrequest
+            const formattedHeaders = paramRequest.header.map((item, index) => ({
+              key: String(index),
+              keyData: item.keyData,
+              value: item.value,
+            }));
+
+            RequestInputs.setHeaders(formattedHeaders);
             RequestInputs.setBody(paramRequest.body);
             console.log('lastparamreq:' ,paramRequest)
           }
@@ -84,7 +90,6 @@ const Accueil = () => {
       }
       else {
         setShowParamPage(false);
-        setParamRequest(null);
       }
     };
   
