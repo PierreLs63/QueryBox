@@ -32,15 +32,12 @@ const useInvite = () => {
             });
             const data = await response.json();
 
-
-            if(data.message !== undefined || response.ok) {
-                toast.success(data.message);
-                collaboratorsZustand.setCollaboratorsWorkspace([...collaboratorsZustand.collaboratorsWorkspace, {username: inviteUsername, privilege: invitePrivilege, hasJoined: false}]);
-            } else {
-                toast.error(data.message);
-                setErrorInvite(data.message);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
-            
+
+            toast.success(data.message);
+            collaboratorsZustand.setCollaboratorsWorkspace([...collaboratorsZustand.collaboratorsWorkspace, {username: inviteUsername, privilege: invitePrivilege, hasJoined: false}]);
             setSuccessInvite(data.message);
         }
         catch (error) {

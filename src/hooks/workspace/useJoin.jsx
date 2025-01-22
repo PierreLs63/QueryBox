@@ -22,10 +22,13 @@ const useJoin = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            console.log(data);
+            if (data.message && !response.ok) {
+                throw new Error(data.message);
             }
+            toast.success(data.message);
             setSuccess(data.message);
+            return {success: true, message: data.message};
         }
         catch (error) {
             setError(error.message);
