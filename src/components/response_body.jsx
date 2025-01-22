@@ -11,10 +11,9 @@ const ResponseBody = () => {
       maxWidth: '100%',
       wordWrap: 'break-word',
       resize: 'none',
-      color: 'white',
     }}
   >
-    <p>{ResponseData.body}</p>
+    <pre>{JSON.stringify(JSON.parse(ResponseData.body), null, 2)}</pre>
   </Card>);
 };
 export default ResponseBody;
