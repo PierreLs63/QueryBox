@@ -8,6 +8,7 @@ import SiderMenu from '../../components/sider_menu';
 import CollaboratorMenu from '../../components/collaboratorMenu';
 import NotificationMenu from '../../components/notificationMenu';
 import InviteMenu from '../../components/inviteMenu';
+import BreadCrumb from '../../components/breadCrumb';
 import './Accueil.css';
 
 import { useState, useEffect, useRef } from 'react';
@@ -190,6 +191,9 @@ const Accueil = () => {
 
         {showParamPage && (
           <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
+            <div style={{ marginTop: '16px' }}>
+              <BreadCrumb />
+            </div>
             <div
               style={{
                 display: 'flex',
