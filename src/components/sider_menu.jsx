@@ -106,13 +106,13 @@ const SiderMenu = () => {
     };
 
     fetchWorkspaces();
-  }, []);
+  }, [currentState.workspaceId]);
 
   // Update menu items after workspaces have been fetched
   useEffect(() => {
     const updateMenuItemsWithCollections = async () => {
-      if (workspaces && workspaces.length > 0) {
-        console.log('Fetched Workspaces:', workspaces);
+      if (workspaces) {
+        console.log('Fetched Workspaces :', workspaces);
 
         // Fetch collections for each workspace and update the menu
         const updatedMenuItems = await Promise.all(
