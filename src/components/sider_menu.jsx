@@ -58,6 +58,12 @@ const SiderMenu = () => {
   // Current State
   const currentState = useCurrentState()
 
+  // State of menu opened
+  const [openKeys, setOpenKeys] = useState([]);
+  const handleOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
+
 
   const [menuItems, setMenuItems] = useState([
     {
@@ -169,7 +175,6 @@ const SiderMenu = () => {
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
     const newWorkspace = await createWorkspace();
-    console.log('New Workspace:', newWorkspace);
 
     if (!newWorkspace.success) {
       return;
@@ -282,6 +287,7 @@ const SiderMenu = () => {
                     {
                       key: newCollectionKey,
                       label: newCollectionLabel,
+                      children: [],
                     },
                   ],
                 };
@@ -317,7 +323,10 @@ const SiderMenu = () => {
       }
     }
     else {
-      await deleteResponse(subKey.split('-history:')[1])
+      const deleteResponseData = await deleteResponse(subKey.split('-history:')[1])
+      if (!deleteResponseData.success){
+        return;
+      }
     }
 
     const recursiveDelete = (items) =>
@@ -517,7 +526,9 @@ const SiderMenu = () => {
       return;
     }
 
-    await changeRequestName(editingRequestId, newRequestName);
+    const changeRequestNameData = await changeRequestName(editingRequestId, newRequestName);
+    if (!changeRequestNameData.success) return;
+
 
     const searchPart = `-request:${editingRequestId}`;
     setMenuItems((prev) => {
@@ -553,8 +564,18 @@ const SiderMenu = () => {
 
   const handleTabClick = async(key) => {
     if (key.includes("workspace:")){
-      const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
-      currentState.setWorkspaceId(workspaceId);
+      if (key.includes("-collection")){
+        const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
+        currentState.setWorkspaceId(workspaceId);
+      }
+      else {
+        const workspaceId = key.split("workspace:")[1].split("-history:")[0];
+        currentState.setWorkspaceId(workspaceId);
+      }
+      
+    }
+    else{
+      currentState.setWorkspaceId(null);
     }
 
     
@@ -562,16 +583,25 @@ const SiderMenu = () => {
       const collectionId = key.split("-collection:")[1].split("-request:")[0];
       currentState.setCollectionId(collectionId);
     }
+    else{
+      currentState.setCollectionId(null);
+    }
 
     
     if (key.includes("-request:")){
       const requestId = key.split("-request:")[1];
       currentState.setRequestId(requestId);
     }
+    else{
+      currentState.setRequestId(null);
+    }
 
     if (key.includes("-history:")){
       const responseId = key.split("-history:")[1];
       currentState.setResponseId(responseId);
+    }
+    else{
+      currentState.setResponseId(null);
     }
 
   };
@@ -583,14 +613,20 @@ const SiderMenu = () => {
     <>
       <Menu
         mode="inline"
+        openKeys={openKeys}
+        onOpenChange={handleOpenChange}
         items={menuItems.map((item) => ({
           ...item,
+          className: openKeys.includes(item.key) ? 'item-open' : '',
           children: item.children?.map((child) => ({
             ...child,
+            className: openKeys.includes(child.key) ? 'child-open' : '',
             children: child.children?.map((subChild) => ({
               ...subChild,
+              className: openKeys.includes(subChild.key) ? 'subchild-open' : '',
               children: subChild.children?.map((subItem) => ({
                 ...subItem,
+                className: openKeys.includes(subItem.key) ? 'subitem-open' : '',
                 children: subItem.children?.map((subsubItem) => ({
                   ...subsubItem,
                   label: (

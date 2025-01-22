@@ -23,7 +23,6 @@ const ResponseHeader = () => {
     value: header.value,
   })) : [];
 
-  console.log('headers', headers);
 
   return (
     <Table
