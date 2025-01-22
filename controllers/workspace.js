@@ -276,9 +276,9 @@ export const joinWorkspace = async (req, res) => {
         userInWorkspace.hasJoined = true;
         await workspace.save();
 
-        res.status(200).json({ message: "User joined workspace successfully" });
+        return res.status(200).json({ message: "You joined the workspace : " + workspace.name });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -350,7 +350,7 @@ export const getUsersInWorkspace = async (req, res) => {
 export const getWorkspaces = async (req, res) => {
     try {
         const { userId } = req.user;
-        const workspaces = await Workspace.find({"users.userId": userId, "users.hasJoined": true});
+        const workspaces = await Workspace.find({ users: { $elemMatch: { userId: userId, hasJoined: true } } });
         const filteredWorkspaces = workspaces.map(workspace => ({ id: workspace._id, name: workspace.name}));
         return res.status(200).json(filteredWorkspaces);
     } catch (error) {
