@@ -13,7 +13,7 @@ const useCollectionNameById = () => {
         setLoadingCollectionNameById(true);
         setErrorCollectionNameById(null);
         setSuccessCollectionNameById(null);
-        const api = `${baseURL}/workspace/${CurrentState.workspaceId}/collection/${CurrentState.collectionId}`;
+        const api = `${baseURL}/collection/${CurrentState.collectionId}`;
         try {
             const response = await fetch(api);
             const data = await response.json();
