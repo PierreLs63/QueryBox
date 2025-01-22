@@ -11,7 +11,7 @@ const useLeave = () => {
     const CurrentState = useCurrentState();
     const CollaboratorsZustand = useCollaboratorsDataStore();
 
-    const leave = async (workspaceId) => {
+    const leave = async (workspaceId, invitation = false) => {
         setLoadingLeave(true);
         setErrorLeave(null);
         setSuccessLeave(null);
@@ -28,11 +28,12 @@ const useLeave = () => {
                 throw new Error(data.message);
             }
             
-            toast.success(data.message);
-            setSuccessLeave(data.message);
-            CurrentState.clearAll();
-            CollaboratorsZustand.clearAll();
-            
+            if (!invitation) {
+                toast.success(data.message);
+                setSuccessLeave(data.message);
+                CurrentState.clearAll();
+                CollaboratorsZustand.clearAll();
+            }
         }
         catch (error) {
             setErrorLeave(error.message);
