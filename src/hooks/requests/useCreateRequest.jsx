@@ -71,7 +71,6 @@ const useCreateRequest = () => {
 
             const data = await response.text();
 
-            console.log(data);
             // Préparer les en-têtes de la réponse
             const responseHeaders = [];
             response.headers.forEach((value, key) => {

@@ -20,7 +20,7 @@ const useChangeWorkspaceName = () => {
                 body: JSON.stringify({name: newName})
             });
             const data = await response.json();
-            console.log(data);
+
             if (data.message && !response.ok) {
                 throw new Error(data.message);
             }
