@@ -26,7 +26,7 @@ const useCurrentState = create((set) => ({
     clearRequestName: () => set({ requestName: null }),
     clearParamRequestId: () => set({ paramRequestId: null }),
     clearResponseId: () => set({ responseId: null }),
-    clearAll: () => set({ workspaceId: null, collectionId: null, requestId: null, paramRequestId: null, responseId: null })
+    clearAll: () => { set({ workspaceId: null, collectionId: null, requestId: null, paramRequestId: null, responseId: null }), console.log("CurrentState : All cleared") }
 
 }));
 

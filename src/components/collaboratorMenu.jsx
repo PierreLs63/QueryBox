@@ -116,10 +116,16 @@ const CollaboratorMenu = ({ loading, error }) => {
     </div>
   );
 
+  const collaboratorEmpty = (
+    <div style={{ textAlign: 'center', padding: '10px' }}>
+      <span style={{ color: 'gray' }}>Select a workspace</span>
+    </div>
+  );
+
   return (
     <>
       <Popover
-        content={collaboratorContent}
+        content={CurrentState.workspaceId ? collaboratorContent : collaboratorEmpty}
         title={<div style={{ textAlign: 'center', width: '100%' }}>Collaborateurs</div>}
         trigger="click">
         <Button

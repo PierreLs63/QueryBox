@@ -13,8 +13,6 @@ const useCollaborateurs = () => {
 
     const getCollaborateurs = async () => {
         setLoadingCollaborateurs(true);
-        setErrorCollaborateurs(null);
-        setSuccessCollaborateurs(null);
         if (CurrentState.workspaceId === null) {
             throw new Error('Invalid workspace ID');
         }
@@ -28,13 +26,10 @@ const useCollaborateurs = () => {
                 }
             });
             const data = await response.json();
-            if (data.error) {
+            if (data.message && !response.ok) {
                 throw new Error(data.error);
             }
-            if(data.message !== undefined) {
-                toast.error(data.message);
-                setErrorCollaborateurs(data.message);
-            }
+            setSuccessCollaborateurs(true);
             collaboratorsZustand.setCollaboratorsWorkspace(data);
         }
         catch (error) {
