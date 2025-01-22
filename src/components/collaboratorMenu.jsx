@@ -49,6 +49,12 @@ const CollaboratorMenu = ({ loading, error }) => {
 
   const handleLeave = async () => {
     await leave(CurrentState.workspaceId);
+    CurrentState.clearWorkspaceId();
+    CurrentState.clearWorkspaceName();
+    CurrentState.clearCollectionId();
+    CurrentState.clearCollectionName();
+    CurrentState.clearRequestId();
+    CurrentState.clearRequestName();
   };
 
   const collaboratorContent = (

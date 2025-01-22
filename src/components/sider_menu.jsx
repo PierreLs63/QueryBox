@@ -10,13 +10,16 @@ import useCreateCollection from '../hooks/workspace/useCreateCollection';
 import useChangeWorkspaceName from '../hooks/workspace/useChangeName';
 import useChangeCollectionName from '../hooks/collection/useChangeName'
 import useWorkspaces from '../hooks/workspace/useWorkspaces';
+import useWorkspaceNameById from '../hooks/workspace/useWorkspaceNameById';
 import useCollections from '../hooks/workspace/useCollections';
 import useDeleteCollection from '../hooks/collection/useDeleteCollection';
 import useGetAllHistory from '../hooks/history/useGetAllHistory';
 import useCreateRequest from '../hooks/collection/useCreateRequest';
 import useRequests from '../hooks/collection/useRequests';
+import useCollectionNameById from '../hooks/collection/useCollectionNameById';
 import useDeleteRequest from '../hooks/requests/useDeleteRequest';
 import useChangeRequestName from '../hooks/requests/useChangeRequestName';
+import useRequestNameById from '../hooks/requests/useRequestNameById';
 import useCurrentState from '../zustand/CurrentState';
 import useDeleteResponse from '../hooks/response/useDeleteResponse';
 
@@ -42,21 +45,30 @@ const SiderMenu = () => {
   const [editingWorkspaceId, setEditingWorkspaceId] = useState(null);
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
   const {loading: loadingWS, error: errorWS, success: successWS, changeName: changeWorkspaceName} = useChangeWorkspaceName();
+  const {getWorkspaceNameById} = useWorkspaceNameById();
 
   // Edition for collection
   const [isModalOpenColl, setIsModalOpenColl] = useState(false);
   const [editingCollectionId, setEditingCollectionId] = useState(null);
   const [newCollectionName, setNewCollectionName] = useState('');
   const {loadingCollectionName, errorCollectionName, successCollectionName, changeName: changeCollectionName} = useChangeCollectionName();
+  const {getCollectionNameById} = useCollectionNameById();
 
   // Edition for request
   const [isModalOpenReq, setIsModalOpenReq] = useState(false);
   const [editingRequestId, setEditingRequestId] = useState(null);
   const [newRequestName, setNewRequestName] = useState('');
   const {loadingRequestName, errorRequestName, successRequestName, changeName: changeRequestName} = useChangeRequestName();
+  const {getRequestNameById} = useRequestNameById();
 
   // Current State
   const currentState = useCurrentState()
+
+  // State of menu opened
+  const [openKeys, setOpenKeys] = useState([]);
+  const handleOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
 
 
   const [menuItems, setMenuItems] = useState([
@@ -281,6 +293,7 @@ const SiderMenu = () => {
                     {
                       key: newCollectionKey,
                       label: newCollectionLabel,
+                      children: [],
                     },
                   ],
                 };
@@ -557,25 +570,51 @@ const SiderMenu = () => {
 
   const handleTabClick = async(key) => {
     if (key.includes("workspace:")){
-      const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
-      currentState.setWorkspaceId(workspaceId);
+      if (key.includes("-collection")){
+        const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
+        currentState.setWorkspaceId(workspaceId);
+        getWorkspaceNameById(workspaceId);
+      }
+      else {
+        const workspaceId = key.split("workspace:")[1].split("-history:")[0];
+        currentState.setWorkspaceId(workspaceId);
+        getWorkspaceNameById(workspaceId);
+      }
+      
+    }
+    else{
+      currentState.setWorkspaceId(null);
+      currentState.setNewWorkspaceName(null);
     }
 
     
     if (key.includes("-collection:")){
       const collectionId = key.split("-collection:")[1].split("-request:")[0];
       currentState.setCollectionId(collectionId);
+      getCollectionNameById(collectionId);
+    }
+    else{
+      currentState.setCollectionId(null);
+      currentState.setCollectionName(null);
     }
 
     
     if (key.includes("-request:")){
       const requestId = key.split("-request:")[1];
       currentState.setRequestId(requestId);
+      getRequestNameById(requestId);
+    }
+    else{
+      currentState.setRequestId(null);
+      currentState.setRequestName(null);
     }
 
     if (key.includes("-history:")){
       const responseId = key.split("-history:")[1];
       currentState.setResponseId(responseId);
+    }
+    else{
+      currentState.setResponseId(null);
     }
 
   };
@@ -587,14 +626,20 @@ const SiderMenu = () => {
     <>
       <Menu
         mode="inline"
+        openKeys={openKeys}
+        onOpenChange={handleOpenChange}
         items={menuItems.map((item) => ({
           ...item,
+          className: openKeys.includes(item.key) ? 'item-open' : '',
           children: item.children?.map((child) => ({
             ...child,
+            className: openKeys.includes(child.key) ? 'child-open' : '',
             children: child.children?.map((subChild) => ({
               ...subChild,
+              className: openKeys.includes(subChild.key) ? 'subchild-open' : '',
               children: subChild.children?.map((subItem) => ({
                 ...subItem,
+                className: openKeys.includes(subItem.key) ? 'subitem-open' : '',
                 children: subItem.children?.map((subsubItem) => ({
                   ...subsubItem,
                   label: (
