@@ -1,5 +1,5 @@
 import { Breadcrumb } from 'antd';
-import { HomeOutlined, AppstoreOutlined, TeamOutlined, FileTextOutlined } from '@ant-design/icons';
+import { HomeOutlined, DesktopOutlined, FileOutlined, FileTextOutlined } from '@ant-design/icons';
 import useCurrentState from '../zustand/CurrentState';
 
 const BreadCrumb = () => {
@@ -10,11 +10,11 @@ const BreadCrumb = () => {
             text: 'Home'
             },
         {
-            icon: <AppstoreOutlined />,
+            icon: <DesktopOutlined />,
             text: workspaceName
             },
         {
-            icon: <TeamOutlined />,
+            icon: <FileOutlined />,
             text: collectionName
             },
         {

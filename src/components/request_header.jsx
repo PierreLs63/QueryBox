@@ -42,8 +42,6 @@ const RequestHeader = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const RequestInputs = useRequestInputStore();
 
-  console.log(RequestInputs.headers);
-
   const isEditing = (record) => record.key === editingKey;
 
   const edit = (record) => {

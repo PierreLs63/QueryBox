@@ -8,6 +8,7 @@ import SiderMenu from '../../components/sider_menu';
 import CollaboratorMenu from '../../components/collaboratorMenu';
 import NotificationMenu from '../../components/notificationMenu';
 import InviteMenu from '../../components/inviteMenu';
+import BreadCrumb from '../../components/breadCrumb';
 import './Accueil.css';
 
 import { useState, useEffect, useRef } from 'react';
@@ -76,19 +77,27 @@ const Accueil = () => {
 
             RequestInputs.setHeaders(formattedHeaders);
             RequestInputs.setBody(paramRequest.body);
-            console.log('lastparamreq:' ,paramRequest)
           }
           else {
             RequestInputs.resetToDefault();
           }
+
           if (success) {
             setShowParamPage(true);
           }
+
+          setSelectedRequest("param");
+          setSelectedResponse("headerResponse");
+          ResponseData.setCode(null);
+
         } catch (error) {
           console.error('Error fetching last param:', error);
         }
       }
       else {
+        setSelectedRequest("param");
+        setSelectedResponse("headerResponse");
+        ResponseData.setCode(null);
         setShowParamPage(false);
       }
     };
@@ -182,6 +191,9 @@ const Accueil = () => {
 
         {showParamPage && (
           <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
+            <div style={{ marginTop: '16px' }}>
+              <BreadCrumb />
+            </div>
             <div
               style={{
                 display: 'flex',
@@ -192,7 +204,7 @@ const Accueil = () => {
             >
               {/* Method Dropdown */}
               <Select
-                defaultValue={RequestInputs.method}
+                value={RequestInputs.method}
                 onChange={(value) => RequestInputs.setMethod(value)}
                 style={{
                   width: 120,
@@ -249,7 +261,7 @@ const Accueil = () => {
                 <Flex vertical gap="middle">
                   <Radio.Group
                     onChange={onChangeResquest}
-                    defaultValue="param"
+                    value={selectedRequest}
                     style={{
                       marginBottom: '5px',
                       marginTop: '0px',
@@ -289,7 +301,7 @@ const Accueil = () => {
                 <Flex vertical gap="middle">
                   <Radio.Group
                     onChange={onChangeResponse}
-                    defaultValue="headerResponse"
+                    value={selectedResponse}
                     style={{
                       marginBottom: '5px',
                       marginTop: '15px',

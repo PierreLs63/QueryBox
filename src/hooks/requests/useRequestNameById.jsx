@@ -9,7 +9,7 @@ const useRequestNameById = () => {
     const [succeseRequestNameById, setSucceseRequestNameById] = useState(null);
     const CurrentState = useCurrentState();
 
-    const geeRequestNameById = async (requestId) => {
+    const getRequestNameById = async (requestId) => {
         setLoadineRequestNameById(true);
         setErroeRequestNameById(null);
         setSucceseRequestNameById(null);
@@ -24,8 +24,8 @@ const useRequestNameById = () => {
                 toast.error(data.message);
                 setErroeRequestNameById(data.message);
             }
-            CurrentState.setCollectionName(data.name)
-            setSucceseRequestNameById(data.name);
+            CurrentState.setRequestName(data.request.name)
+            setSucceseRequestNameById(data.request.name);
         }
         catch (error) {
             setErroeRequestNameById(error.message);
@@ -35,7 +35,7 @@ const useRequestNameById = () => {
             setLoadineRequestNameById(false);
         }
     }
-    return { loadineRequestNameById, erroeRequestNameById, succeseRequestNameById, geeRequestNameById }
+    return { loadineRequestNameById, erroeRequestNameById, succeseRequestNameById, getRequestNameById }
 }
 
 export default useRequestNameById;
