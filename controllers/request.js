@@ -249,7 +249,7 @@ export const getLastParamRequest = async (req, res) => {
 
         const lastParamRequest = await ParamRequest.findOne({ requestId }).sort({ createdAt: -1 });
         if (!lastParamRequest) {
-            return res.status(404).json({ message: "ParamRequest not found" });
+            return res.status(200).json({ paramRequest: null });
         }
 
         return res.status(200).json({ paramRequest: lastParamRequest });
