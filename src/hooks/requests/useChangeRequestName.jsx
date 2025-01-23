@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useChangeRequestName = () => {
     const [loadingChangeName, setLoadingChangeName] = useState(false);
@@ -8,6 +9,7 @@ const useChangeRequestName = () => {
     const [successChangeName, setSuccessChangeName] = useState(null);
     const [requestId, setRequestId] = useState(null);
     const [newRequestName, setNewRequestName] = useState(null);
+    const CurrentState = useCurrentState();
 
     const changeName = async (requestId, newRequestName) => {
         setLoadingChangeName(true);
@@ -28,6 +30,9 @@ const useChangeRequestName = () => {
             }
             setSuccessChangeName(data.message);
             toast.success(data.message);
+            if(requestId === CurrentState.requestId) {
+                CurrentState.setRequestName(newRequestName);
+            }
             return {success: true};
         }
         catch (error) {

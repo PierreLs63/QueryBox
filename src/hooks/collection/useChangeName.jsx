@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useChangeCollectionName = () => {
     const [loadingChangeName, setLoadingChangeName] = useState(false);
     const [errorChangeName, setErrorChangeName] = useState(null);
     const [successChangeName, setSuccessChangeName] = useState(null);
+    const CurrentState = useCurrentState();
+
     const changeName = async (collectionId, newName) => {
         setLoadingChangeName(true);
         setErrorChangeName(null);
@@ -25,6 +28,9 @@ const useChangeCollectionName = () => {
             }
             setSuccessChangeName(data.message);
             toast.success(data.message);
+            if(collectionId === CurrentState.collectionId) {
+                CurrentState.setCollectionName(newName);
+            }
             return {success: true};
         }
         catch (error) {

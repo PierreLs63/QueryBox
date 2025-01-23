@@ -1,8 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd';
 import useRequestInputStore from '../zustand/RequestInput';
 import './request_param.css'
+import { v4 as uuidv4 } from 'uuid';
+
 
 const EditableCell = ({
   editing,
@@ -40,12 +41,7 @@ const RequestParam = () => {
   const [editingKey, setEditingKey] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const RequestInputs = useRequestInputStore();
-
-  useEffect(() => {
-    RequestInputs.setParams(RequestInputs.params);
-  }, [RequestInputs.params]);
-     
+  const RequestInputs = useRequestInputStore(); 
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -78,6 +74,11 @@ const RequestParam = () => {
         RequestInputs.setParams(newData);
         setEditingKey('');
         form.resetFields();
+      } else {
+        newData.push(row);
+        RequestInputs.setParams(newData);
+        setEditingKey('');
+        form.resetFields();
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
@@ -96,7 +97,7 @@ const RequestParam = () => {
   
   const handleAdd = (values) => {
     const newRow = {
-      key: RequestInputs.params.length.toString(),
+      key: uuidv4(),
       keyData: values.keyData,
       value: values.value || '',
       description: values.description || '',
@@ -134,7 +135,7 @@ const RequestParam = () => {
       title: 'Operation',
       dataIndex: 'operation',
       render: (_, record) => {
-        if (record.key === 'add-row') {
+        if (typeof record.key === 'string' && record.key.startsWith('add-row')) {
           return null;
         }
         const editable = isEditing(record);
@@ -142,7 +143,7 @@ const RequestParam = () => {
           <span>
             <Typography.Link
               onClick={() => save(record.key)}
-              style={{ marginInlineEnd: 8, color: '#388E3C' }}
+              style={{ marginRight: 8, color: '#388E3C' }}
             >
               Save
             </Typography.Link>
@@ -227,7 +228,7 @@ const RequestParam = () => {
       setSelectedRowKeys(selectedKeys);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.key === 'add-row'
+      disabled: typeof record.key === 'string' && record.key.startsWith('add-row'),
     }),
   };
 
@@ -235,7 +236,7 @@ const RequestParam = () => {
   const dataWithAddButton = [
     ...RequestInputs.params,
     {
-      key: 'add-row',
+      key: `add-row-${Date.now()}`,
       keyData: (
         <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
           + New Row
@@ -249,29 +250,28 @@ const RequestParam = () => {
   return (
     <>
       <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={dataWithAddButton}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        size="small"
-        pagination={false}
-        rowSelection={rowSelection}
-      />
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={dataWithAddButton}
+          columns={mergedColumns}
+          size="small"
+          pagination={false}
+          rowSelection={rowSelection}
+        />
       </Form>
 
       <Modal title="Ajouter une ligne" open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form form={form} layout="vertical" onFinish={handleAdd}>
-        <Form.Item
-            label="Key"
-            name="keyData"
-            rules={[{ required: true, message: 'Veuillez saisir une clé!' }]}
-          >
+          <Form.Item
+              label="Key"
+              name="keyData"
+              rules={[{ required: true, message: 'Veuillez saisir une clé!' }]}
+            >
             <Input placeholder="Veuillez saisir une clé" />
           </Form.Item>
           <Form.Item
