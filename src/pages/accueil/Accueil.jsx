@@ -12,7 +12,7 @@ import BreadCrumb from '../../components/breadCrumb';
 import './Accueil.css';
 
 import { useState, useEffect, useRef } from 'react';
-import { Layout, Button, Input, Radio, Flex, Splitter, Select, Badge } from 'antd';
+import { Layout, Button, Input, Radio, Flex, Splitter, Select, Badge, Card } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
 import useInvite from '../../hooks/workspace/useInvite.jsx';
@@ -23,6 +23,7 @@ import useCurrentState from '../../zustand/CurrentState';
 import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
 import useWorkspaces from '../../hooks/workspace/useWorkspaces';
 import useCollaboratorsDataStore from '../../zustand/Collaborators';
+import useCollections from '../../hooks/workspace/useCollections';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -55,11 +56,14 @@ const Accueil = () => {
   const [pageState, setpageState] = useState("workspaces");
   const { getWorkspaces } = useWorkspaces();
   const [ workspaceNames, setWorkspaceNames ] = useState([]);
+  const [ workspaceName, setWorkspaceName ] = useState("");
   const collaborators = useCollaboratorsDataStore();
+  const { getCollections } = useCollections();
+  const [ collectionName, setCollectionName ] = useState("");
+
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
-
     getCollaborateurs();
     console.log(collaborators.collaboratorsWorkspace)
   }, [CurrentState.workspaceId]);
@@ -157,15 +161,39 @@ const Accueil = () => {
   }, []);
 
 
-  const prepareWorkspaceList = async() => {
-    const workspaces = await getWorkspaces();
-    const workspaceName = workspaces.map(workspace => workspace.name);
-    setWorkspaceNames(workspaceName)
-  }
-
+  const prepareWorkspaceList = async () => {
+    try {
+      const workspaces = await getWorkspaces();
+      setWorkspaceNames(workspaces.map(workspace => workspace.name));
+  
+      const currentWorkspace = workspaces.find(ws => ws.id === CurrentState.workspaceId);
+      setWorkspaceName(currentWorkspace ? currentWorkspace.name : "Unknown Workspace");
+    } catch (error) {
+      console.error("Error fetching workspace name:", error);
+    }
+  };
+  
   useEffect(() => {
     prepareWorkspaceList();
-  }, []);
+  }, [CurrentState.workspaceId]);
+
+
+  const prepareCollectionList = async () => {
+    try {
+      if (!CurrentState.workspaceId) return;
+      const collections = await getCollections(CurrentState.workspaceId);
+      const currentCollection = collections.find(col => col.id === CurrentState.collectionId);
+      setCollectionName(currentCollection ? currentCollection.name : "Unknown Collection");
+    } catch (error) {
+      console.error("Error fetching collection name:", error);
+    }
+  };
+  
+  useEffect(() => {
+    if (CurrentState.collectionId) {
+      prepareCollectionList();
+    }
+  }, [CurrentState.collectionId]);
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
@@ -365,41 +393,129 @@ const Accueil = () => {
           </Layout>
 
         ) : pageState === "workspaces" ? (
-          <div>
-            <div>These are the workspaces you work on:</div>
-            <ul>
-              {workspaceNames.map((workspace, index) => (
-                <li key={index}>{workspace}</li>
-              ))}
-            </ul>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+            background: '#d9ebe5',
+          }}>
+            <Card
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#e8f0ed',
+                borderRadius: '10px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <h2 style={{ marginBottom: '16px', color: '#333' }}>Your Workspaces</h2>
+              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                {workspaceNames.length > 0 ? (
+                  workspaceNames.map((workspace, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        padding: '10px',
+                        borderBottom: index !== workspaceNames.length - 1 ? '1px solid #ddd' : 'none'
+                      }}
+                    >
+                      {workspace}
+                    </li>
+                  ))
+                ) : (
+                  <p style={{ color: '#888' }}>No workspaces found.</p>
+                )}
+              </ul>
+            </Card>
           </div>
 
         ) : pageState === "workspace" ? (
-          <div>
-            <div>Placeholder description for the workspace</div>
-            <div>Collaborators:</div>
-            <ul>
-              {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
-                let privilegeLabel = '';
-                if (collaborator.privilege === 30) {
-                  privilegeLabel = 'Admin';
-                } else if (collaborator.privilege === 20) {
-                  privilegeLabel = 'Editor';
-                } else if (collaborator.privilege === 10) {
-                  privilegeLabel = 'Viewer';
-                }
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+            background: '#d9ebe5',
+          }}>
+            <Card
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#e8f0ed',
+                borderRadius: '10px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <h2 style={{ marginBottom: '40px', color: '#333' }}>{workspaceName || "Loading..."}</h2>
+              <h2 style={{ marginBottom: '16px', color: '#333' }}>Collaborators:</h2>
+              <ul>
+                {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
+                  let privilegeLabel = '';
+                  if (collaborator.privilege === 30) {
+                    privilegeLabel = 'Admin';
+                  } else if (collaborator.privilege === 20) {
+                    privilegeLabel = 'Editor';
+                  } else if (collaborator.privilege === 10) {
+                    privilegeLabel = 'Viewer';
+                  }
 
-                return (
-                  <li key={index}>
-                    {collaborator.username} - Privilege: {privilegeLabel}
-                  </li>
-                );
-              })}
-            </ul>
+                  return (
+                    <li key={index}>
+                      {collaborator.username} - Privilege: {privilegeLabel}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
           </div>
 
         ) : pageState === "collection" ? (
-          <div>collection</div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+            background: '#d9ebe5',
+          }}>
+            <Card
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#e8f0ed',
+                borderRadius: '10px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              }}>
+                <h2 style={{ marginBottom: '16px', color: '#333' }}>{collectionName || "Loading..."}</h2>
+                <ul>
+                {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
+                  let privilegeLabel = '';
+                  if (collaborator.privilege === 30) {
+                    privilegeLabel = 'Admin';
+                  } else if (collaborator.privilege === 20) {
+                    privilegeLabel = 'Editor';
+                  } else if (collaborator.privilege === 10) {
+                    privilegeLabel = 'Viewer';
+                  }
+
+                  return (
+                    <li key={index}>
+                      {collaborator.username} - Privilege: {privilegeLabel}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          </div>
         ) : (
           <div></div>
         )}
