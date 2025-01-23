@@ -26,7 +26,7 @@ const useDeleteCollection = () => {
                 throw new Error(data.message);
             }
             setSuccessDelete(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             return {success: true};
         }
         catch (error) {

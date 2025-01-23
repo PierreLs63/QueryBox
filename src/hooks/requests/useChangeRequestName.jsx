@@ -29,7 +29,7 @@ const useChangeRequestName = () => {
                 throw new Error(data.message);
             }
             setSuccessChangeName(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             if(requestId === CurrentState.requestId) {
                 CurrentState.setRequestName(newRequestName);
             }

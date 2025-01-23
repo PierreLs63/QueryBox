@@ -25,7 +25,7 @@ const useJoin = () => {
             if (data.message && !response.ok) {
                 throw new Error(data.message);
             }
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             setSuccess(data.message);
             CurrentState.setTriggerUpdateWorkspaces();
             return {success: true, message: data.message};

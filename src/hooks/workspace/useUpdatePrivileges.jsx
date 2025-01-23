@@ -37,7 +37,7 @@ const useUpdatePrivileges = () => {
             }
         
             if(data.message !== undefined && response.ok) {
-                toast.success(data.message);
+                toast.success(data.message, {style: {wordBreak: 'break-word'}});;
                 getCollaborateurs.getCollaborateurs();
             }
 

@@ -27,7 +27,7 @@ const useChangeCollectionName = () => {
                 throw new Error(data.message);
             }
             setSuccessChangeName(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             if(collectionId === CurrentState.collectionId) {
                 CurrentState.setCollectionName(newName);
             }

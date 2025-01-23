@@ -24,7 +24,7 @@ const useDeleteRequest = () => {
                 throw new Error(data.message);
             }
             setSuccessDelete(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             return { success: true, message: data.message };
         }
         catch (error) {

@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useRef, useLayoutEffect } from 'react';
 import { Menu, Button, Modal, Input } from 'antd';
-import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined, EyeOutlined, KeyOutlined, FireOutlined } from '@ant-design/icons';
 import './sider_menu.css'
 
 import useLogout from '../../src/hooks/auth/useLogout';
@@ -22,6 +22,8 @@ import useChangeRequestName from '../hooks/requests/useChangeRequestName';
 import useRequestNameById from '../hooks/requests/useRequestNameById';
 import useCurrentState from '../zustand/CurrentState';
 import useDeleteResponse from '../hooks/response/useDeleteResponse';
+import { useAuthContext } from '../context/AuthContext';
+import useCollaborateurs2 from '../hooks/workspace/useCollaborateurs2';
 
 
 const SiderMenu = () => {
@@ -39,6 +41,8 @@ const SiderMenu = () => {
   const { getAllHistory } = useGetAllHistory();
   const { getRequests } = useRequests();
   const { deleteResponse } = useDeleteResponse();
+  const { getCollaborateurs } = useCollaborateurs2();
+  const { authUser } = useAuthContext();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,10 +68,29 @@ const SiderMenu = () => {
   // Current State
   const currentState = useCurrentState()
 
+  // Ref for container and state for overflow
+  const containerRefs = useRef([]);
+  const [overflowState, setOverflowState]  = useState(false);
+  const [hoverElement, setHoverElement] = useState(null);
+
+  // Hover scrolling
+  const handleHoverScrolling = (e) => {
+    setHoverElement(e.target);
+  };
+
+  useLayoutEffect(() => {
+    if (hoverElement) {
+      const containerWidth = hoverElement.parentElement.getBoundingClientRect().width;
+      const targetWidth = hoverElement.getBoundingClientRect().width;
+      const overflow = containerWidth <= targetWidth;
+      console.log(containerWidth, targetWidth);
+      setOverflowState(overflow);
+    }
+  }, [hoverElement]);
+
   // State of menu opened
   const [openKeys, setOpenKeys] = useState(['workspaces']);
   const handleOpenChange = (keys) => {
-    console.log('Open Keys :', keys);
     setOpenKeys(keys);
   };
 
@@ -89,7 +112,6 @@ const SiderMenu = () => {
       children: [],
     },
   ]);
-  
 
    // Fetch workspaces when the page loads (initial fetch)
    useEffect(() => {
@@ -109,6 +131,7 @@ const SiderMenu = () => {
     fetchWorkspaces();
   }, [currentState.workspaceId, currentState.triggerUpdateWorkspaces]);
 
+
   // Update menu items after workspaces have been fetched
   useEffect(() => {
     const updateMenuItemsWithCollections = async () => {
@@ -121,10 +144,20 @@ const SiderMenu = () => {
             const workspaceCollections = await getCollections(workspace.id);
             const workspaceHistory = await getAllHistory(workspace.id);
             const workspaceKey = `workspace:${workspace.id}`;
+            const workspaceCollaborators = await getCollaborateurs(workspace.id);
+            const userPrivilege = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
+            console.log(workspace.id, userPrivilege)
             
             return {
               key: `workspace:${workspace.id}`,
               label: workspace.name,
+              icon: userPrivilege === 10 
+                ? <EyeOutlined /> 
+                : userPrivilege === 20 
+                ? <FireOutlined />  
+                : userPrivilege === 30 
+                ? <KeyOutlined />  
+                : <EyeOutlined /> ,
               children: [
                 {
                   key: `workspace:${workspace.id}-collection`,
@@ -202,6 +235,7 @@ const SiderMenu = () => {
               {
                 key: newWsKey,
                 label: `${newWorkspace.data.name}`,
+                icon: <KeyOutlined /> ,
                 children: [
                   {
                     key: `${newWsKey}-collection`,
@@ -631,9 +665,6 @@ const SiderMenu = () => {
 
   };
 
-
-
-
   return (
     <>
       <Menu
@@ -649,23 +680,31 @@ const SiderMenu = () => {
             children: child.children?.map((subChild) => ({
               ...subChild,
               className: openKeys.includes(subChild.key) ? 'subchild-open' : '',
-              children: subChild.children?.map((subItem) => ({
+              children: subChild.children?.map((subItem, index) => ({
                 ...subItem,
                 className: openKeys.includes(subItem.key) ? 'subitem-open' : '',
-                children: subItem.children?.map((subsubItem) => ({
+                children: subItem.children?.map((subsubItem, index) => ({
                   ...subsubItem,
                   label: (
                     <div
                     style={{
+                      width: '80%',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
+                      overflow: 'hidden',
+
                     }}
+                    ref={(el) => (containerRefs.current[index] = el)}
                     onClick={() => handleTabClick(subsubItem.key)}
                     >
-                      <span>{subsubItem.label}</span>
+                      <span
+                      onMouseEnter={handleHoverScrolling}
+                      className={`${overflowState ? 'scroll-title' : ''}`}
+                      title={overflowState ? `${subsubItem.label}` : ''}
+                      >{subsubItem.label}</span>
                       {subsubItem.key.includes('-request:') && (
-                        <div style={{ display: 'flex', gap: '4px' }}>
+                        <div style={{ position: 'absolute', right: '15px', display: 'flex', gap: '4px' }}>
                           <Button
                             size="small"
                             onClick={(e) => deleteReq(subsubItem.key, e)}
@@ -707,15 +746,22 @@ const SiderMenu = () => {
                 label: (
                   <div
                     style={{
+                      width: subItem.key.includes('-history:') ? '90%' : '70%',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
+                      overflow: 'hidden'
                     }}
                     onClick={() => handleTabClick(subItem.key)}
+                    ref={(el) => (containerRefs.current[index] = el)}
                   >
-                    <span>{subItem.label}</span>
+                    <span
+                    onMouseEnter={handleHoverScrolling}
+                    className={`${overflowState ? 'scroll-title' : ''}`}
+                    title={overflowState ? `${subItem.label}` : ''}
+                    >{subItem.label}</span>
                     {subItem.key.includes('-collection:') && (
-                      <div style={{ display: 'flex', gap: '4px' }}>
+                      <div style={{ position: 'absolute', right: '2.5em', display: 'flex', gap: '4px' }}>
                         <Button
                           size="small"
                           onClick={(e) => addRequest(e, subItem.key)}
@@ -767,6 +813,7 @@ const SiderMenu = () => {
                       </div>
                     )}
                     {subItem.key.includes('-history:') && (
+                    <div style={{ position: 'absolute', right: '1em', display: 'flex' }}>
                       <Button
                         size="small"
                         onClick={(e) => deleteSubItem(subItem.key, e)}
@@ -782,6 +829,7 @@ const SiderMenu = () => {
                         }}
                         icon={<CloseOutlined />}
                       />
+                      </div>
                     )}
                   </div>
                 ),
@@ -818,15 +866,21 @@ const SiderMenu = () => {
             label: (
               <div
                 style={{
+                  width: '80%',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  overflow: 'hidden'
                 }}
                 onClick={() => handleTabClick(child.key)}
               >
-                <span>{child.label}</span>
+                <span
+                onMouseEnter={handleHoverScrolling}
+                className={`${overflowState ? 'scroll-title' : ''}`}
+                title={overflowState ? `${child.label}` : ''}
+                >{child.label}</span>
                 {child.key.startsWith('workspace:') && (
-                  <div style={{ display: 'flex', gap: '4px' }}>
+                  <div style={{ position:'absolute', right: '3em', display: 'flex', gap: '4px' }}>
                     <Button
                       size="small"
                       onClick={(e) => deleteSubMenu(child.key, e)}
@@ -930,7 +984,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newWorkspaceName}
-          onChange={(e) => e.target.value.length < 30 && setNewWorkspaceName(e.target.value)}
+          onChange={(e) => e.target.value.length < 250 && setNewWorkspaceName(e.target.value)}
           placeholder="Enter new workspace name"
         />
       </Modal>
@@ -960,7 +1014,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newCollectionName}
-          onChange={(e) => e.target.value.length < 25 && setNewCollectionName(e.target.value)}
+          onChange={(e) => e.target.value.length < 250 && setNewCollectionName(e.target.value)}
           placeholder="Enter new collection name"
         />
       </Modal>
@@ -990,7 +1044,7 @@ const SiderMenu = () => {
       >
         <Input
           value={newRequestName}
-          onChange={(e) => e.target.value.length < 25 && setNewRequestName(e.target.value)}
+          onChange={(e) => e.target.value.length < 250 && setNewRequestName(e.target.value)}
           placeholder="Enter new request name"
         />
       </Modal>
