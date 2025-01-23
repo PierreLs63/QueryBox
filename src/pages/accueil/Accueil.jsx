@@ -21,6 +21,8 @@ import useResponseDataStore from '../../zustand/ResponseData';
 import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
 import useCurrentState from '../../zustand/CurrentState';
 import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
+import useWorkspaces from '../../hooks/workspace/useWorkspaces';
+import useCollaboratorsDataStore from '../../zustand/Collaborators';
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -50,12 +52,16 @@ const Accueil = () => {
   const { invite, inviteUsername, setInviteUsername, invitePrivilege, setInvitePrivilege } = useInvite();
 
   const { GetLastParamRequest } = useGetLastParamRequest();
-  const [showParamPage, setShowParamPage] = useState(false);
+  const [pageState, setpageState] = useState("workspaces");
+  const { getWorkspaces } = useWorkspaces();
+  const [ workspaceNames, setWorkspaceNames ] = useState([]);
+  const collaborators = useCollaboratorsDataStore();
 
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
 
     getCollaborateurs();
+    console.log(collaborators.collaboratorsWorkspace)
   }, [CurrentState.workspaceId]);
 
   useEffect(() => {
@@ -83,7 +89,7 @@ const Accueil = () => {
           }
 
           if (success) {
-            setShowParamPage(true);
+            setpageState("request");
           }
 
           setSelectedRequest("param");
@@ -98,7 +104,16 @@ const Accueil = () => {
         setSelectedRequest("param");
         setSelectedResponse("headerResponse");
         ResponseData.setCode(null);
-        setShowParamPage(false);
+
+        if (CurrentState.workspaceId === null){
+          setpageState("workspaces");
+        }
+        else if (CurrentState.collectionId === null){
+          setpageState("workspace");
+        }
+        else if (CurrentState.requestId === null){
+          setpageState("collection");
+        }
       }
     };
   
@@ -142,6 +157,15 @@ const Accueil = () => {
   }, []);
 
 
+  const prepareWorkspaceList = async() => {
+    const workspaces = await getWorkspaces();
+    const workspaceName = workspaces.map(workspace => workspace.name);
+    setWorkspaceNames(workspaceName)
+  }
+
+  useEffect(() => {
+    prepareWorkspaceList();
+  }, []);
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
@@ -189,7 +213,7 @@ const Accueil = () => {
           <SiderMenu />
         </Sider>
 
-        {showParamPage && (
+        {pageState === "request" ? (
           <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
             <div style={{ marginTop: '16px' }}>
               <BreadCrumb />
@@ -339,6 +363,42 @@ const Accueil = () => {
               </Splitter.Panel>
             </Splitter>
           </Layout>
+        ) : pageState === "workspaces" ? (
+          <div>
+            <div>These are the workspaces you work on:</div>
+            <ul>
+              {workspaceNames.map((workspace, index) => (
+                <li key={index}>{workspace}</li>
+              ))}
+            </ul>
+          </div>
+        ) : pageState === "workspace" ? (
+          <div>
+            <div>Placeholder description for the workspace</div>
+            <div>Collaborators:</div>
+            <ul>
+              {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
+                let privilegeLabel = '';
+                if (collaborator.privilege === 30) {
+                  privilegeLabel = 'Admin';
+                } else if (collaborator.privilege === 20) {
+                  privilegeLabel = 'Editor';
+                } else if (collaborator.privilege === 10) {
+                  privilegeLabel = 'Viewer';
+                }
+
+                return (
+                  <li key={index}>
+                    {collaborator.username} - Privilege: {privilegeLabel}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : pageState === "collection" ? (
+          <div>collection</div>
+        ) : (
+          <div></div>
         )}
 
       </Layout>

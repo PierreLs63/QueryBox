@@ -18,6 +18,7 @@ const useWorkspaces = () => {
             const data = await response.json();
             //workspaces is an array of objects with id and name
             setWorkspaces(data);
+            return(data)
         }
         catch (error) {
             setErrorWorkspaces(error);
