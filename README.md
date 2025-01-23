@@ -35,7 +35,7 @@ This application is an API testing tool similar to Postman or Insomnia. It allow
 2. **Package Manager**
    - NPM (comes with Node.js) or Yarn (optional).
 3. **Database** (if applicable)
-   - MongoDB: Recommended for storing test results and environment configurations.
+   - MongoDB: Recommended for storing test results and environment configurations. (used only if you are willing to self-host your database)
 
 ### Supported Operating Systems
 - **Windows:** 10 or later
@@ -58,8 +58,8 @@ The following environment variables are required to configure the application:
 
 ### Example `.env` File
 ```plaintext
-VIEWER_GRADE=user
-ADMIN_GRADE=admin
+VIEWER_GRADE=10
+ADMIN_GRADE=20
 BASE_URL=http://localhost
 PORT=5001
 API_VERSION=v1
@@ -103,13 +103,13 @@ npm install
 
 ### Step 3: Configure the Application
 
-The application requires a  `.env`  file in both the  `frontend`  and  `backend`  directories to store environment variables.
+The application requires a  `.env`  file in both the `backend`  directories to store environment variables.
 
 #### Backend  `.env`  File
 
 Create a  `.env`  file in the  `backend`  directory and include the following [variables](#Example-`.env`-File):
 
-#### Frontend  `.env`  File
+#### Frontend  `src/utils/variables.js`  File
 
 Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable:
 
@@ -159,8 +159,6 @@ The project is structured into various directories and files to ensure maintaina
 
 #### **public**
 Contains static assets that do not need processing by the bundler. These files are directly served as they are.
-
-- `vite.svg`: A sample static asset used in the project.
 
 #### **src**
 This is the main source folder containing all the application code and resources. It is further divided into subdirectories:
