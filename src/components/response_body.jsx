@@ -11,9 +11,18 @@ const ResponseBody = () => {
       maxWidth: '100%',
       wordWrap: 'break-word',
       resize: 'none',
+      overflow: 'auto',
     }}
   >
-    <pre>
+    <pre
+        style={{
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word',
+          overflow: 'auto',
+          maxHeight: '100%',
+          backgroundColor: 'inherit',
+        }}
+      >
       {(() => {
         try {
           return JSON.stringify(JSON.parse(ResponseData.body), null, 2);
