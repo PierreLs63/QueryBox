@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 const useChangeWorkspaceName = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const CurrentState = useCurrentState();
+
     const changeName = async (workspaceId, newName) => {
         setLoading(true);
         setError(null);
@@ -26,6 +29,9 @@ const useChangeWorkspaceName = () => {
             }
             setSuccess(data.message);
             toast.success(data.message);
+            if(workspaceId === CurrentState.workspaceId) {
+                CurrentState.setWorkspaceName(newName);
+            }
             return {success: true, message: data.message};
         }
         catch (error) {
