@@ -1,0 +1,40 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - develop-backend  # Déclenchement sur la branche develop-backend
+  workflow_dispatch:  # Permet de lancer le workflow manuellement
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Recreate .env file from GitHub Secret
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENTS }}" > .env
+          echo ".env file created successfully"
+
+      - name: Build Docker image with .env
+        run: |
+          docker build \
+            --build-arg VIEWER_GRADE=$VIEWER_GRADE \
+            --build-arg ADMIN_GRADE=$ADMIN_GRADE \
+            --build-arg BASE_URL=$BASE_URL \
+            --build-arg PORT=$PORT \
+            --build-arg API_VERSION=$API_VERSION \
+            --build-arg ENV=$ENV \
+            --build-arg MONGO_DB_URI=$MONGO_DB_URI \
+            --build-arg JWT_SECRET=$JWT_SECRET \
+            --build-arg MAIL=$MAIL \
+            --build-arg HOST_MAIL=$HOST_MAIL \
+            --build-arg PORT_MAIL=$PORT_MAIL \
+            -t gasparduser/querybox:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push gasparduser/querybox:latest
