@@ -58,3 +58,17 @@
 .subitem-open > .ant-menu-submenu-title {
   background-color: #90ae90a5 !important;
 }
+
+.scroll-title:hover {
+  display: inline-block;
+  animation: scroll 4s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
