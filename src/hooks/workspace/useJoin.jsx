@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
+import useCurrentState from '../../zustand/CurrentState';
 
 
 const useJoin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const [workspaceId, setWorkspaceId] = useState(null);
+    const CurrentState = useCurrentState();
+
     const join = async (workspaceId) => {
-        setWorkspaceId(workspaceId);
         setLoading(true);
-        setError(null);
-        setSuccess(null);
         const api = `${baseURL}/workspace/${workspaceId}/join`;
         try {
             const response = await fetch(api, {
@@ -28,6 +27,7 @@ const useJoin = () => {
             }
             toast.success(data.message);
             setSuccess(data.message);
+            CurrentState.setTriggerUpdateWorkspaces();
             return {success: true, message: data.message};
         }
         catch (error) {
@@ -38,7 +38,7 @@ const useJoin = () => {
             setLoading(false);
         }
     }
-    return { loading, error, success, join, workspaceId }
+    return { loading, error, success, join }
 }
 
 export default useJoin

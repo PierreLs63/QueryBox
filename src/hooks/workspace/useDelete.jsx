@@ -2,12 +2,14 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import {baseURL} from '../../utils/variables';
 import useCurrentState from '../../zustand/CurrentState';
+import useCollaboratorsDataStore from '../../zustand/Collaborators';
 
 const useDelete = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const CurrentState = useCurrentState();
+    const CollaboratorsZustand = useCollaboratorsDataStore();
     
     
     const deleteWorkspace = async (workspaceId) => {
@@ -29,6 +31,8 @@ const useDelete = () => {
             setSuccess(data.message);
             toast.success(data.message);
             CurrentState.clearAll();
+            CollaboratorsZustand.clearAll();
+
             return {success: true, message: data.message};
         }
         catch (error) {

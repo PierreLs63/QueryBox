@@ -1,7 +1,7 @@
 import {create} from "zustand";
 
-const useCurrentState = create((set) => ({
-
+const useCurrentState = create((set, get) => ({
+    triggerUpdateWorkspaces: false,
     workspaceId: null,
     workspaceName: null,
     collectionId: null,
@@ -10,6 +10,11 @@ const useCurrentState = create((set) => ({
     requestName: null,
     paramRequestId: null,
     responseId: null,
+    setTriggerUpdateWorkspaces: () => {
+        const current = get().triggerUpdateWorkspaces;
+        set({ triggerUpdateWorkspaces: !current });
+        console.log("Update Workspaces set to : ", !current);
+    },
     setWorkspaceId: (workspaceId) => {set({ workspaceId: workspaceId }), console.log("Workspace ID set to : ", workspaceId)},
     setWorkspaceName: (workspaceName) => {set({ workspaceName: workspaceName }), console.log("Workspace Name set to : ", workspaceName)},
     setCollectionId: (collectionId) => {set({ collectionId: collectionId }), console.log("Collection ID set to : ", collectionId)},
