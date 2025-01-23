@@ -1,8 +1,8 @@
 //je veux créer un hook pour créer une collection dans un workspace donné avec comme paramètres le workspaceId
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-
 import {baseURL} from '../../utils/variables';
+import { v4 as uuidv4 } from 'uuid';
 
 const useGetLastParamRequest = () => {
     const [loading, setLoading] = useState(false);
@@ -19,9 +19,18 @@ const useGetLastParamRequest = () => {
                 }
             });
             const data = await response.json();
+            console.log(data)
             if (data.message && !response.ok) {
                 throw new Error(data.message);
             }
+
+            if (data.paramRequest) {
+                data.paramRequest.parameters = data.paramRequest.parameters.map(item => ({
+                    ...item,
+                    key: uuidv4(),
+                }));
+              }
+
             setSuccess(data.message);
             return {success: true, paramRequest: data.paramRequest};
 

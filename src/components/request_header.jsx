@@ -2,6 +2,7 @@ import { Table, Button, Input, Form, Modal, Typography, Popconfirm } from 'antd'
 import { useState } from 'react';
 import './request_header.css';
 import useRequestInputStore from '../zustand/RequestInput.js';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const EditableCell = ({
@@ -96,7 +97,7 @@ const RequestHeader = () => {
 
   const handleAdd = (values) => {
     const newRow = {
-      key: `${RequestInputs.headers.length}-${Date.now()}`,
+      key: uuidv4(),
       keyData: values.keyData,
       value: values.value || '',
       description: values.description || '',
@@ -138,7 +139,7 @@ const RequestHeader = () => {
       title: 'Operation',
       dataIndex: 'operation',
       render: (_, record) => {
-        if (record.key.startsWith('add-row')) {
+        if (typeof record.key === 'string' && record.key.startsWith('add-row')) {
           return null;
         }
         const editable = isEditing(record);
@@ -232,7 +233,7 @@ const RequestHeader = () => {
       setSelectedRowKeys(selectedKeys);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.key.startsWith('add-row')
+      disabled: typeof record.key === 'string' && record.key.startsWith('add-row'),
     }),
   };
 
