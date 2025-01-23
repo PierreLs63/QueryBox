@@ -5,7 +5,7 @@ to use this application
 
 ````
 # Clone the repository
-git clone https://github.com/your-username/QueryBox.git
+git clone https://github.com/PierreLs63/QueryBox.git
 cd QueryBox
 # Install the dependencies
 npm install
