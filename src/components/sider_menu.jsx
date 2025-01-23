@@ -1,6 +1,6 @@
 import React, { useState,useEffect, useRef, useLayoutEffect } from 'react';
 import { Menu, Button, Modal, Input } from 'antd';
-import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { UserOutlined, DesktopOutlined, FileOutlined, HistoryOutlined, CloseOutlined, PlusOutlined, EditOutlined, EyeOutlined, KeyOutlined, FireOutlined } from '@ant-design/icons';
 import './sider_menu.css'
 
 import useLogout from '../../src/hooks/auth/useLogout';
@@ -22,6 +22,8 @@ import useChangeRequestName from '../hooks/requests/useChangeRequestName';
 import useRequestNameById from '../hooks/requests/useRequestNameById';
 import useCurrentState from '../zustand/CurrentState';
 import useDeleteResponse from '../hooks/response/useDeleteResponse';
+import { useAuthContext } from '../context/AuthContext';
+import useCollaborateurs2 from '../hooks/workspace/useCollaborateurs2';
 
 
 const SiderMenu = () => {
@@ -39,6 +41,8 @@ const SiderMenu = () => {
   const { getAllHistory } = useGetAllHistory();
   const { getRequests } = useRequests();
   const { deleteResponse } = useDeleteResponse();
+  const { getCollaborateurs } = useCollaborateurs2();
+  const { authUser } = useAuthContext();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -140,10 +144,20 @@ const SiderMenu = () => {
             const workspaceCollections = await getCollections(workspace.id);
             const workspaceHistory = await getAllHistory(workspace.id);
             const workspaceKey = `workspace:${workspace.id}`;
+            const workspaceCollaborators = await getCollaborateurs(workspace.id);
+            const userPrivilege = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
+            console.log(workspace.id, userPrivilege)
             
             return {
               key: `workspace:${workspace.id}`,
               label: workspace.name,
+              icon: userPrivilege === 10 
+                ? <EyeOutlined /> 
+                : userPrivilege === 20 
+                ? <FireOutlined />  
+                : userPrivilege === 30 
+                ? <KeyOutlined />  
+                : <EyeOutlined /> ,
               children: [
                 {
                   key: `workspace:${workspace.id}-collection`,
@@ -221,6 +235,7 @@ const SiderMenu = () => {
               {
                 key: newWsKey,
                 label: `${newWorkspace.data.name}`,
+                icon: <KeyOutlined /> ,
                 children: [
                   {
                     key: `${newWsKey}-collection`,
