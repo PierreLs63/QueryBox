@@ -29,7 +29,7 @@ const useLeave = () => {
             }
             
             if (!invitation) {
-                toast.success(data.message);
+                toast.success(data.message, {style: {wordBreak: 'break-word'}});;
                 setSuccessLeave(data.message);
                 CurrentState.clearAll();
                 CollaboratorsZustand.clearAll();

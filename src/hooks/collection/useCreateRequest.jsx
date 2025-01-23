@@ -31,7 +31,7 @@ const useCreateRequest = () => {
                 throw new Error(data.message);
             }
             setSuccessCreateRequest(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             return {success: true, ...data};
         }
         catch (error) {

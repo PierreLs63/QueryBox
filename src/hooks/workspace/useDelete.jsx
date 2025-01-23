@@ -29,7 +29,7 @@ const useDelete = () => {
                 throw new Error(data.message);
             }
             setSuccess(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             CurrentState.clearAll();
             CollaboratorsZustand.clearAll();
 

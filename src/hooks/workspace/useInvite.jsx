@@ -36,7 +36,7 @@ const useInvite = () => {
                 throw new Error(data.message);
             }
 
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             collaboratorsZustand.setCollaboratorsWorkspace([...collaboratorsZustand.collaboratorsWorkspace, {username: inviteUsername, privilege: invitePrivilege, hasJoined: false}]);
             setSuccessInvite(data.message);
         }

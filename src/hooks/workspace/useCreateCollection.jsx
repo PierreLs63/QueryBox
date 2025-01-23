@@ -23,7 +23,7 @@ const useCreateCollection = () => {
                 throw new Error(data.message);
             }
             setSuccess(data.message);
-            toast.success(data.message);
+            toast.success(data.message, {style: {wordBreak: 'break-word'}});;
             return {success: true, collection: data.collection, message: data.message};
 
         }
