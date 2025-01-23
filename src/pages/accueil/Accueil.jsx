@@ -122,7 +122,7 @@ const Accueil = () => {
 
 
   // Event of request checked
-  const onChangeResquest = (e) => {
+  const onChangeRequest = (e) => {
     setSelectedRequest(e.target.value);
   };
 
@@ -284,7 +284,7 @@ const Accueil = () => {
               >
                 <Flex vertical gap="middle">
                   <Radio.Group
-                    onChange={onChangeResquest}
+                    onChange={onChangeRequest}
                     value={selectedRequest}
                     style={{
                       marginBottom: '5px',
@@ -363,6 +363,7 @@ const Accueil = () => {
               </Splitter.Panel>
             </Splitter>
           </Layout>
+
         ) : pageState === "workspaces" ? (
           <div>
             <div>These are the workspaces you work on:</div>
@@ -372,6 +373,7 @@ const Accueil = () => {
               ))}
             </ul>
           </div>
+
         ) : pageState === "workspace" ? (
           <div>
             <div>Placeholder description for the workspace</div>
@@ -395,6 +397,7 @@ const Accueil = () => {
               })}
             </ul>
           </div>
+
         ) : pageState === "collection" ? (
           <div>collection</div>
         ) : (
