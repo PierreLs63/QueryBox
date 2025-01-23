@@ -65,8 +65,9 @@ const SiderMenu = () => {
   const currentState = useCurrentState()
 
   // State of menu opened
-  const [openKeys, setOpenKeys] = useState([]);
+  const [openKeys, setOpenKeys] = useState(['workspaces']);
   const handleOpenChange = (keys) => {
+    console.log('Open Keys :', keys);
     setOpenKeys(keys);
   };
 
@@ -106,7 +107,7 @@ const SiderMenu = () => {
     };
 
     fetchWorkspaces();
-  }, [currentState.workspaceId]);
+  }, [currentState.workspaceId, currentState.triggerUpdateWorkspaces]);
 
   // Update menu items after workspaces have been fetched
   useEffect(() => {
@@ -186,7 +187,10 @@ const SiderMenu = () => {
       return;
     }
 
+
     const newWsKey = `workspace:${newWorkspace.data._id}`;
+
+    setOpenKeys((prev) => [...prev, newWsKey, 'workspaces']);
 
     setMenuItems((prev) =>
       prev.map((item) => {
@@ -275,7 +279,11 @@ const SiderMenu = () => {
       return;
     }
     
+    const workspaceCollectionKey = `${workspaceKey}-collection`;
     const newCollectionKey = `${workspaceKey}-collection:${newCollection.collection._id}`;
+
+    setOpenKeys((prev) => [...prev, workspaceCollectionKey]);
+
     const newCollectionLabel = `${newCollection.collection.name}`;
 
 
@@ -366,6 +374,10 @@ const SiderMenu = () => {
     if (!newRequest.success) {
       return;
     }
+
+    const requestCollectionKey = `${workspaceKey}-${collectionKey}`;
+
+    setOpenKeys((prev) => [...prev, requestCollectionKey]);
 
     const newRequestKey = `${workspaceKey}-${collectionKey}-request:${newRequest._id}`;
     const newRequestLabel = `${newRequest.name}`;
@@ -584,7 +596,7 @@ const SiderMenu = () => {
     }
     else{
       currentState.setWorkspaceId(null);
-      currentState.setNewWorkspaceName(null);
+      currentState.setWorkspaceName(null);
     }
 
     
