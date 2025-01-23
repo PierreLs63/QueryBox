@@ -13,7 +13,15 @@ const ResponseBody = () => {
       resize: 'none',
     }}
   >
-    <pre>{JSON.stringify(JSON.parse(ResponseData.body), null, 2)}</pre>
+    <pre>
+      {(() => {
+        try {
+          return JSON.stringify(JSON.parse(ResponseData.body), null, 2);
+        } catch (e) {
+          return ResponseData.body;
+        }
+      })()}
+    </pre>
   </Card>);
 };
 export default ResponseBody;
