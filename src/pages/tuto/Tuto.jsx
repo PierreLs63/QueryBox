@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined, BellOutlined, SettingOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
 import { Layout, Button, Radio, Tour, Splitter, Select, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import RequestParam from '../../components/request_param';
@@ -60,7 +60,7 @@ const Tuto = () => {
   const steps = [
     {
       target: () => menuRef.current,
-      title: 'Cliquer Account/Workspace/Collection/History pour voir plus de détailles.'
+      title: 'Cliquer le menu pour voir plus de détailles sur Workspace/Collection/History/Request.'
     },
     {
       target: () => methodRef.current,
@@ -115,21 +115,19 @@ const Tuto = () => {
             Commencer votre premier essai
         </Button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Button 
-            shape="round" 
-            style={{
-              backgroundColor: 'transparent',
-              borderColor: 'rgb(34, 56, 51)',
-              borderWidth: '2px',
-              color: 'rgb(28, 41, 38)',
-              height: '31px',
-              fontWeight: 'bold'
-            }}>
-            Collaborateur
-          </Button>
           <Button
             type="text"
-            icon={<UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            icon={<UserOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<TeamOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<UsergroupAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
             style={{ padding: 0 }}
           />
           <Button
