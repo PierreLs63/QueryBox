@@ -210,7 +210,7 @@ const Tuto = () => {
             <Input placeholder="URL" />
 
             {/* Send Button */}
-            <Button type="default">Send</Button>
+            <Button className='send-btn'>Send</Button>
           </div>
 
             <Splitter layout="vertical" style={{ height: '100vh', background: '#d9ebe5', overflow: 'hidden' }}>
