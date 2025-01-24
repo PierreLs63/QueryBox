@@ -10,6 +10,8 @@ const useCurrentState = create((set, get) => ({
     requestName: null,
     paramRequestId: null,
     responseId: null,
+    sendRequest: false,
+
     setTriggerUpdateWorkspaces: () => {
         const current = get().triggerUpdateWorkspaces;
         set({ triggerUpdateWorkspaces: !current });
@@ -23,6 +25,7 @@ const useCurrentState = create((set, get) => ({
     setRequestName: (requestName) => {set({ requestName: requestName }), console.log("Request Name set to : ", requestName)},
     setParamRequestId: (paramRequestId) => {set({ paramRequestId: paramRequestId }), console.log("Param Request ID set to : ", paramRequestId)},
     setResponseId: (responseId) => {set({ responseId: responseId }), console.log("Response ID set to : ", responseId)},
+    setSendRequest: (sendRequest) => {set({ sendRequest: sendRequest }), console.log("SendRequest set to : ", sendRequest)},
     clearWorkspaceId: () => set({ workspaceId: null }),
     clearWorkspaceName: () => set({ workspaceName: null }),
     clearCollectionId: () => set({ collectionId: null }),

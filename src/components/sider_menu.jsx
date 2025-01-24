@@ -220,6 +220,16 @@ const SiderMenu = () => {
     updateMenuItemsWithCollections();
   }, [workspaces]);
 
+  // Update when send request
+  useEffect(() => {
+    if(currentState.sendRequest === true){
+      currentState.setSendRequest(false);
+      addHistory();
+    }
+  }, [currentState.sendRequest]);
+
+
+
   // Add new workspace
   const addWorkspace = async(parentKey, event) => {
     event.stopPropagation();
@@ -499,6 +509,54 @@ const SiderMenu = () => {
   };
 
 
+  // Add new history
+  const addHistory = async() => {
+    // Split workspaceKey from type
+    const workspaceId = currentState.workspaceId;
+    const responseId = currentState.responseId;
+    
+    const newHistoryKey = `workspace:${workspaceId}-history:${responseId}`;
+
+
+
+    setOpenKeys((prev) => [...prev, `workspace:${workspaceId}-history`]);
+
+    const newHistoryLabel = `${responseId}`;
+
+    console.log("bouk")
+    const recursiveUpdate = (items) =>
+      items.map((item) => {
+        if (item.key === `workspace:${workspaceId}`) {
+          return {
+            ...item,
+            children: item.children?.map((child) => {
+              if (child.key === `workspace:${workspaceId}-history`) {
+                console.log("bachoula")
+                return {
+                  ...child,
+                  children: [
+                    ...child.children,
+                    {
+                      key: newHistoryKey,
+                      label: newHistoryLabel,
+                    },
+                  ],
+                };
+              }
+              return child;
+            }),
+          };
+        } else {
+          return {
+            ...item,
+            children: item.children ? recursiveUpdate(item.children) : item.children,
+          };
+        }
+      });
+
+    setMenuItems((prev) => recursiveUpdate(prev));
+
+  };
 
   // Save edition of workspace
   const handleEditNameOk = async () => {

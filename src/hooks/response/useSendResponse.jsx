@@ -32,6 +32,8 @@ const useSendResponse = () => {
             if (!response.ok) {
                 throw new Error(data.message);
             }
+            CurrentState.setResponseId(data._id);
+            CurrentState.setSendRequest(true);
         }
         catch (error) {
             setErrorSendResponse(error.message);
