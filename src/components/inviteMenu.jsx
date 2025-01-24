@@ -2,7 +2,6 @@ import React from 'react';
 import { Input, Button, Popover, Select } from 'antd';
 import { UsergroupAddOutlined } from '@ant-design/icons';
 import useInvite from '../../src/hooks/workspace/useInvite';
-import './inviteMenu.css'
 import useCurrentState from '../zustand/CurrentState';
 
 const InviteMenu = () => {
@@ -30,11 +29,10 @@ const InviteMenu = () => {
             <Select.Option value="admin">Admin</Select.Option>
             <Select.Option value="viewer">Viewer</Select.Option>
         </Select>
-        <Button 
+        <Button block
             type="primary" 
             onClick={handleInvite}
             disabled={!inviteUsername}
-            className="invite-button"
         >
             Invite
         </Button>
