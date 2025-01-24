@@ -1,17 +1,19 @@
-import { Card } from 'antd';
 import useResponseDataStore from '../zustand/ResponseData';
+import CodeBlock from './CodeBlock';
+
 
 const ResponseBody = () => {
 
   const ResponseData = useResponseDataStore();
   return (
-  <Card
+  <div
     style={{
       height: '100%',
       maxWidth: '100%',
       wordWrap: 'break-word',
       resize: 'none',
-      overflow: 'auto',
+      overflow: 'hidden',
+      backgroundColor: '#f5f5f5',
     }}
   >
     <pre
@@ -19,18 +21,20 @@ const ResponseBody = () => {
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-word',
           overflow: 'auto',
-          maxHeight: '100%',
+          height: '100%',
+          paddingLeft: '1em',
           backgroundColor: 'inherit',
+          margin: 0
         }}
       >
-      {(() => {
-        try {
-          return JSON.stringify(JSON.parse(ResponseData.body), null, 2);
-        } catch (e) {
-          return ResponseData.body;
-        }
-      })()}
+        {(() => {
+          try {
+            return <CodeBlock value={JSON.stringify(JSON.parse(ResponseData.body), null, 2)} />;
+          } catch {
+            return <CodeBlock value={ResponseData.body} />;
+          }
+        })()}
     </pre>
-  </Card>);
+  </div>);
 };
 export default ResponseBody;
