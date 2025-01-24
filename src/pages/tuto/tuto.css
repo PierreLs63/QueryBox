@@ -68,7 +68,8 @@
 
 
 /* Send Button style */
-.send-btn:hover {
+.send-btn:hover
+.send-btn:focus {
   border-color: #054d29 !important;
   color: #397d4b !important;
   box-shadow: 0 0 0 2px rgba(5, 77, 41, 0.2) !important;
