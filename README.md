@@ -114,7 +114,7 @@ Create a  `.env`  file in the  `backend`  directory and include the following [v
 Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable:
 
 ```plaintext
-BaseURL=http://localhost:5137/api/v1`
+BaseURL=http://localhost:5173/api/v1`
 ```
 
 ### Step 4: Run the Application
