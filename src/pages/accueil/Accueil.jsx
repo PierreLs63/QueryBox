@@ -23,7 +23,7 @@ import useCurrentState from '../../zustand/CurrentState';
 import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
 import useWorkspaces from '../../hooks/workspace/useWorkspaces';
 import useCollaboratorsDataStore from '../../zustand/Collaborators';
-import useCollections from '../../hooks/workspace/useCollections';
+
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -436,9 +436,9 @@ const Accueil = () => {
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
-                    privilegeLabel = 'Admin';
+                    privilegeLabel = 'Owner';
                   } else if (collaborator.privilege === 20) {
-                    privilegeLabel = 'Editor';
+                    privilegeLabel = 'Admin';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
                   }
@@ -477,9 +477,9 @@ const Accueil = () => {
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
-                    privilegeLabel = 'Admin';
+                    privilegeLabel = 'Owner';
                   } else if (collaborator.privilege === 20) {
-                    privilegeLabel = 'Editor';
+                    privilegeLabel = 'Admin';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
                   }
