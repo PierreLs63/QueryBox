@@ -6,6 +6,9 @@ const BreadCrumb = () => {
     const { workspaceId, collectionName, requestName, workspaceName } = useCurrentState();
 
     const truncateName = (name, maxLength = 16) => {
+        if (!name) {
+          return null;
+        }
         if (name.length > maxLength) {
           return name.substring(0, maxLength) + '...';
         }
