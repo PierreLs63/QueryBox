@@ -435,9 +435,10 @@ const Accueil = () => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <h2 style={{ marginBottom: '40px', color: '#333' }}>{CurrentState.workspaceName || "Loading..."}</h2>
-              <h2 style={{ marginBottom: '16px', color: '#333' }}>Collaborators:</h2>
-              <ul>
+              <h2 style={{ marginBottom: '16px', color: '#333' }}>
+                {CurrentState.workspaceName || "Loading..."}
+              </h2>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
@@ -449,8 +450,22 @@ const Accueil = () => {
                   }
 
                   return (
-                    <li key={index}>
-                      {collaborator.username} - Privilege: {privilegeLabel}
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      <span style={{ marginRight: '4px', color: '#555' }}>
+                        {collaborator.username}
+                      </span>
+                      <span style={{ margin: '0 4px', color: '#999' }}>-</span>
+                      <span style={{ color: '#555' }}>
+                        Privilege: {privilegeLabel}
+                      </span>
                     </li>
                   );
                 })}
@@ -476,9 +491,12 @@ const Accueil = () => {
                 backgroundColor: '#e8f0ed',
                 borderRadius: '10px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              }}>
-                <h2 style={{ marginBottom: '16px', color: '#333' }}>{CurrentState.collectionName || "Loading..."}</h2>
-                <ul>
+              }}
+            >
+              <h2 style={{ marginBottom: '16px', color: '#333' }}>
+                {CurrentState.collectionName || "Loading..."}
+              </h2>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
@@ -490,8 +508,22 @@ const Accueil = () => {
                   }
 
                   return (
-                    <li key={index}>
-                      {collaborator.username} - Privilege: {privilegeLabel}
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      <span style={{ marginRight: '4px', color: '#555' }}>
+                        {collaborator.username}
+                      </span>
+                      <span style={{ margin: '0 4px', color: '#999' }}>-</span>
+                      <span style={{ color: '#555' }}>
+                        Privilege: {privilegeLabel}
+                      </span>
                     </li>
                   );
                 })}
