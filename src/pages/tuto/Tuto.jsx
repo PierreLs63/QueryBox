@@ -135,11 +135,6 @@ const Tuto = () => {
             icon={<BellOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
             style={{ padding: 0 }}
           />
-          <Button
-            type="text"
-            icon={<SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
-            style={{ padding: 0 }}
-          />
         </div>
       </Header>
       
