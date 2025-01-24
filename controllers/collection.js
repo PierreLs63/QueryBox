@@ -227,3 +227,30 @@ export const getCollectionById = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+export const getUsersInCollection = async (req, res) => {
+    try {
+        const { collectionId } = req.params;
+        const { userId } = req.user;
+
+        const collection = await Collection.findById(collectionId);
+        if (!collection) {
+            return res.status(404).json({ message: "Collection not found" });
+        }
+        const userInCollection = collection.users.find(user => user.userId.toString() === userId.toString());
+        if (!userInCollection) {
+            return res.status(404).json({ message: "User not found in collection" });
+        }
+       
+        await collection.populate({path:"users.userId", select: "username"});
+        const users = collection.users.map(user => ({
+            userId: user.userId._id,       // Keep the userId
+            username: user.userId.username, // Extract the username
+            privilege: user.privilege,
+        }));
+        return res.status(200).json(users);
+    }
+    catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}

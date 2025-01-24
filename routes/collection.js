@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteCollection, getAllRequestsFromCollection, changeCollectionName, updatePrivileges, getCollectionById } from "../controllers/collection.js";
+import { deleteCollection, getAllRequestsFromCollection, changeCollectionName, updatePrivileges, getCollectionById, getUsersInCollection } from "../controllers/collection.js";
 import { createRequest } from "../controllers/request.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
@@ -11,5 +11,7 @@ router.get("/:collectionId/requests", protectRoute, getAllRequestsFromCollection
 router.put("/:collectionId/name", protectRoute, changeCollectionName); // Changer le nom d'une collection
 router.put("/:collectionId/updatePrivileges", protectRoute, updatePrivileges); // Mettre à jour les privilèges d'un utilisateur dans une collection
 router.get("/:collectionId", protectRoute, getCollectionById); // Obtenir une collection par son id
+router.get("/:collectionId/users", protectRoute, getUsersInCollection); // Obtenir la liste des utilisateurs d'une collection
+
 
 export default router;
