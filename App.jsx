@@ -1,6 +1,7 @@
 import Connexion from './src/pages/connexion/Connexion.jsx'
 import Inscription from './src/pages/inscription/Inscription.jsx'
 import Mailenvoye from './src/pages/mailenvoye/Mailenvoye.jsx'
+import Reinitialiser from './src/pages/reinitialiser/Reinitialiser.jsx'
 import Mailverifie from './src/pages/mailverifie/Mailverifie.jsx'
 import Accueil from './src/pages/accueil/Accueil.jsx'
 import Debutant from './src/pages/debutant/Debutant.jsx'
@@ -25,7 +26,7 @@ function App() {
           <Route path="/" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
           <Route path="/connexion" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Connexion />} />
           <Route path="/inscription" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Inscription />} />
-          <Route path="/reinitialiser" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
+          <Route path="/reinitialiser" element={authUser ? (authUser?.isVerified ? <Reinitialiser /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' />} />
           <Route path="/mailenvoye" element={authUser ? (authUser?.isVerified ? <Navigate to="/accueil" /> : <Mailenvoye />) : <Navigate to='/connexion' />} />
           <Route path="/mailverifie" element={authUser ? (authUser?.isVerified ? <Mailverifie /> : <Navigate to="/mailenvoye" />) : <Navigate to='/connexion' /> } />
           <Route path="/accueil" element={authUser ? (authUser?.isVerified ? <Accueil /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" /> } />
