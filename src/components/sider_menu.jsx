@@ -24,6 +24,7 @@ import useCurrentState from '../zustand/CurrentState';
 import useDeleteResponse from '../hooks/response/useDeleteResponse';
 import { useAuthContext } from '../context/AuthContext';
 import useCollaborateurs2 from '../hooks/workspace/useCollaborateurs2';
+import useCollaborateursCollection from '../hooks/collection/useCollaborateursCollection';
 
 
 const SiderMenu = () => {
@@ -42,6 +43,7 @@ const SiderMenu = () => {
   const { getRequests } = useRequests();
   const { deleteResponse } = useDeleteResponse();
   const { getCollaborateurs } = useCollaborateurs2();
+  const { getCollaborateursCollection } = useCollaborateursCollection();
   const { authUser } = useAuthContext();
 
   // Edition for workspace
@@ -83,7 +85,6 @@ const SiderMenu = () => {
       const containerWidth = hoverElement.parentElement.getBoundingClientRect().width;
       const targetWidth = hoverElement.getBoundingClientRect().width;
       const overflow = containerWidth <= targetWidth;
-      console.log(containerWidth, targetWidth);
       setOverflowState(overflow);
     }
   }, [hoverElement]);
@@ -136,17 +137,16 @@ const SiderMenu = () => {
             const workspaceHistory = await getAllHistory(workspace.id);
             const workspaceKey = `workspace:${workspace.id}`;
             const workspaceCollaborators = await getCollaborateurs(workspace.id);
-            const userPrivilege = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
-            console.log(workspace.id, userPrivilege)
+            const userPrivilegeWorkspace = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
             
             return {
               key: `workspace:${workspace.id}`,
               label: workspace.name,
-              icon: userPrivilege === 10 
+              icon: userPrivilegeWorkspace === 10 
                 ? <EyeOutlined /> 
-                : userPrivilege === 20 
+                : userPrivilegeWorkspace === 20 
                 ? <FireOutlined />  
-                : userPrivilege === 30 
+                : userPrivilegeWorkspace === 30 
                 ? <KeyOutlined />  
                 : <EyeOutlined /> ,
               children: [
@@ -157,9 +157,18 @@ const SiderMenu = () => {
                   children: await Promise.all( // Use Promise.all to resolve async operations inside map
                     workspaceCollections.map(async (collection) => {
                       const requests = await getRequests(collection._id);
+                      const collectionCollaborators = await getCollaborateursCollection(collection._id);
+                      const userPrivilegeCollection = collectionCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
                       return {
                         key: `${workspaceKey}-collection:${collection._id}`,
                         label: collection.name,
+                        icon: userPrivilegeCollection === 10 
+                          ? <EyeOutlined /> 
+                          : userPrivilegeCollection === 20 & userPrivilegeWorkspace === 30
+                          ? <KeyOutlined />  
+                          : userPrivilegeCollection === 20 
+                          ? <FireOutlined />  
+                          : <EyeOutlined /> ,
                         children: await Promise.all(
                           requests.map(async (request) => {
                             return {
@@ -201,6 +210,16 @@ const SiderMenu = () => {
 
     updateMenuItemsWithCollections();
   }, [workspaces]);
+
+  // Update when send request
+  useEffect(() => {
+    if(currentState.sendRequest === true){
+      currentState.setSendRequest(false);
+      addHistory();
+    }
+  }, [currentState.sendRequest]);
+
+
 
   // Add new workspace
   const addWorkspace = async(parentKey, event) => {
@@ -481,6 +500,54 @@ const SiderMenu = () => {
   };
 
 
+  // Add new history
+  const addHistory = async() => {
+    // Split workspaceKey from type
+    const workspaceId = currentState.workspaceId;
+    const responseId = currentState.responseId;
+    
+    const newHistoryKey = `workspace:${workspaceId}-history:${responseId}`;
+
+
+
+    setOpenKeys((prev) => [...prev, `workspace:${workspaceId}-history`]);
+
+    const newHistoryLabel = `${responseId}`;
+
+    console.log("bouk")
+    const recursiveUpdate = (items) =>
+      items.map((item) => {
+        if (item.key === `workspace:${workspaceId}`) {
+          return {
+            ...item,
+            children: item.children?.map((child) => {
+              if (child.key === `workspace:${workspaceId}-history`) {
+                console.log("bachoula")
+                return {
+                  ...child,
+                  children: [
+                    ...child.children,
+                    {
+                      key: newHistoryKey,
+                      label: newHistoryLabel,
+                    },
+                  ],
+                };
+              }
+              return child;
+            }),
+          };
+        } else {
+          return {
+            ...item,
+            children: item.children ? recursiveUpdate(item.children) : item.children,
+          };
+        }
+      });
+
+    setMenuItems((prev) => recursiveUpdate(prev));
+
+  };
 
   // Save edition of workspace
   const handleEditNameOk = async () => {
@@ -606,6 +673,7 @@ const SiderMenu = () => {
 
 
   const handleTabClick = async(key) => {
+
     if (key.includes("workspace:")){
       if (key.includes("-collection")){
         const workspaceId = key.split("workspace:")[1].split("-collection:")[0];
@@ -920,6 +988,7 @@ const SiderMenu = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}
+              onClick={() => handleTabClick(item.key)}
             >
               <span>{item.label}</span>
               {item.key === 'workspaces' && (

@@ -1,6 +1,5 @@
 import Connexion from './src/pages/connexion/Connexion.jsx'
 import Inscription from './src/pages/inscription/Inscription.jsx'
-import Reinitialiser from './src/pages/reinitialiser/Reinitialiser.jsx'
 import Mailenvoye from './src/pages/mailenvoye/Mailenvoye.jsx'
 import Mailverifie from './src/pages/mailverifie/Mailverifie.jsx'
 import Accueil from './src/pages/accueil/Accueil.jsx'
