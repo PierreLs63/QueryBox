@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, List, Popover, Tag, Spin, Alert, Modal, Select } from 'antd';
-import { DeleteOutlined, LogoutOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LogoutOutlined, TeamOutlined } from '@ant-design/icons';
 import useUpdatePrivileges from '../hooks/workspace/useUpdatePrivileges';
 import useRemoveUser from '../hooks/workspace/useRemoveUser';
 import useLeave from '../hooks/workspace/useLeave';
@@ -129,18 +129,10 @@ const CollaboratorMenu = ({ loading, error }) => {
         title={<div style={{ textAlign: 'center', width: '100%' }}>Collaborateurs</div>}
         trigger="click">
         <Button
-          shape="round"
-          style={{
-            backgroundColor: 'transparent',
-            borderColor: 'rgb(34, 56, 51)',
-            borderWidth: '2px',
-            color: 'rgb(28, 41, 38)',
-            height: '31px',
-            fontWeight: 'bold',
-          }}
-        >
-          Collaborateur
-        </Button>
+        type="text"
+        icon={<TeamOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+        style={{ padding: 0 }}
+      />
       </Popover>
       <Modal
         title="Edit Collaborator"
