@@ -513,17 +513,15 @@ const SiderMenu = () => {
   const addHistory = async() => {
     // Split workspaceKey from type
     const workspaceId = currentState.workspaceId;
-    const responseId = currentState.responseId;
+    const responseId = currentState.historyId;
     
     const newHistoryKey = `workspace:${workspaceId}-history:${responseId}`;
-
 
 
     setOpenKeys((prev) => [...prev, `workspace:${workspaceId}-history`]);
 
     const newHistoryLabel = `${responseId}`;
 
-    console.log("bouk")
     const recursiveUpdate = (items) =>
       items.map((item) => {
         if (item.key === `workspace:${workspaceId}`) {
@@ -531,7 +529,6 @@ const SiderMenu = () => {
             ...item,
             children: item.children?.map((child) => {
               if (child.key === `workspace:${workspaceId}-history`) {
-                console.log("bachoula")
                 return {
                   ...child,
                   children: [
