@@ -1,7 +1,6 @@
 import React from 'react';
 import { Input, Button, Popover, Select } from 'antd';
-import { UserAddOutlined } from '@ant-design/icons';
-import toast from 'react-hot-toast';
+import { UsergroupAddOutlined } from '@ant-design/icons';
 import useInvite from '../../src/hooks/workspace/useInvite';
 import './inviteMenu.css'
 import useCurrentState from '../zustand/CurrentState';
@@ -55,7 +54,7 @@ const InviteMenu = () => {
       trigger="click">
       <Button
         type="text"
-        icon={<UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+        icon={<UsergroupAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
         style={{ padding: 0 }}
       />
     </Popover>
