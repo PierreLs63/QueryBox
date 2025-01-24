@@ -32,32 +32,19 @@ const Account = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
+        gap: '8px',
         alignItems: 'center'
       }}
     >
       <Button
-        type="text"
+        type="primary" block
         onClick={() => handleMenuClick('profil')}
-        style={{
-          width: '90%',
-          border: '1px solid black',
-          borderRadius: '4px',
-          margin: '4px 0',
-          textAlign: 'center',
-        }}
       >
         Profil
       </Button>
-      <Button
-        type="text"
+      <Button danger block
         onClick={() => handleMenuClick('logout')}
-        style={{
-          width: '90%',
-          border: '1px solid black',
-          borderRadius: '4px',
-          margin: '4px 0',
-          textAlign: 'center',
-        }}
+        
       >
         Déconnexion
       </Button>
@@ -68,37 +55,23 @@ const Account = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        gap: '8px'
       }}
     >
       {authUser && (
         <>
-          <div style={{ marginBottom: '8px', marginLeft:'8px' }}>
-            <p><strong>User name:</strong> {authUser.username}</p>
-            <p><strong>Email:</strong> {authUser.email}</p>
+          <div style={{ marginLeft:'8px' }}>
+            <p><strong>User name :</strong> {authUser.username}</p>
+            <p><strong>Email :</strong> {authUser.email}</p>
           </div>
-          <Button
-            type="text"
+          <Button danger block
+            type="primary"
             onClick={() => handleInitialisePassword()}
-            style={{
-                width: '90%',
-                border: '1px solid black',
-                borderRadius: '4px',
-                margin: '4px 0',
-                textAlign: 'center',
-            }}
           >
             Réinitialiser mot de passe
           </Button>
-          <Button
-            type="text"
+          <Button danger block
             onClick={handleBackClick}
-            style={{
-              width: '90%',
-              border: '1px solid black',
-              borderRadius: '4px',
-              margin: '4px 0',
-              textAlign: 'center',
-            }}
           >
             Retour
           </Button>
@@ -106,6 +79,7 @@ const Account = () => {
       )}
     </div>
   );
+
 
   return (
     <Popover
