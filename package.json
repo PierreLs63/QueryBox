@@ -15,6 +15,7 @@
     "antd-style": "^3.7.1",
     "dotenv": "^16.4.7",
     "highlight.js": "^11.11.1",
+    "hljs": "^6.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",

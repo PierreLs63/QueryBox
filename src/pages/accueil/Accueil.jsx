@@ -9,13 +9,14 @@ import CollaboratorMenu from '../../components/collaboratorMenu';
 import NotificationMenu from '../../components/notificationMenu';
 import InviteMenu from '../../components/inviteMenu';
 import BreadCrumb from '../../components/breadCrumb';
+import Account from '../../components/account'
 import './Accueil.css';
 
 import { useState, useEffect, useRef } from 'react';
 import { Layout, Button, Input, Radio, Flex, Splitter, Select, Badge, Card } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
-import useCollaborateurs from '../../hooks/workspace/useCollaborateurs.jsx';
-import useInvite from '../../hooks/workspace/useInvite.jsx';
+import useCollaborateurs from '../../hooks/workspace/useCollaborateurs';
+import useInvite from '../../hooks/workspace/useInvite';
 import useRequestInputStore from '../../zustand/RequestInput';
 import useResponseDataStore from '../../zustand/ResponseData';
 import useCreateParamRequest from '../../hooks/requests/useCreateParamRequest';
@@ -183,6 +184,8 @@ const Accueil = () => {
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Account with Profil and Deconnexion */}
+          <Account />
 
           {/* Collaborateur Button with Popover for user list */}
           <CollaboratorMenu loading={loadingCollaborateurs} error={errorCollaborateurs} />
@@ -387,6 +390,8 @@ const Accueil = () => {
                 backgroundColor: '#e8f0ed',
                 borderRadius: '10px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                height: '50%',
+                overflowY: 'auto',
               }}
             >
               <h2 style={{ marginBottom: '16px', color: '#333' }}>Your Workspaces</h2>

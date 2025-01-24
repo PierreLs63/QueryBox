@@ -98,15 +98,6 @@ const SiderMenu = () => {
 
   const [menuItems, setMenuItems] = useState([
     {
-      key: 'account',
-      icon: <UserOutlined />,
-      label: 'Account',
-      children: [
-        { key: 'profil', label: 'Profil' },
-        { key: 'deconnecter', label: 'Déconnecter', onClick: () => logout() },
-      ],
-    },
-    {
       key: 'workspaces',
       icon: <DesktopOutlined />,
       label: 'Workspaces',
