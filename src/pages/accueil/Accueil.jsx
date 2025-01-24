@@ -23,7 +23,7 @@ import useCurrentState from '../../zustand/CurrentState';
 import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
 import useWorkspaces from '../../hooks/workspace/useWorkspaces';
 import useCollaboratorsDataStore from '../../zustand/Collaborators';
-import useCollections from '../../hooks/workspace/useCollections';
+
 
 // Overall page layout
 const { Header, Sider } = Layout;
@@ -56,10 +56,7 @@ const Accueil = () => {
   const [pageState, setpageState] = useState("workspaces");
   const { getWorkspaces } = useWorkspaces();
   const [ workspaceNames, setWorkspaceNames ] = useState([]);
-  const [ workspaceName, setWorkspaceName ] = useState("");
   const collaborators = useCollaboratorsDataStore();
-  const { getCollections } = useCollections();
-  const [ collectionName, setCollectionName ] = useState("");
 
 
   // Récupérer les collaborateurs lors du montage du composant
@@ -165,9 +162,6 @@ const Accueil = () => {
     try {
       const workspaces = await getWorkspaces();
       setWorkspaceNames(workspaces.map(workspace => workspace.name));
-  
-      const currentWorkspace = workspaces.find(ws => ws.id === CurrentState.workspaceId);
-      setWorkspaceName(currentWorkspace ? currentWorkspace.name : "Unknown Workspace");
     } catch (error) {
       console.error("Error fetching workspace name:", error);
     }
@@ -177,23 +171,6 @@ const Accueil = () => {
     prepareWorkspaceList();
   }, [CurrentState.workspaceId]);
 
-
-  const prepareCollectionList = async () => {
-    try {
-      if (!CurrentState.workspaceId) return;
-      const collections = await getCollections(CurrentState.workspaceId);
-      const currentCollection = collections.find(col => col.id === CurrentState.collectionId);
-      setCollectionName(currentCollection ? currentCollection.name : "Unknown Collection");
-    } catch (error) {
-      console.error("Error fetching collection name:", error);
-    }
-  };
-  
-  useEffect(() => {
-    if (CurrentState.collectionId) {
-      prepareCollectionList();
-    }
-  }, [CurrentState.collectionId]);
 
   return (
     <Layout style={{ height: '100vh', width: '100vw', background: '#d9ebe5', overflowY: 'hidden' }}>
@@ -453,15 +430,15 @@ const Accueil = () => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <h2 style={{ marginBottom: '40px', color: '#333' }}>{workspaceName || "Loading..."}</h2>
+              <h2 style={{ marginBottom: '40px', color: '#333' }}>{CurrentState.workspaceName || "Loading..."}</h2>
               <h2 style={{ marginBottom: '16px', color: '#333' }}>Collaborators:</h2>
               <ul>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
-                    privilegeLabel = 'Admin';
+                    privilegeLabel = 'Owner';
                   } else if (collaborator.privilege === 20) {
-                    privilegeLabel = 'Editor';
+                    privilegeLabel = 'Admin';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
                   }
@@ -495,14 +472,14 @@ const Accueil = () => {
                 borderRadius: '10px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}>
-                <h2 style={{ marginBottom: '16px', color: '#333' }}>{collectionName || "Loading..."}</h2>
+                <h2 style={{ marginBottom: '16px', color: '#333' }}>{CurrentState.collectionName || "Loading..."}</h2>
                 <ul>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
                   if (collaborator.privilege === 30) {
-                    privilegeLabel = 'Admin';
+                    privilegeLabel = 'Owner';
                   } else if (collaborator.privilege === 20) {
-                    privilegeLabel = 'Editor';
+                    privilegeLabel = 'Admin';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
                   }
