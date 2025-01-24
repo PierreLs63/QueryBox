@@ -390,6 +390,8 @@ const Accueil = () => {
                 backgroundColor: '#e8f0ed',
                 borderRadius: '10px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                height: '50%',
+                overflowY: 'auto',
               }}
             >
               <h2 style={{ marginBottom: '16px', color: '#333' }}>Your Workspaces</h2>
