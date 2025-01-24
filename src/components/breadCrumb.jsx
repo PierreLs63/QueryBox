@@ -4,6 +4,14 @@ import useCurrentState from '../zustand/CurrentState';
 
 const BreadCrumb = () => {
     const { workspaceId, collectionName, requestName, workspaceName } = useCurrentState();
+
+    const truncateName = (name, maxLength = 16) => {
+        if (name.length > maxLength) {
+          return name.substring(0, maxLength) + '...';
+        }
+        return name;
+      };
+
     const breadcrumbItems = [
         {
             icon: <HomeOutlined />,
@@ -29,7 +37,7 @@ const BreadCrumb = () => {
                     {breadcrumbItems.map((item, index) => (
                         <Breadcrumb.Item key={index} href="#">
                             {item.icon}
-                            <span>{item.text}</span>
+                            <span>{truncateName(item.text)}</span>
                         </Breadcrumb.Item>
                     ))}
                 </Breadcrumb>
