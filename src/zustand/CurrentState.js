@@ -9,6 +9,7 @@ const useCurrentState = create((set, get) => ({
     requestId: null,
     requestName: null,
     paramRequestId: null,
+    historyId: null,
     responseId: null,
     sendRequest: false,
 
@@ -24,6 +25,7 @@ const useCurrentState = create((set, get) => ({
     setRequestId: (requestId) => {set({ requestId: requestId }), console.log("Request ID set to : ", requestId)},
     setRequestName: (requestName) => {set({ requestName: requestName }), console.log("Request Name set to : ", requestName)},
     setParamRequestId: (paramRequestId) => {set({ paramRequestId: paramRequestId }), console.log("Param Request ID set to : ", paramRequestId)},
+    setHistoryId: (historyId) => {set({ historyId: historyId }), console.log("History ID set to : ", historyId)},
     setResponseId: (responseId) => {set({ responseId: responseId }), console.log("Response ID set to : ", responseId)},
     setSendRequest: (sendRequest) => {set({ sendRequest: sendRequest }), console.log("SendRequest set to : ", sendRequest)},
     clearWorkspaceId: () => set({ workspaceId: null }),
@@ -31,6 +33,7 @@ const useCurrentState = create((set, get) => ({
     clearCollectionId: () => set({ collectionId: null }),
     clearCollectionName: () => set({ collectionName: null }),
     clearRequestId: () => set({ requestId: null }),
+    clearHistoryId: () => set({ historyId: null }),
     clearRequestName: () => set({ requestName: null }),
     clearParamRequestId: () => set({ paramRequestId: null }),
     clearResponseId: () => set({ responseId: null }),

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { UserAddOutlined, BellOutlined, SettingOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined, BellOutlined, SettingOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
 import { Layout, Button, Typography, Flex } from 'antd';
 import SiderMenu from '../../components/sider_menu';
 import { useNavigate } from 'react-router-dom';
@@ -40,21 +40,19 @@ const Debutant = () => {
 
         {/* Icons and Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Button 
-            shape="round" 
-            style={{
-              backgroundColor: 'transparent',
-              borderColor: 'rgb(34, 56, 51)',
-              borderWidth: '2px',
-              color: 'rgb(28, 41, 38)',
-              height: '31px',
-              fontWeight: 'bold'
-            }}>
-            Collaborateur
-          </Button>
           <Button
             type="text"
-            icon={<UserAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            icon={<UserOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<TeamOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
+            style={{ padding: 0 }}
+          />
+          <Button
+            type="text"
+            icon={<UsergroupAddOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
             style={{ padding: 0 }}
           />
           <Button
