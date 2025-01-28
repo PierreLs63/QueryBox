@@ -9,7 +9,7 @@ const ChangerMotDePasse = () => {
       <div className='login-box'>
         <h1 className='title'>QueryBox</h1>
         <h2 className='subtitle'>Changer votre mot de passe</h2>
-        <Form name="login" initialValues={{ remember: true }}  layout="vertical">
+        <Form name="changePassword" initialValues={{ remember: true }} layout="vertical">
           <Form.Item
             name="newPassword"
             rules={[{ required: true, message: 'Veuillez entrer votre nouveau mot de passe!' }]}
