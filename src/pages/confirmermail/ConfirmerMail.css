@@ -63,9 +63,17 @@
     color: white;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
+    transition: background-color 0.2s ease;
 }
+
+.button-default {
+    border-radius: 24px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
 
 .button:hover {
     background-color: #90b9b0 !important;
