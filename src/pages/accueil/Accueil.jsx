@@ -437,7 +437,7 @@ const Accueil = () => {
                 overflowY: 'auto',
               }}
             >
-              <h2 style={{ marginBottom: '16px', color: '#333' }}>Your Workspaces</h2>
+              <h2 style={{ marginBottom: '16px', color: '#333', fontSize: '24px' }}>Your Workspaces</h2>
               <ul style={{ listStyleType: 'none', padding: 0 }}>
                 {workspaceNames.length > 0 ? (
                   workspaceNames.map((workspace, index) => (
@@ -445,7 +445,8 @@ const Accueil = () => {
                       key={index}
                       style={{
                         padding: '10px',
-                        borderBottom: index !== workspaceNames.length - 1 ? '1px solid #ddd' : 'none'
+                        borderBottom: index !== workspaceNames.length - 1 ? '1px solid #ddd' : 'none',
+                        fontSize: '16px'
                       }}
                     >
                       {workspace}
@@ -478,18 +479,22 @@ const Accueil = () => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <h2 style={{ marginBottom: '16px', color: '#333' }}>
+              <h2 style={{ marginBottom: '16px', color: '#333', fontSize: '24px' }}>
                 {CurrentState.workspaceName || "Loading..."}
               </h2>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
+                  let usernameColor = '';
                   if (collaborator.privilege === 30) {
                     privilegeLabel = 'Owner';
+                    usernameColor = 'blue';
                   } else if (collaborator.privilege === 20) {
                     privilegeLabel = 'Admin';
+                    usernameColor = 'red';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
+                    usernameColor = 'green';
                   }
 
                   return (
@@ -502,13 +507,12 @@ const Accueil = () => {
                         marginBottom: '8px',
                       }}
                     >
-                      <span style={{ marginRight: '4px', color: '#555' }}>
+                      <span style={{ marginRight: '4px', color: '#777', fontSize: '16px', fontWeight: 'bold' }}>
                         {collaborator.username}
                       </span>
-                      <span style={{ margin: '0 4px', color: '#999' }}>-</span>
-                      <span style={{ color: '#555' }}>
-                        Privilege: {privilegeLabel}
-                      </span>
+                      <span style={{ margin: '0 4px', color: 'black' }}>-</span>
+                      <span style={{ margin: '0 4px', color: 'black', fontSize: '16px' }}>Privilege: </span>
+                      <span style={{ color: usernameColor, fontSize: '16px' }}>{privilegeLabel}</span>
                     </li>
                   );
                 })}
@@ -536,18 +540,22 @@ const Accueil = () => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <h2 style={{ marginBottom: '16px', color: '#333' }}>
+              <h2 style={{ marginBottom: '16px', color: '#333', fontSize: '24px' }}>
                 {CurrentState.collectionName || "Loading..."}
               </h2>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 {collaborators.collaboratorsWorkspace.map((collaborator, index) => {
                   let privilegeLabel = '';
+                  let usernameColor = '';
                   if (collaborator.privilege === 30) {
                     privilegeLabel = 'Owner';
+                    usernameColor = 'blue';
                   } else if (collaborator.privilege === 20) {
                     privilegeLabel = 'Admin';
+                    usernameColor = 'red';
                   } else if (collaborator.privilege === 10) {
                     privilegeLabel = 'Viewer';
+                    usernameColor = 'green';
                   }
 
                   return (
@@ -560,13 +568,12 @@ const Accueil = () => {
                         marginBottom: '8px',
                       }}
                     >
-                      <span style={{ marginRight: '4px', color: '#555' }}>
+                      <span style={{ marginRight: '4px', color: '#777', fontSize: '16px', fontWeight: 'bold' }}>
                         {collaborator.username}
                       </span>
-                      <span style={{ margin: '0 4px', color: '#999' }}>-</span>
-                      <span style={{ color: '#555' }}>
-                        Privilege: {privilegeLabel}
-                      </span>
+                      <span style={{ margin: '0 4px', color: 'black' }}>-</span>
+                      <span style={{ margin: '0 4px', color: 'black', fontSize: '16px' }}>Privilege: </span>
+                      <span style={{ color: usernameColor, fontSize: '16px' }}>{privilegeLabel}</span>
                     </li>
                   );
                 })}

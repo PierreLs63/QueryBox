@@ -3,12 +3,14 @@ import { UserOutlined } from '@ant-design/icons';
 import { Button, Popover } from 'antd';
 import { useAuthContext } from '../../src/context/AuthContext';
 import useLogout from '../../src/hooks/auth/useLogout';
+import useSendResetPassword from '../../src/hooks/auth/useSendResetPassword';
 import { useNavigate } from 'react-router-dom';
 
 const Account = () => {
   const { logout } = useLogout();
   const { authUser, setAuthUser } = useAuthContext();
   const [popoverContentType, setPopoverContentType] = useState('menu');
+  const { sendResetPassword } = useSendResetPassword();
 
   const handleMenuClick = (action) => {
     if (action === 'profil') {
@@ -22,9 +24,9 @@ const Account = () => {
     setPopoverContentType('menu');
   };
 
-  const navigate = useNavigate();
   const handleInitialisePassword = () => {
-    navigate('/reinitialiser')};
+    sendResetPassword(authUser.email);
+  };
 
 
   const popoverContent = popoverContentType === 'menu' ? (
