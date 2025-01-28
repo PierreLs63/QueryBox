@@ -45,7 +45,9 @@ export const getHistory = async (req, res) => {
             .skip((page - 1) * perPage)
             .limit(parseInt(perPage));
 
-        return res.status(200).json(responses);
+        
+
+        return res.status(200).json(responses.reverse());
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

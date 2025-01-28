@@ -158,7 +158,7 @@ export const getParamRequest = async (req, res) => {
 
         if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
-        res.status(200).json(paramRequest);
+        res.status(200).json({paramResponse: response, paramRequest: paramRequest});
     } catch (error) {
         res.status(500).json({ message: error.message });     
     }
