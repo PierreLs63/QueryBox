@@ -5,6 +5,12 @@ import './ConfirmerMail.css'
 
 const ConfirmerMail = () => {
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/connexion');
+  };
+
   return (
     <div className='global'>
       <div className='login-box'>
@@ -19,14 +25,11 @@ const ConfirmerMail = () => {
             ]}
             className="custom-form-item"
           >
-            <Input.Password
+            <Input
               prefix={<MailOutlined />}
               placeholder="Mail utilisé lors de l'inscription"
               className="custom-input"
             />
-          </Form.Item>
-
-          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
@@ -35,6 +38,15 @@ const ConfirmerMail = () => {
               className='button'
             >
               Envoyer le mail
+            </Button>
+            <Button
+              type="default"
+              size='large'
+              block
+              className='button-default'
+              onClick={handleClick}
+            >
+              Revenir à la page de connexion
             </Button>
           </Form.Item>
         </Form>

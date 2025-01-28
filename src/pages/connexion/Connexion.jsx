@@ -14,7 +14,7 @@ const Connexion = () => {
 
   // Navigate to reinitialiser if forget password
   const handleForgotPassword = () => {
-    navigate('/confirmermail');
+    navigate('/confirmerMail');
   };
 
   // Navigate to inscription if not have password
