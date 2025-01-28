@@ -23,10 +23,12 @@ const useGetResponse = () => {
             });
             const data = await response.json();
             setResponse(data);
+            return {success: true, paramResponse: data.paramResponse, paramRequest: data.paramRequest};
         }
         catch (error) {
             setError(error.message);
             toast.error(error.message);
+            return {success: false, message: error.message};
         }
         finally {
             setLoading(false);

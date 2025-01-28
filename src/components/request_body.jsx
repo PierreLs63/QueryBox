@@ -1,12 +1,15 @@
 import { Input } from 'antd';
 import { useState } from 'react';
 import useRequestInputStore from '../zustand/RequestInput';
+import useCurrentState from '../zustand/CurrentState';
 
 const { TextArea } = Input;
+
 
 const RequestBody = () => {
 
     const RequestInputs = useRequestInputStore();
+    const CurrentState = useCurrentState();
 
     
     const handleAdd = (e) => {
@@ -22,7 +25,7 @@ const RequestBody = () => {
                     height: '100%',
                     resize: 'none',
                   }}
-                placeholder="Enter body content here" value={RequestInputs.body} onChange={handleAdd} disabled={RequestInputs.method === "GET" || RequestInputs.method === "HEAD"}/>
+                placeholder="Enter body content here" value={RequestInputs.body} onChange={handleAdd} disabled={RequestInputs.method === "GET" || RequestInputs.method === "HEAD" || CurrentState.responseId !== null}/>
         </>
     )
 }

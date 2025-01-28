@@ -3,6 +3,7 @@ import { Form, Input, Button, Table, Typography, Popconfirm, Modal } from 'antd'
 import useRequestInputStore from '../zustand/RequestInput';
 import './request_param.css'
 import { v4 as uuidv4 } from 'uuid';
+import useCurrentState from '../zustand/CurrentState';
 
 
 const EditableCell = ({
@@ -42,6 +43,7 @@ const RequestParam = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const RequestInputs = useRequestInputStore(); 
+  const CurrentState = useCurrentState();
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -131,81 +133,86 @@ const RequestParam = () => {
       width: '30%',
       editable: true,
     },
-    {
-      title: 'Operation',
-      dataIndex: 'operation',
-      render: (_, record) => {
-        if (typeof record.key === 'string' && record.key.startsWith('add-row')) {
-          return null;
-        }
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{ marginRight: 8, color: '#388E3C' }}
-            >
-              Save
-            </Typography.Link>
-            <Popconfirm
-              title="Sure to cancel?"
-              onConfirm={cancel}
-              okButtonProps={{
-                style: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'black',
-                  color: '#388E3C',
-                },
-                className: 'custom-ok-button'
-              }}
-              cancelButtonProps={{
-                style: {
-                  color: 'red',
-                  borderColor: 'black',
-                },
-                className: 'custom-cancel-button'
-              }}
-            >
-              <a style={{ color: 'red' }}>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <span>
-            <Typography.Link
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-              style={{ marginRight: 8, color: '#397d4b' }}
-            >
-              Edit
-            </Typography.Link>
-            <Popconfirm
-              title="Sure to delete?"
-              onConfirm={() => deleteRow(record.key)}
-              okText="Yes"
-              cancelText="No"
-              okButtonProps={{
-                style: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'black',
-                  color: '#388E3C',
-                },
-                className: 'custom-ok-button'
-              }}
-              cancelButtonProps={{
-                style: {
-                  color: 'red',
-                  borderColor: 'black',
-                },
-                className: 'custom-cancel-button'
-              }}
-            >
-              <a style={{ color: 'red' }}>Delete</a>
-            </Popconfirm>
-          </span>
-        );
-      },
-    },
+    ...(CurrentState.responseId === null
+      ? [
+          {
+            title: 'Operation',
+            dataIndex: 'operation',
+            render: (_, record) => {
+              if (typeof record.key === 'string' && record.key.startsWith('add-row')) {
+                return null;
+              }
+              const editable = isEditing(record);
+              return editable ? (
+                <span>
+                  <Typography.Link
+                    onClick={() => save(record.key)}
+                    style={{ marginRight: 8, color: '#388E3C' }}
+                  >
+                    Save
+                  </Typography.Link>
+                  <Popconfirm
+                    title="Sure to cancel?"
+                    onConfirm={cancel}
+                    okButtonProps={{
+                      style: {
+                        backgroundColor: 'transparent',
+                        borderColor: 'black',
+                        color: '#388E3C',
+                      },
+                      className: 'custom-ok-button',
+                    }}
+                    cancelButtonProps={{
+                      style: {
+                        color: 'red',
+                        borderColor: 'black',
+                      },
+                      className: 'custom-cancel-button',
+                    }}
+                  >
+                    <a style={{ color: 'red' }}>Cancel</a>
+                  </Popconfirm>
+                </span>
+              ) : (
+                <span>
+                  <Typography.Link
+                    disabled={editingKey !== ''}
+                    onClick={() => edit(record)}
+                    style={{ marginRight: 8, color: '#397d4b' }}
+                  >
+                    Edit
+                  </Typography.Link>
+                  <Popconfirm
+                    title="Sure to delete?"
+                    onConfirm={() => deleteRow(record.key)}
+                    okText="Yes"
+                    cancelText="No"
+                    okButtonProps={{
+                      style: {
+                        backgroundColor: 'transparent',
+                        borderColor: 'black',
+                        color: '#388E3C',
+                      },
+                      className: 'custom-ok-button',
+                    }}
+                    cancelButtonProps={{
+                      style: {
+                        color: 'red',
+                        borderColor: 'black',
+                      },
+                      className: 'custom-cancel-button',
+                    }}
+                  >
+                    <a style={{ color: 'red' }}>Delete</a>
+                  </Popconfirm>
+                </span>
+              );
+            },
+          },
+        ]
+      : []),
   ];
+  
 
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -235,17 +242,22 @@ const RequestParam = () => {
   // Line + New Row
   const dataWithAddButton = [
     ...RequestInputs.params,
-    {
-      key: `add-row-${Date.now()}`,
-      keyData: (
-        <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
-          + New Row
-        </Typography.Link>
-      ),
-      value: '',
-      description: '',
-    },
+    ...(CurrentState.responseId === null
+      ? [
+          {
+            key: `add-row-${Date.now()}`,
+            keyData: (
+              <Typography.Link onClick={showModal} style={{ fontSize: '12px', color: '#54877c' }}>
+                + New Row
+              </Typography.Link>
+            ),
+            value: '',
+            description: '',
+          },
+        ]
+      : []),
   ];
+  
 
   return (
     <>
@@ -261,7 +273,7 @@ const RequestParam = () => {
           columns={mergedColumns}
           size="small"
           pagination={false}
-          rowSelection={rowSelection}
+          rowSelection={CurrentState.responseId === null ? rowSelection : null}
         />
       </Form>
 

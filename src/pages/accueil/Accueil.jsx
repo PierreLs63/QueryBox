@@ -24,6 +24,7 @@ import useCurrentState from '../../zustand/CurrentState';
 import useGetLastParamRequest from '../../hooks/requests/useGetLastParamRequest';
 import useWorkspaces from '../../hooks/workspace/useWorkspaces';
 import useCollaboratorsDataStore from '../../zustand/Collaborators';
+import useGetResponse from '../../hooks/response/useGetResponse';
 
 
 // Overall page layout
@@ -58,6 +59,7 @@ const Accueil = () => {
   const { getWorkspaces } = useWorkspaces();
   const [ workspaceNames, setWorkspaceNames ] = useState([]);
   const collaborators = useCollaboratorsDataStore();
+  const { getResponse } = useGetResponse();
 
 
   // Récupérer les collaborateurs lors du montage du composant
@@ -97,6 +99,8 @@ const Accueil = () => {
           setSelectedRequest("param");
           setSelectedResponse("headerResponse");
           ResponseData.setCode(null);
+          ResponseData.setHeader([]);
+          ResponseData.setBody("");
 
         } catch (error) {
           console.error('Error fetching last param:', error);
@@ -111,7 +115,45 @@ const Accueil = () => {
           setpageState("workspaces");
         }
         else if (CurrentState.collectionId === null){
-          setpageState("workspace");
+          if (CurrentState.responseId === null){
+            setpageState("workspace");
+          }
+          else{
+
+            const { success, paramResponse, paramRequest } = await getResponse(CurrentState.responseId);
+            RequestInputs.setMethod(paramRequest.method);
+            RequestInputs.setUrl(paramRequest.url);
+            RequestInputs.setParams(paramRequest.parameters);
+
+            //Adds key element to headers from paramrequest
+            const formattedHeaders = paramRequest.header.map((item, index) => ({
+              key: String(index),
+              keyData: item.keyData,
+              value: item.value,
+            }));
+
+            RequestInputs.setHeaders(formattedHeaders);
+            RequestInputs.setBody(paramRequest.body);
+
+            if (success) {
+              setpageState("history");
+            }
+
+            const formattedHeadersResponse = paramResponse.header.map((item, index) => ({
+              key: String(index),
+              keyData: item.keyData,
+              value: item.value,
+            }));
+            
+
+            setSelectedRequest("param");
+            setSelectedResponse("headerResponse");
+            ResponseData.setCode(paramResponse.code);
+            ResponseData.setHeader(formattedHeadersResponse);
+            ResponseData.setBody(paramResponse.body);
+
+          }
+
         }
         else if (CurrentState.requestId === null){
           setpageState("collection");
@@ -214,7 +256,7 @@ const Accueil = () => {
           <SiderMenu />
         </Sider>
 
-        {pageState === "request" ? (
+        {pageState === "request" || pageState === "history"? (
           <Layout style={{ padding: '0 24px 24px', width: '70vw', height: '100%', background: '#d9ebe5' }}>
             <div style={{ marginTop: '16px' }}>
               <BreadCrumb />
@@ -234,6 +276,7 @@ const Accueil = () => {
                 style={{
                   width: 120,
                 }}
+                disabled={pageState === "history"}
                 options={[
                   { value: 'GET', label: 'GET' },
                   { value: 'POST', label: 'POST' },
@@ -246,20 +289,26 @@ const Accueil = () => {
               />
 
               {/* URL Input */}
-              <Input placeholder="URL" value={RequestInputs.url} onChange={(e) => RequestInputs.setUrl(e.target.value)} />
-
+              <Input 
+                placeholder="URL" 
+                value={RequestInputs.url} 
+                onChange={(e) => RequestInputs.setUrl(e.target.value)} 
+                disabled={pageState === "history"}
+              />
 
               {/* Send Button */}
-              <Button
-                type="default"
-                onClick={(e) => {
-                  e.currentTarget.blur();
-                  createParamRequest();
-                }}
-               
-              >
-                Send
-              </Button>
+              {pageState !== "history" && (
+                <Button
+                  type="default"
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    createParamRequest();
+                  }}
+                >
+                  Send
+                </Button>
+              )}
+
             </div>
 
             <Splitter
