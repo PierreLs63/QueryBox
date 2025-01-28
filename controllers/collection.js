@@ -237,10 +237,16 @@ export const getUsersInCollection = async (req, res) => {
         if (!collection) {
             return res.status(404).json({ message: "Collection not found" });
         }
-        const userInCollection = collection.users.find(user => user.userId.toString() === userId.toString());
-        if (!userInCollection) {
-            return res.status(404).json({ message: "User not found in collection" });
+       
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === userId.toString());
+
+        const workspaceConnectedUser = await Workspace.findOne({ collections: collectionId, "users.userId": userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === userId.toString());
         }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
        
         await collection.populate({path:"users.userId", select: "username"});
         const users = collection.users.map(user => ({
