@@ -523,11 +523,11 @@ const SiderMenu = () => {
                 return {
                   ...child,
                   children: [
-                    ...child.children,
                     {
                       key: newHistoryKey,
                       label: newHistoryLabel,
                     },
+                    ...child.children,
                   ],
                 };
               }
