@@ -4,12 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import './ConfirmerMail.css'
 
 const ConfirmerMail = () => {
-  const navigate = useNavigate();
-
-  // Navigate to reinitialiser if forget password
-  const handleReinitialiser = () => {
-    navigate('/reinitialiser');
-  };
 
   return (
     <div className='global'>
@@ -19,7 +13,10 @@ const ConfirmerMail = () => {
         <Form name="confirmMail" initialValues={{ remember: true }} layout="vertical">
           <Form.Item
             name="mail"
-            rules={[{ required: true, message: "Veuillez saisir mail utilisé lors de l'inscription!" }]}
+            rules={[
+              { required: true, message: "Veuillez saisir mail utilisé lors de l'inscription!" },
+              { type: 'email', message: 'Veuillez entrer un email valide!' },
+            ]}
             className="custom-form-item"
           >
             <Input.Password
@@ -36,7 +33,6 @@ const ConfirmerMail = () => {
               size="large"
               block
               className='button'
-              onClick={handleReinitialiser}
             >
               Envoyer le mail
             </Button>
