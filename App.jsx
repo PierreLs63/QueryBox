@@ -33,9 +33,9 @@ function App() {
           <Route path="/accueil" element={authUser ? (authUser?.isVerified ? <Accueil /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" /> } />
           <Route path="/debutant" element={authUser ? (authUser?.isVerified ? <Debutant /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
           <Route path="/tuto" element={authUser ? (authUser?.isVerified ? <Tuto /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
-          <Route path="/verificationEmail/:token" element={authUser ? (authUser?.isVerified ? <Navigate to="/mailverifie" /> : <VerificationEmail /> ) : <Navigate to='/connexion' /> } />
+          <Route path="/verificationEmail/:token" element={authUser ? (authUser?.isVerified ? <Navigate to="/mailverifie" /> : <VerificationEmail /> ) : <VerificationEmail /> } />
           <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/changermotdepasse" element={<ChangerMotDePasse />} />
+          <Route path="/resetPassword/:token" element={<ChangerMotDePasse />} />
         </Routes>
       </Router>
     </>

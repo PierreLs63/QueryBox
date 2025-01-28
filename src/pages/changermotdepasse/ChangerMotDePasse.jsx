@@ -11,7 +11,7 @@ const ChangerMotDePasse = () => {
         <h2 className='subtitle'>Changer votre mot de passe</h2>
         <Form name="changePassword" initialValues={{ remember: true }} layout="vertical">
           <Form.Item
-            name="newPassword"
+            name="password"
             rules={[{ required: true, message: 'Veuillez entrer votre nouveau mot de passe!' }]}
             className="custom-form-item"
           >
@@ -23,13 +23,13 @@ const ChangerMotDePasse = () => {
           </Form.Item>
 
           <Form.Item
-            name="repeatPassword"
-            dependencies={['newPassword']}
+            name="confirmPassword"
+            dependencies={['password']}
             rules={[
               { required: true, message: 'Veuillez confirmer votre mot de passe!' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('newPassword') === value) {
+                  if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(new Error('Les deux saisies ne correspondent pas!'));
