@@ -1,5 +1,5 @@
 import { Form, Input, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 import './ChangerMotDePasse.css'
 
 const ChangerMotDePasse = () => {
@@ -16,7 +16,7 @@ const ChangerMotDePasse = () => {
             className="custom-form-item"
           >
             <Input.Password
-              prefix={<UserOutlined />}
+              prefix={<LockOutlined />}
               placeholder="Nouveau mot de passe"
               className="custom-input"
             />
