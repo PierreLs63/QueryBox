@@ -195,13 +195,6 @@ const Accueil = () => {
 
           {/* Bell Icon with Popover for Notifications */}
           <NotificationMenu  />
-
-          {/* Setting Icon --- To do */}
-          <Button
-            type="text"
-            icon={<SettingOutlined style={{ color: 'rgb(34, 56, 51)', fontSize: '30px', cursor: 'pointer' }} />}
-            style={{ padding: 0 }}
-          />
         </div>
       </Header>
 
@@ -258,11 +251,12 @@ const Accueil = () => {
 
               {/* Send Button */}
               <Button
+                type="default"
                 onClick={(e) => {
                   e.currentTarget.blur();
                   createParamRequest();
                 }}
-                className="sendButton"
+               
               >
                 Send
               </Button>
