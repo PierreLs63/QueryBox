@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './src/context/AuthContext.jsx';
 import VerificationEmail from './src/pages/verificationEmail/VerificationEmail.jsx';
 import ChangerMotDePasse from './src/pages/changermotdepasse/ChangerMotDePasse.jsx';
+import ConfirmerMail from './src/pages/confirmermail/ConfirmerMail.jsx'
 
 function App() {
   const { authUser } = useAuthContext();
@@ -35,7 +36,10 @@ function App() {
           <Route path="/tuto" element={authUser ? (authUser?.isVerified ? <Tuto /> : <Navigate to="/mailenvoye" />) : <Navigate to="/connexion" />} />
           <Route path="/verificationEmail/:token" element={authUser ? (authUser?.isVerified ? <Navigate to="/mailverifie" /> : <VerificationEmail /> ) : <VerificationEmail /> } />
           <Route path="*" element={<Navigate to="/" />} />
+<<<<<<< HEAD
           <Route path="/resetPassword/:token" element={<ChangerMotDePasse />} />
+          <Route path="/confirmerMail" element={<ConfirmerMail />} />
+>>>>>>> 96a89e91a174526d5f379959e71d69b33250deaf
         </Routes>
       </Router>
     </>
