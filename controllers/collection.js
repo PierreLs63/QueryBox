@@ -1,5 +1,8 @@
 import Collection from '../models/Collection.js';
 import Workspace from '../models/Workspace.js';
+import Request from '../models/Request.js';
+import ParamRequest from '../models/ParamRequest.js';
+import Response from '../models/Response.js';
 import User from '../models/User.js';
 import dotenv from 'dotenv';
 
@@ -59,6 +62,15 @@ export const deleteCollection = async (req, res) => {
 
         await Collection.findByIdAndDelete(collectionId);
         await Workspace.findByIdAndUpdate(workspaceConnectedUser._id, { $pull: { collections: collectionId } });
+        const requests = await Request.find({ collectionId: collectionId });
+        const requestIds = requests.map(request => request._id);
+
+        const paramRequests = await ParamRequest.find({ requestId: { $in: requestIds } });
+        const paramRequestIds = paramRequests.map(paramRequest => paramRequest._id);
+
+        await Response.deleteMany({ paramRequestId: { $in: paramRequestIds } });
+        await ParamRequest.deleteMany({ requestId: { $in: requestIds } });
+        await Request.deleteMany({ collectionId: collectionId });
         return res.status(200).json({ message: "Collection deleted successfully" });
     } catch (error) {
         return res.status(500).json({ message: error.message });

@@ -186,9 +186,10 @@ export const deleteRequest = async (req, res) => {
 
         if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
 
+        await Response.deleteMany({ paramRequestId: { $in: request.requests.map(r => r.paramRequestId) } });
+        await ParamRequest.deleteMany({ requestId });
         await Request.findByIdAndDelete(requestId);
         await Collection.findByIdAndUpdate(collection._id, { $pull: { requests: requestId } });
-        await ParamRequest.deleteMany({ requestId });
         return res.status(200).json({ message: "Request deleted successfully" });
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -309,6 +310,11 @@ const executeRequest = async (request, paramRequest) => {
 export const getRequestById = async (req, res) => {
     const { requestId }= req.params;
     const { userId } = req.user;
+
+    if (!requestId) {
+        return res.status(400).json({ message: "Request ID is required" });
+    }
+
     const request = await Request.findById(requestId);
     if (!request) {
         return res.status(404).json({ message: "Request not found" });
@@ -329,4 +335,48 @@ export const getRequestById = async (req, res) => {
     
     const paramRequests = await ParamRequest.find({ requestId });
     return res.status(200).json({ request, paramRequests });
+}
+
+export const getRequestFromResponseId = async (req, res) => {
+    try {
+        const { responseId } = req.params;
+
+        if (!responseId) {
+            return res.status(400).json({ message: "Response ID is required" });
+        }
+        
+        const response = await Response.findById(responseId);
+
+        if (!response) {
+            return res.status(404).json({ message: "Response not found" });
+        }
+
+        const paramRequest = await ParamRequest.findById(response.paramRequestId);
+        if (!paramRequest) {
+            return res.status(404).json({ message: "ParamRequest not found" });
+        }
+
+        const request = await Request.findById(paramRequest.requestId);
+        if (!request) {
+            return res.status(404).json({ message: "Request not found" });
+        }
+
+        const collection = await Collection.findById(request.collectionId);
+        if (!collection) {
+            return res.status(404).json({ message: "Collection not found" });
+        }
+
+        var userConnectedInCollection = collection.users.find(u => u.userId.toString() === response.userId.toString());
+        const workspaceConnectedUser = await Workspace.findOne({ collections: request.collectionId, "users.userId": response.userId });
+        if (!workspaceConnectedUser) return res.status(404).json({ message: "User not found in workspace" });
+        if (!userConnectedInCollection) {
+            userConnectedInCollection = workspaceConnectedUser.users.find(u => u.userId.toString() === response.userId.toString());
+        }
+        if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
+
+        return res.status(200).json({ name: request.name });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
 }

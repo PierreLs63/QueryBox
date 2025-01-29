@@ -18,5 +18,4 @@ router.delete("/:requestId", protectRoute, deleteRequest); // Supprimer une requ
 router.delete("/paramRequests/:paramRequestId", protectRoute, deleteParamRequest); // Supprimer un ParamRequest
 router.get("/:requestId/lastParamRequest", protectRoute, getLastParamRequest); // Créer une nouvelle requête
 router.get("/:requestId", protectRoute, getRequestById); // Obtenir une requête par son id
-
 export default router;
