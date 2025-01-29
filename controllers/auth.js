@@ -129,7 +129,7 @@ export const login = async (req, res) => {
           subject: "Bienvenue sur QueryBox",
           text: "Bienvenue sur QueryBox",
           html:
-            `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
+            `<h1>Bienvenue sur QueryBox, ${newUser.username} !</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
         })
 
         res.status(201).json({
@@ -222,7 +222,7 @@ export const login = async (req, res) => {
           subject: "Bienvenue sur QueryBox",
           text: "Bienvenue sur QueryBox",
           html:
-            `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
+            `<h1>Bienvenue sur QueryBox, ${user.username}</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
         })
 
         return res.status(400).json({ error: "Veuillez vérifier votre email avant de réinitialiser votre mot de passe, un mail vous a été renvoyé" })
@@ -236,7 +236,7 @@ export const login = async (req, res) => {
         subject: "Réinitialisation du mot de passe",
         text: "Réinitialisation du mot de passe",
         html:
-          `<h1>Réinitialisation du mot de passe</h1><p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe</br /><a href='${resetPasswordLink}'>Cliquez pour réinitialiser votre mot de passe</a></p>`
+          `<h1>Réinitialisation du mot de passe</h1><p>Pseudonyme : <b>${user.username}</b></p><p><a href='${resetPasswordLink}'>Cliquez pour réinitialiser votre mot de passe</a></p>`
       });
 
       return res.status(201).json({ message: "Mail de réinitialisation de mot de passe envoyé avec succès" })
@@ -344,7 +344,7 @@ export const login = async (req, res) => {
         subject: "Bienvenue sur QueryBox",
         text: "Bienvenue sur QueryBox",
         html:
-          `<h1>Bienvenue sur QueryBox</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
+          `<h1>Bienvenue sur QueryBox, ${user.username} !</h1><p>Vous avez rejoint la communauté QueryBox avec succès</br /><a href='${verificationLink}'>Cliquez pour vérifier votre email</a></p>`
       })
   
       res.status(201).json({ message: "Email renvoyé avec succès" })
