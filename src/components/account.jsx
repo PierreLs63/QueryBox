@@ -24,8 +24,8 @@ const Account = () => {
     setPopoverContentType('menu');
   };
 
-  const handleInitialisePassword = () => {
-    sendResetPassword(authUser.email);
+  const handleInitialisePassword = async () => {
+    await sendResetPassword(authUser.email);
   };
 
 

@@ -37,7 +37,7 @@ function App() {
           <Route path="/verificationEmail/:token" element={authUser ? (authUser?.isVerified ? <Navigate to="/mailverifie" /> : <VerificationEmail /> ) : <VerificationEmail /> } />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/resetPassword/:token" element={<ChangerMotDePasse />} />
-          <Route path="/confirmerMail" element={<ConfirmerMail />} />
+          <Route path="/confirmerMail" element={authUser ? <Navigate to="/accueil" /> : <ConfirmerMail />} />
         </Routes>
       </Router>
     </>

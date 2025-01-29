@@ -1,18 +1,48 @@
 import { Form, Input, Button } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuthContext } from '../../context/AuthContext';
+import useCheckTokenPassword from '../../hooks/auth/useCheckTokenPassword';
+import useResetPassword from '../../hooks/auth/useResetPassword';
 import './ChangerMotDePasse.css'
 
 const ChangerMotDePasse = () => {
+  const { authUser } = useAuthContext();
+  const { checkTokenPassword } = useCheckTokenPassword();
+  const {resetPassword} = useResetPassword();
+  const navigate = useNavigate();
+  const { token } = useParams();
+  const [form] = Form.useForm();
+
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const validToken = await checkTokenPassword(token);
+      if (!validToken) {
+        authUser ? navigate('/accueil') : navigate('/connexion');
+      }
+    };
+    checkToken();
+  }, []);
+
+  const handleSubmit = async (values) => {
+    const validPassword = await resetPassword(token, values.password, values.confirmPassword);
+    if (validPassword) {
+      authUser ? navigate('/accueil') : navigate('/connexion');
+      return;
+    }
+  }
 
   return (
     <div className='global'>
       <div className='login-box'>
         <h1 className='title'>QueryBox</h1>
         <h2 className='subtitle'>Changer votre mot de passe</h2>
-        <Form name="changePassword" initialValues={{ remember: true }} layout="vertical">
+        <Form name="changePassword" form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Veuillez entrer votre nouveau mot de passe!' }]}
+            rules={[{ required: true, message: 'Veuillez entrer votre nouveau mot de passe!' }, { min: 8, message: 'Le mot de passe doit contenir au moins 8 caractères !' }]}
             className="custom-form-item"
           >
             <Input.Password

@@ -2,12 +2,12 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables.js';
 
-const useSendResetPassword = () => {
+const useResetPassword = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const sendResetPassword = async (email) => {
-        const api = `${baseURL}/auth/sendResetPassword`;
+    const resetPassword = async (token, password, confirmPassword) => {
+        const api = `${baseURL}/auth/resetPassword/${token}`;
         try {
             setLoading(true);
             const response = await fetch(api, {
@@ -15,7 +15,7 @@ const useSendResetPassword = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({email: email})
+                body: JSON.stringify({password, confirmPassword})
             });
             
             const data = await response.json();
@@ -34,7 +34,7 @@ const useSendResetPassword = () => {
         }
     }
     
-    return {loading, sendResetPassword};
+    return {loading, resetPassword};
 };
 
-export default useSendResetPassword;
+export default useResetPassword;

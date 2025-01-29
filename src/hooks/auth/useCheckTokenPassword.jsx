@@ -2,39 +2,35 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { baseURL } from '../../utils/variables.js';
 
-const useSendResetPassword = () => {
+const useCheckTokenPassword = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const sendResetPassword = async (email) => {
-        const api = `${baseURL}/auth/sendResetPassword`;
+    const checkTokenPassword = async (token) => {
+        
+        const api = `${baseURL}/auth/resetPassword/${token}`;
         try {
             setLoading(true);
             const response = await fetch(api, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email: email})
+                }
             });
             
             const data = await response.json();
             if (data.error) {
                 throw new Error(data.error);
             }
-            
-            toast.success(data.message);
-
             return true;
-        } catch (error) {
-            toast.error(error.message);
+        } catch {
             return false;
         } finally {
             setLoading(false);
         }
     }
     
-    return {loading, sendResetPassword};
+    return {loading, checkTokenPassword};
 };
 
-export default useSendResetPassword;
+export default useCheckTokenPassword;
