@@ -43,7 +43,7 @@ const NotificationMenu = () => {
   }
 
   const notificationContent = (
-    <div style={{ maxHeight: '200px', overflowY: 'scroll', width: '250px' }}>
+    <div style={{ maxHeight: '200px', overflowY: 'auto', width: '250px' }}>
       <List
         dataSource={notifications}
         renderItem={(item) => (
@@ -54,7 +54,6 @@ const NotificationMenu = () => {
               alignItems: 'center',
               wordWrap: 'break-word',
               wordBreak: 'break-word',
-              maxWidth: '230px',
             }}
           >
             <div style={{ flex: 1, marginRight: '10px' }}>{item.message}</div>
