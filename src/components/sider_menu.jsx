@@ -25,6 +25,7 @@ import useDeleteResponse from '../hooks/response/useDeleteResponse';
 import { useAuthContext } from '../context/AuthContext';
 import useCollaborateurs2 from '../hooks/workspace/useCollaborateurs2';
 import useCollaborateursCollection from '../hooks/collection/useCollaborateursCollection';
+import useGetRequestName from '../hooks/response/useGetRequestName';
 
 
 const SiderMenu = () => {
@@ -45,6 +46,7 @@ const SiderMenu = () => {
   const { getCollaborateurs } = useCollaborateurs2();
   const { getCollaborateursCollection } = useCollaborateursCollection();
   const { authUser } = useAuthContext();
+  const { getRequestName } = useGetRequestName();
 
   // Edition for workspace
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -185,10 +187,19 @@ const SiderMenu = () => {
                   key: `workspace:${workspace.id}-history`,
                   label: 'History',
                   icon: <HistoryOutlined />,
-                  children: workspaceHistory.map((history) => ({
-                    key: `${workspaceKey}-history:${history._id}`,
-                    label: history._id,
-                  })),
+                  children: await Promise.all(
+                    workspaceHistory.map(async (history) => {
+                      const requestName = await getRequestName(history._id); 
+                      const formattedDate = new Date(history.createdAt).toLocaleString('fr-FR', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric', 
+                        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                      }).replace(',', '');
+                      return {
+                        key: `${workspaceKey}-history:${history._id}`,
+                        label: `${requestName} ${formattedDate}`,
+                      };
+                    })
+                  ),
                 },
               ],
             };
@@ -508,10 +519,15 @@ const SiderMenu = () => {
     
     const newHistoryKey = `workspace:${workspaceId}-history:${responseId}`;
 
+    const requestName = await getRequestName(responseId); 
+    const formattedDate = new Date().toLocaleString('fr-FR', { 
+      day: '2-digit', month: '2-digit', year: 'numeric', 
+      hour: '2-digit', minute: '2-digit', second: '2-digit' 
+    }).replace(',', '');
 
     setOpenKeys((prev) => [...prev, `workspace:${workspaceId}-history`]);
 
-    const newHistoryLabel = `${responseId}`;
+    const newHistoryLabel = `${requestName} ${formattedDate}`;
 
     const recursiveUpdate = (items) =>
       items.map((item) => {
