@@ -41,9 +41,9 @@ export const getHistory = async (req, res) => {
         const filteredParamRequestIds = paramRequestIds.flatMap(request => Object.values(request.requests).map(req => req.paramRequestId));
 
         // Récupérer toutes les réponses des requêtes pour l'utilisateur donné
-        const responses = await Response.find({ paramRequestId: { $in: filteredParamRequestIds } })
-            .skip((page - 1) * perPage)
-            .limit(parseInt(perPage));
+        const responses = await Response.find({ paramRequestId: { $in: filteredParamRequestIds } });
+            // .skip((page - 1) * perPage)
+            // .limit(parseInt(perPage));
 
         
 
