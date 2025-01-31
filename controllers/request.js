@@ -134,8 +134,6 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
 
         if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
-        console.log("parametre", parameters);
-        console.log("header", header);
         // Créer un nouveau ParamRequest
         const newParamRequest = new ParamRequest({
             requestId,
