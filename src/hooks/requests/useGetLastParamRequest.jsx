@@ -19,7 +19,6 @@ const useGetLastParamRequest = () => {
                 }
             });
             const data = await response.json();
-            console.log(data)
             if (data.message && !response.ok) {
                 throw new Error(data.message);
             }
@@ -29,7 +28,7 @@ const useGetLastParamRequest = () => {
                     ...item,
                     key: uuidv4(),
                 }));
-              }
+            }
 
             setSuccess(data.message);
             return {success: true, paramRequest: data.paramRequest};

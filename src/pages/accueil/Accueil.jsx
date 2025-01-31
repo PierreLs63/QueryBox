@@ -83,6 +83,7 @@ const Accueil = () => {
               key: String(index),
               keyData: item.keyData,
               value: item.value,
+              description: item.description
             }));
 
             RequestInputs.setHeaders(formattedHeaders);
@@ -130,6 +131,7 @@ const Accueil = () => {
               key: String(index),
               keyData: item.keyData,
               value: item.value,
+              description: item.description
             }));
 
             RequestInputs.setHeaders(formattedHeaders);

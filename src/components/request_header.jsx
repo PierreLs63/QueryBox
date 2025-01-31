@@ -291,7 +291,7 @@ const RequestHeader = () => {
           <Form.Item
             label="Key"
             name="keyData"
-            rules={[{ required: true, message: 'Veuillez saisir une clé!' }]}
+            rules={[{ required: true, message: 'Veuillez saisir une clé !' }]}
           >
             <Input placeholder="Veuillez saisir une clé" />
           </Form.Item>
