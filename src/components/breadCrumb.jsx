@@ -34,8 +34,9 @@ const BreadCrumb = () => {
             }
     ]
     return (
-        <div style={{ height: '22px' }}>
-            {workspaceId !== null && responseId === null && (
+        workspaceId != null && responseId == null && (
+        <>
+            <div style={{ height: '22px' }}>
                 <Breadcrumb>
                     {breadcrumbItems.map((item, index) => (
                         <Breadcrumb.Item key={index} href="#">
@@ -44,8 +45,9 @@ const BreadCrumb = () => {
                         </Breadcrumb.Item>
                     ))}
                 </Breadcrumb>
-            )}
-        </div>
+            </div>
+        </>
+        )
     )
 }
 
