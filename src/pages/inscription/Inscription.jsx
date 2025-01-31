@@ -7,7 +7,6 @@ import './Inscription.css'
 const Inscription = () => {
   const { loading, signup } = useSignup();
   const onFinish = (values) => {
-    console.log('Form Values :', values);
     signup(values);
   };
 

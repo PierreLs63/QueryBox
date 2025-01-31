@@ -16,7 +16,6 @@ const NotificationMenu = () => {
   useEffect(() => {
     async function fetchData() {
       const invitations = await getWorkspaceInvitations();
-      console.log(invitations);
       setNotifications(
         invitations.map((invitation) => ({
           id: invitation.id,

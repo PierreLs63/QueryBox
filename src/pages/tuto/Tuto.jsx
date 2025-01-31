@@ -38,19 +38,15 @@ const Tuto = () => {
 
     if (menuRef.current) {
       menuRef.current.classList.add('menu-highlight');
-      console.log("menu-highlight added to menuRef");
     }
     if (methodRef.current) {
       methodRef.current.classList.add('method-highlight');
-      console.log("method-highlight added to methodRef");
     }
     if (requestRef.current) {
       requestRef.current.classList.add('request-ratio-box');
-      console.log("request-ratio-box added to requestRef");
     }
     if (responseRef.current) {
       responseRef.current.classList.add('response-ratio-box');
-      console.log("response-ratio-box added to responseRef");
     }
 
     setOpen(true);

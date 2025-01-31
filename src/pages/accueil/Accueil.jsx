@@ -65,7 +65,6 @@ const Accueil = () => {
   // Récupérer les collaborateurs lors du montage du composant
   useEffect(() => {
     getCollaborateurs();
-    console.log(collaborators.collaboratorsWorkspace)
   }, [CurrentState.workspaceId]);
 
   useEffect(() => {
