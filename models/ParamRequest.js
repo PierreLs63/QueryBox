@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 // Key value structure to be implemented in header with disabled id
 const KeyValueSchema = new mongoose.Schema({
     keyData: { type: String },
-    value: { type: String }
+    value: { type: String },
+    description: { type: String }
   }, { _id: false });
 
 

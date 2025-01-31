@@ -96,7 +96,7 @@ export const changeName = async (req, res) => {
 export const createParamRequestAndUpdateRequest = async (req, res) => {
     try {
         const { requestId } = req.params;
-        const { url, method, body, header, parameters, responses } = req.body;
+        const { url, method, body, header, parameters } = req.body;
         const { userId } = req.user;
 
         if ((method && !["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"].includes(method)) || method === "") {
@@ -134,6 +134,8 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
 
         if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
 
+        console.log("parametre", parameters);
+        console.log("header", header);
         // Créer un nouveau ParamRequest
         const newParamRequest = new ParamRequest({
             requestId,
@@ -142,7 +144,7 @@ export const createParamRequestAndUpdateRequest = async (req, res) => {
             body,
             header,
             parameters,
-            responses,
+            responses: [],
             userId
         });
 
@@ -259,53 +261,6 @@ export const getLastParamRequest = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
-
-const executeRequest = async (request, paramRequest) => {
-    const { url, method, body, header, parameters } = paramRequest;
-
-    // Préparer les en-têtes pour la requête
-    const headers = {};
-    header.forEach(h => {
-        headers[h.key] = h.value;
-    });
-
-    // Préparer les paramètres pour la requête
-    const queryParams = new URLSearchParams();
-    parameters.forEach(p => {
-        queryParams.append(p.key, p.value);
-    });
-
-    // Construire l'URL avec les paramètres
-    const requestUrl = `${url}?${queryParams.toString()}`;
-
-    // Envoyer la requête au serveur avec fetch
-    const api = await fetch(requestUrl, {
-        method,
-        headers,
-        body: method !== 'GET' ? body : undefined // Le corps de la requête n'est pas utilisé pour les requêtes GET
-    });
-
-    if (!api.ok) {
-        throw new Error("Error while fetching the request");
-    }
-
-    // Préparer les en-têtes de la réponse
-    const responseHeaders = [];
-    api.headers.forEach((value, key) => {
-        responseHeaders.push({ key, value });
-    });
-
-    // Créer une nouvelle réponse
-    const response = new Response({
-        paramRequestId: paramRequest._id,
-        code: api.status,
-        body: await api.text(),
-        header: responseHeaders,
-        userId: paramRequest.userId
-    });
-
-    await response.save();
-};
 
 export const getRequestById = async (req, res) => {
     const { requestId }= req.params;
