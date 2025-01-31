@@ -3,7 +3,7 @@ import { HomeOutlined, DesktopOutlined, FileOutlined, FileTextOutlined } from '@
 import useCurrentState from '../zustand/CurrentState';
 
 const BreadCrumb = () => {
-    const { workspaceId, collectionName, requestName, workspaceName } = useCurrentState();
+    const { workspaceId, collectionName, requestName, workspaceName, responseId } = useCurrentState();
 
     const truncateName = (name, maxLength = 16) => {
         if (!name) {
@@ -34,8 +34,8 @@ const BreadCrumb = () => {
             }
     ]
     return (
-        <div>
-            {workspaceId !== null && (
+        <div style={{ height: '22px' }}>
+            {workspaceId !== null && responseId === null && (
                 <Breadcrumb>
                     {breadcrumbItems.map((item, index) => (
                         <Breadcrumb.Item key={index} href="#">
