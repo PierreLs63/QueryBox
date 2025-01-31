@@ -166,8 +166,6 @@ const SiderMenu = () => {
                         label: collection.name,
                         icon: userPrivilegeCollection === 10 
                           ? <EyeOutlined /> 
-                          : userPrivilegeCollection === 20 & userPrivilegeWorkspace === 30
-                          ? <KeyOutlined />  
                           : userPrivilegeCollection === 20 
                           ? <FireOutlined />  
                           : <EyeOutlined /> ,
@@ -356,6 +354,7 @@ const SiderMenu = () => {
                     {
                       key: newCollectionKey,
                       label: newCollectionLabel,
+                      icon: <FireOutlined />,
                       children: [],
                     },
                   ],
