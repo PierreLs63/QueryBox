@@ -214,7 +214,7 @@ export const getCollectionById = async (req, res) => {
         const collection = await Collection
         .findOne({ _id: collectionId })
         .populate('requests')
-        .populate('users.userId')
+        .populate({path:"users.userId", select: "username"})
         .populate('workspaceId')
         .exec();
         if (!collection) return res.status(404).json({ message: "Collection not found" });
