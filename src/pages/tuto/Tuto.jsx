@@ -56,19 +56,19 @@ const Tuto = () => {
   const steps = [
     {
       target: () => menuRef.current,
-      title: 'Cliquer le menu pour voir plus de détailles sur Workspace/Collection/History/Request.'
+      title: 'Cliquez sur le menu pour voir plus de détails sur Workspace/Collection/History/Request.'
     },
     {
       target: () => methodRef.current,
-      title: 'Choisir votre méthode et mettre votre URL ici, puis cliquer le bouton <send>.'
+      title: 'Choisissez votre méthode et mettez votre URL ici, puis cliquer le bouton <Send>.'
     },
     {
       target: () => requestRef.current,
-      title: 'Modifier ici votre Paramètre/Header/Body des requêtes.'
+      title: 'Modifiez ici vos Paramètres/Headers/Body de la requête.'
     },
     {
       target: () => responseRef.current,
-      title: 'Cliquer les boutons pour voir Header/Body des réponses.'
+      title: 'Cliquez sur les boutons pour voir les Headers/Body de la réponse à la requête.'
     },
   ];
 
