@@ -128,94 +128,6 @@ const SiderMenu = () => {
 
   // Update menu items after workspaces have been fetched
   useEffect(() => {
-    const updateMenuItemsWithCollections = async () => {
-      if (workspaces) {
-        console.log('Fetched Workspaces :', workspaces);
-
-        // Fetch collections for each workspace and update the menu
-        const updatedMenuItems = await Promise.all(
-          workspaces.map(async (workspace) => {
-            const workspaceCollections = await getCollections(workspace.id);
-            const workspaceHistory = await getAllHistory(workspace.id);
-            const workspaceKey = `workspace:${workspace.id}`;
-            const workspaceCollaborators = await getCollaborateurs(workspace.id);
-            const userPrivilegeWorkspace = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
-            
-            return {
-              key: `workspace:${workspace.id}`,
-              label: workspace.name,
-              icon: userPrivilegeWorkspace === 10 
-                ? <EyeOutlined /> 
-                : userPrivilegeWorkspace === 20 
-                ? <FireOutlined />  
-                : userPrivilegeWorkspace === 30 
-                ? <KeyOutlined />  
-                : <EyeOutlined /> ,
-              children: [
-                {
-                  key: `workspace:${workspace.id}-collection`,
-                  label: 'Collections',
-                  icon: <FileOutlined />,
-                  children: await Promise.all( // Use Promise.all to resolve async operations inside map
-                    workspaceCollections.map(async (collection) => {
-                      const requests = await getRequests(collection._id);
-                      const collectionCollaborators = await getCollaborateursCollection(collection._id);
-                      const userPrivilegeCollection = collectionCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
-                      return {
-                        key: `${workspaceKey}-collection:${collection._id}`,
-                        label: collection.name,
-                        icon: userPrivilegeCollection === 10 
-                          ? <EyeOutlined /> 
-                          : userPrivilegeCollection === 20 
-                          ? <FireOutlined />  
-                          : <EyeOutlined /> ,
-                        children: await Promise.all(
-                          requests.map(async (request) => {
-                            return {
-                              key: `${workspaceKey}-collection:${collection._id}-request:${request._id}`,
-                              label: request.name,
-                            }
-                          })
-                        ),
-                      };
-                    })
-                  ),
-                },
-                {
-                  key: `workspace:${workspace.id}-history`,
-                  label: 'History',
-                  icon: <HistoryOutlined />,
-                  children: await Promise.all(
-                    workspaceHistory.map(async (history) => {
-                      const requestName = await getRequestName(history._id); 
-                      const formattedDate = new Date(history.createdAt).toLocaleString('fr-FR', { 
-                        day: '2-digit', month: '2-digit', year: 'numeric', 
-                        hour: '2-digit', minute: '2-digit', second: '2-digit' 
-                      }).replace(',', '');
-                      return {
-                        key: `${workspaceKey}-history:${history._id}`,
-                        label: `${requestName} ${formattedDate}`,
-                      };
-                    })
-                  ),
-                },
-              ],
-            };
-          })
-        );
-
-        // Update the menu items with fetched data
-        setMenuItems((prevItems) =>
-          prevItems.map((item) =>
-            item.key === 'workspaces'
-              ? { ...item, children: updatedMenuItems }
-              : item
-          )
-        );
-      } else {
-        console.log('No workspaces available');
-      }
-    };
 
     updateMenuItemsWithCollections();
   }, [workspaces]);
@@ -229,6 +141,95 @@ const SiderMenu = () => {
   }, [currentState.sendRequest]);
 
 
+  //update menu
+  const updateMenuItemsWithCollections = async () => {
+    if (workspaces) {
+      console.log('Fetched Workspaces :', workspaces);
+
+      // Fetch collections for each workspace and update the menu
+      const updatedMenuItems = await Promise.all(
+        workspaces.map(async (workspace) => {
+          const workspaceCollections = await getCollections(workspace.id);
+          const workspaceHistory = await getAllHistory(workspace.id);
+          const workspaceKey = `workspace:${workspace.id}`;
+          const workspaceCollaborators = await getCollaborateurs(workspace.id);
+          const userPrivilegeWorkspace = workspaceCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
+          
+          return {
+            key: `workspace:${workspace.id}`,
+            label: workspace.name,
+            icon: userPrivilegeWorkspace === 10 
+              ? <EyeOutlined /> 
+              : userPrivilegeWorkspace === 20 
+              ? <FireOutlined />  
+              : userPrivilegeWorkspace === 30 
+              ? <KeyOutlined />  
+              : <EyeOutlined /> ,
+            children: [
+              {
+                key: `workspace:${workspace.id}-collection`,
+                label: 'Collections',
+                icon: <FileOutlined />,
+                children: await Promise.all( // Use Promise.all to resolve async operations inside map
+                  workspaceCollections.map(async (collection) => {
+                    const requests = await getRequests(collection._id);
+                    const collectionCollaborators = await getCollaborateursCollection(collection._id);
+                    const userPrivilegeCollection = collectionCollaborators.find(collaborator => collaborator.userId === authUser._id)?.privilege;
+                    return {
+                      key: `${workspaceKey}-collection:${collection._id}`,
+                      label: collection.name,
+                      icon: userPrivilegeCollection === 10 
+                        ? <EyeOutlined />  
+                        : userPrivilegeCollection === 20 
+                        ? <FireOutlined />  
+                        : <EyeOutlined /> ,
+                      children: await Promise.all(
+                        requests.map(async (request) => {
+                          return {
+                            key: `${workspaceKey}-collection:${collection._id}-request:${request._id}`,
+                            label: request.name,
+                          }
+                        })
+                      ),
+                    };
+                  })
+                ),
+              },
+              {
+                key: `workspace:${workspace.id}-history`,
+                label: 'History',
+                icon: <HistoryOutlined />,
+                children: await Promise.all(
+                  workspaceHistory.map(async (history) => {
+                    const requestName = await getRequestName(history._id); 
+                    const formattedDate = new Date(history.createdAt).toLocaleString('fr-FR', { 
+                      day: '2-digit', month: '2-digit', year: 'numeric', 
+                      hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                    }).replace(',', '');
+                    return {
+                      key: `${workspaceKey}-history:${history._id}`,
+                      label: `${requestName} ${formattedDate}`,
+                    };
+                  })
+                ),
+              },
+            ],
+          };
+        })
+      );
+
+      // Update the menu items with fetched data
+      setMenuItems((prevItems) =>
+        prevItems.map((item) =>
+          item.key === 'workspaces'
+            ? { ...item, children: updatedMenuItems }
+            : item
+        )
+      );
+    } else {
+      console.log('No workspaces available');
+    }
+  };
 
   // Add new workspace
   const addWorkspace = async(parentKey, event) => {
@@ -383,7 +384,7 @@ const SiderMenu = () => {
     if(event != null){
       event.stopPropagation();
     }
-
+    console.log(subKey);
     if (subKey.includes("-collection:")){
       const deleteCollectionData = await deleteCollection(subKey.split('-collection:')[1]);
       if (!deleteCollectionData.success) {
@@ -412,6 +413,7 @@ const SiderMenu = () => {
         .filter((i) => i.key !== subKey);
 
     setMenuItems((prevItems) => recursiveDelete(prevItems));
+    updateMenuItemsWithCollections();
   };
 
 
@@ -507,6 +509,7 @@ const SiderMenu = () => {
         .filter((i) => i.key !== subKey);
 
     setMenuItems((prevItems) => recursiveDelete(prevItems));
+    updateMenuItemsWithCollections();
   };
 
 
