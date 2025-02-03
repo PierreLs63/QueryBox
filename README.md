@@ -100,24 +100,64 @@ Navigate to the  `frontend`  directory and install dependencies:
 cd ../frontend
 npm install
 ```
+### Step 3: Configure the Application  
 
-### Step 3: Configure the Application
+The application requires a `.env` file in the `backend` directory to store environment variables.  
 
-The application requires a  `.env`  file in both the `backend`  directories to store environment variables.
+#### Backend `.env` File  
 
-#### Backend  `.env`  File
-
-Create a  `.env`  file in the  `backend`  directory and include the following [variables](#Example-`.env`-File):
+Create a `.env` file in the `backend` directory and include the following [variables](#example-env-file).  
 
 #### Frontend  `src/utils/variables.js`  File
 
-Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable:
+Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable :
 
 ```plaintext
 BaseURL=http://localhost:5173/api/v1
 ```
 
-### Step 4: Run the Application
+### Step 4: Launch Maildev or Use Your Own SMTP Server  
+
+## Maildev
+If you want to test email functionality locally, you can use Maildev, a simple SMTP server that captures outgoing emails for testing purposes.  
+
+First, ensure that Docker Desktop is installed and running on your computer. Then, run the following command in the bash terminal (you may need administrator privileges):  
+
+```bash
+docker run -p 1080:1080 -p 1025:1025 maildev/maildev
+```  
+
+After that, you can open your browser and go to `http://localhost:1080` to access the Maildev web interface.
+
+Update the `.env` file, set the `PORT_MAIL` to `1025`. The `MAIL` and `HOST_MAIL` values can be any valid values, for example :  
+
+```plaintext
+MAIL=noreply@querybox.com
+HOST_MAIL=smtp.querybox.com
+PORT_MAIL=1025
+```  
+
+
+## Using Your Own SMTP Server  
+
+If you prefer a real SMTP server, you can configure the application to use Gmail, Outlook, or any custom SMTP provider.  
+
+Example with Gmail:  
+
+```plaintext
+MAIL=querybox@gmail.com
+HOST_MAIL=smtp.gmail.com
+PORT_MAIL=587
+```
+
+Please note that it may not work if:  
+- **You have two-factor authentication (2FA) enabled**: You must generate an [App Password](https://myaccount.google.com/apppasswords) instead of using your regular password.  
+- **Less Secure Apps is disabled**: Google has restricted this option for security reasons.  
+- **Your provider blocks SMTP connections**: Some networks or ISPs may restrict outgoing SMTP traffic.  
+
+For other providers, update `MAIL`, `HOST_MAIL` and `PORT_MAIL` accordingly.
+
+### Step 5: Run the Application
 
 Start both the frontend and backend:
 
