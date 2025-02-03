@@ -229,7 +229,7 @@ export const getCollectionById = async (req, res) => {
         }
         if (!userConnectedInCollection) return res.status(404).json({ message: "User not found in collection or workspace" });
 
-        if (userConnectedInCollection.privilege < admin_grade) return res.status(403).json({ message: "User not authorized" });
+        if (userConnectedInCollection.privilege < viewer_grade) return res.status(403).json({ message: "User not authorized" });
         
         if (collection.workspaceId.hasJoined === false) return res.status(403).json({ message: "User not authorized" });
        
