@@ -1,0 +1,74 @@
+  .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    color: #397d4b !important;
+    font-weight: bold;
+  }
+  
+  .ant-menu-submenu-selected > .ant-menu-submenu-title:hover {
+    background-color: #90ae902c !important;
+  }
+  
+  .ant-menu-item-selected {
+    background-color: #90ae90e0 !important;
+    color: #397d4b !important;
+    font-weight: bold;
+  }
+  
+  .ant-menu-item:hover {
+    background-color: #90ae902c;
+  }
+  
+  .ant-menu-item-selected:hover {
+    color: #397d4b !important;
+  }
+
+  .ant-menu-item:active, 
+  .ant-menu-submenu-title:active {
+  background-color: #90ae90c5 !important;
+  color: #397d4b !important;
+  }
+
+
+.okButton:hover,
+.okButton:focus {
+    background-color: #e6f7e6 !important;
+  }  
+
+.cancelButton:hover,
+.cancelButton:focus {
+    background-color: #ffe3e3 !important;
+  } 
+
+
+.menu {
+  background-color: #cae4db;
+}
+
+.item-open > .ant-menu-submenu-title {
+  background-color: #90ae902c !important;
+}
+
+.child-open > .ant-menu-submenu-title {
+  background-color: #90ae9050 !important;
+}
+
+.subchild-open > .ant-menu-submenu-title {
+  background-color: #90ae9081 !important;
+}
+
+.subitem-open > .ant-menu-submenu-title {
+  background-color: #90ae90a5 !important;
+}
+
+.scroll-title:hover {
+  display: inline-block;
+  animation: scroll 4s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

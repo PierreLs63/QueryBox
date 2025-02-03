@@ -1,0 +1,52 @@
+.custom-ok-button:hover,
+.custom-ok-button:focus {
+    background-color: #e6f7e6 !important;
+  }  
+
+.custom-cancel-button:hover,
+.custom-cancel-button:focus {
+    background-color: #ffe3e3 !important;
+    color: red !important;
+  } 
+
+
+.confirm-button {
+    border-radius: 24px;
+    border: none;
+    background-color: #54877c;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover,
+.confirm-button:focus {
+    background-color: #87c1af !important;
+}
+
+
+.ant-table-tbody > tr.ant-table-row-selected > td {
+  background-color: #e6f7e6 !important;
+}
+
+.ant-table-tbody > tr.ant-table-row-selected .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: rgb(26, 79, 20) !important;
+}
+
+.ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #b7eb8f !important;
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: #b7eb8f !important; 
+}
+
+
+.ant-table-thead .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: rgb(26, 79, 20) !important;
+}
+
+.ant-table-thead .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+  background-color: rgb(26, 79, 20) !important;
+}

@@ -1,0 +1,100 @@
+/* global style */
+.global {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    background-color: #d9ebe5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* sign up container style */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #d9ebe5;
+}
+
+/* sign up box style */
+.signup-box {
+    width: 400px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* title style */
+.title {
+    font-family: 'Monofett';
+    font-size: 70px;
+    font-weight: bold;
+    color: #54877c;
+    margin-bottom: 20px;
+}
+
+/* subtitle style */
+.signup-subtitle {
+    color: #060606;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* already-account style */
+.already-account {
+    font-size: 14px;
+    color: black;
+    margin-top: -16px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* already-account-link style */
+.already-account-link {
+    color: #54877c;
+    text-decoration: none;
+}
+
+.already-account-link:hover {
+    color: #54877c;
+    text-decoration: underline;
+}
+
+/* button style */
+.button {
+    border-radius: 24px;
+    border: none;
+    background-color: #54877c;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #3a5a50;
+}
+
+/* form input style */
+.custom-input {
+    border-radius: 8px;
+    border: 2px solid #ccc !important;
+    height: 35px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.custom-input:hover {
+    border-color: #2e4b44 !important;
+}
+
+.custom-input:focus {
+    border-color: #54877c !important;
+    outline: none;
+    box-shadow: 0 0 5px rgba(84, 135, 124, 0.5) !important;
+}
