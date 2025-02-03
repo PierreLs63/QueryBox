@@ -225,7 +225,7 @@ This is the main source folder containing all the application code and resources
 
 This structured organization ensures clarity, making the codebase easy to understand and modify.
 
-### Backtend directory 
+### Backend directory 
 
 The backend of the application is organized to ensure clarity and maintainability. Below is the detailed structure and purpose of each directory and file:
 
