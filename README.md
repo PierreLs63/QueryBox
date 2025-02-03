@@ -168,13 +168,18 @@ In the  `backend`  directory:
 ```bash
 npm start
 ```
+or
+```bash
+npm run nodemon
+```
+If you prefer to use Nodemon
 
 #### Start the Frontend
 
 In the  `frontend`  directory:
 
 ```bash
-npm run
+npm run dev
 ``` 
 
 ### Access the Application
