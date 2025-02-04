@@ -86,6 +86,7 @@ Create a `.env` file in the `backend` directory and include the following variab
 The following environment variables are required to configure the application :
 - `VIEWER_GRADE` : Default user permissions for API testers.
 - `ADMIN_GRADE` : Administrator-level permissions.
+- `OWNER_GRADE` : Owner-level permissions.
 - `BASE_URL` : The base URL for the application.
 - `PORT` : The port number the application runs on (e.g., 5001).
 - `API_VERSION` : Version of the API being tested.
@@ -100,6 +101,7 @@ The following environment variables are required to configure the application :
 ```plaintext
 VIEWER_GRADE=10
 ADMIN_GRADE=20
+OWNER_GRADE=30
 BASE_URL=http://localhost
 PORT=5001
 API_VERSION=v1
