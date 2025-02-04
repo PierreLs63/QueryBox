@@ -90,7 +90,7 @@ The application is divided into two parts:  `frontend`  and  `backend`. You need
 Navigate to the  `backend`  directory and install dependencies:
 
 `cd backend
-npm install` 
+npm install`
 
 #### Frontend
 
@@ -100,13 +100,13 @@ Navigate to the  `frontend`  directory and install dependencies:
 cd ../frontend
 npm install
 ```
-### Step 3: Configure the Application  
+### Step 3: Configure the Application
 
-The application requires a `.env` file in the `backend` directory to store environment variables.  
+The application requires a `.env` file in the `backend` directory to store environment variables.
 
-#### Backend `.env` File  
+#### Backend `.env` File
 
-Create a `.env` file in the `backend` directory and include the following [variables](#example-env-file).  
+Create a `.env` file in the `backend` directory and include the following [variables](#example-env-file).
 
 #### Frontend  `src/utils/variables.js`  File
 
@@ -116,33 +116,33 @@ Change a  `src/utils/variables.js`  file in the  `frontend`  directory and inclu
 BaseURL=http://localhost:5173/api/v1
 ```
 
-### Step 4: Launch Maildev or Use Your Own SMTP Server  
+### Step 4: Launch Maildev or Use Your Own SMTP Server
 
 ## Maildev
-If you want to test email functionality locally, you can use Maildev, a simple SMTP server that captures outgoing emails for testing purposes.  
+If you want to test email functionality locally, you can use Maildev, a simple SMTP server that captures outgoing emails for testing purposes.
 
-First, ensure that Docker Desktop is installed and running on your computer. Then, run the following command in the bash terminal (you may need administrator privileges):  
+First, ensure that Docker Desktop is installed and running on your computer. Then, run the following command in the bash terminal (you may need administrator privileges):
 
 ```bash
 docker run -p 1080:1080 -p 1025:1025 maildev/maildev
-```  
+```
 
 After that, you can open your browser and go to `http://localhost:1080` to access the Maildev web interface.
 
-Update the `.env` file, set the `PORT_MAIL` to `1025`. The `MAIL` and `HOST_MAIL` values can be any valid values, for example :  
+Update the `.env` file, set the `PORT_MAIL` to `1025`. The `MAIL` and `HOST_MAIL` values can be any valid values, for example :
 
 ```plaintext
 MAIL=noreply@querybox.com
 HOST_MAIL=smtp.querybox.com
 PORT_MAIL=1025
-```  
+```
 
 
-## Using Your Own SMTP Server  
+## Using Your Own SMTP Server
 
-If you prefer a real SMTP server, you can configure the application to use Gmail, Outlook, or any custom SMTP provider.  
+If you prefer a real SMTP server, you can configure the application to use Gmail, Outlook, or any custom SMTP provider.
 
-Example with Gmail:  
+Example with Gmail:
 
 ```plaintext
 MAIL=querybox@gmail.com
@@ -150,10 +150,10 @@ HOST_MAIL=smtp.gmail.com
 PORT_MAIL=587
 ```
 
-Please note that it may not work if:  
-- **You have two-factor authentication (2FA) enabled**: You must generate an [App Password](https://myaccount.google.com/apppasswords) instead of using your regular password.  
-- **Less Secure Apps is disabled**: Google has restricted this option for security reasons.  
-- **Your provider blocks SMTP connections**: Some networks or ISPs may restrict outgoing SMTP traffic.  
+Please note that it may not work if:
+- **You have two-factor authentication (2FA) enabled**: You must generate an [App Password](https://myaccount.google.com/apppasswords) instead of using your regular password.
+- **Less Secure Apps is disabled**: Google has restricted this option for security reasons.
+- **Your provider blocks SMTP connections**: Some networks or ISPs may restrict outgoing SMTP traffic.
 
 For other providers, update `MAIL`, `HOST_MAIL` and `PORT_MAIL` accordingly.
 
@@ -180,7 +180,7 @@ In the  `frontend`  directory:
 
 ```bash
 npm run dev
-``` 
+```
 
 ### Access the Application
 
@@ -191,7 +191,7 @@ npm run dev
 
 The project is structured into various directories and files to ensure maintainability and scalability. Below is a description of the main components:
 
-### Frontend directory 
+### Frontend directory
 
 ### Root Directory
 - `.env`: Contains the environment variables needed for the application, such as API keys, database URLs, and other configurations.
@@ -207,7 +207,7 @@ Contains static assets that do not need processing by the bundler. These files a
 
 #### **src**
 This is the main source folder containing all the application code and resources. It is further divided into subdirectories:
-  
+
 - **`assets`**: Stores images, fonts, and other static resources used in the application.
 - **`components`**: Houses reusable React components to build the user interface.
 - **`context`**: Contains context providers for managing global states using React Context API.
@@ -226,7 +226,7 @@ This is the main source folder containing all the application code and resources
 
 This structured organization ensures clarity, making the codebase easy to understand and modify.
 
-### Backtend directory 
+### Backtend directory
 
 The backend of the application is organized to ensure clarity and maintainability. Below is the detailed structure and purpose of each directory and file:
 
