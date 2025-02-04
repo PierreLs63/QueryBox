@@ -89,15 +89,17 @@ The application is divided into two parts:  `frontend`  and  `backend`. You need
 
 Navigate to the  `backend`  directory and install dependencies:
 
-`cd backend
-npm install`
+```bash
+cd backend
+npm install
+```
 
 #### Frontend
 
 Navigate to the  `frontend`  directory and install dependencies:
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
 ```
 ### Step 3: Configure the Application
@@ -107,14 +109,6 @@ The application requires a `.env` file in the `backend` directory to store envir
 #### Backend `.env` File
 
 Create a `.env` file in the `backend` directory and include the following [variables](#example-env-file).
-
-#### Frontend  `src/utils/variables.js`  File
-
-Change a  `src/utils/variables.js`  file in the  `frontend`  directory and include the following variable :
-
-```plaintext
-BaseURL=http://localhost:5173/api/v1
-```
 
 ### Step 4: Launch Maildev or Use Your Own SMTP Server
 
@@ -129,11 +123,11 @@ docker run -p 1080:1080 -p 1025:1025 maildev/maildev
 
 After that, you can open your browser and go to `http://localhost:1080` to access the Maildev web interface.
 
-Update the `.env` file, set the `PORT_MAIL` to `1025`. The `MAIL` and `HOST_MAIL` values can be any valid values, for example :
+Update the `.env` file, set `PORT_MAIL` to `1025` and `HOST_MAIL` to `localhost`. `MAIL` can be any valid value, for example :
 
 ```plaintext
 MAIL=noreply@querybox.com
-HOST_MAIL=smtp.querybox.com
+HOST_MAIL=localhost
 PORT_MAIL=1025
 ```
 
@@ -157,7 +151,26 @@ Please note that it may not work if:
 
 For other providers, update `MAIL`, `HOST_MAIL` and `PORT_MAIL` accordingly.
 
-### Step 5: Run the Application
+### Step 5: Launch your MongoDB database
+
+You can either launch it from MongoDB Atlas or from a local instance.
+
+#### Using MongoDB Atlas
+
+1. **Create an Account**: Sign up for a free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. **Create a Cluster**: Follow the instructions to create a new cluster.
+3. **Add IP Address**: Add your IP address to the list of authorized IPs. You can also allow access from any IP by setting it to `0.0.0.0/0`.
+4. **Get Connection String**: Obtain the connection string for your cluster and update the `MONGO_DB_URI` in your `.env` file.
+
+#### Using a Local Instance
+
+1. **Install MongoDB**: Download and install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
+2. **Start MongoDB**: Follow the instructions to start the MongoDB server on your local machine.
+3. **Update Connection String**: Use the local connection string (e.g., `mongodb://localhost:27017/dbname`) and update the `MONGO_DB_URI` in your `.env` file.
+
+After setting up your MongoDB database, proceed to the next step.
+
+### Step 6: Run the Application
 
 Start both the frontend and backend:
 
