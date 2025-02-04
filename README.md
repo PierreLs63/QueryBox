@@ -10,9 +10,9 @@ QueryBox
 This application is an API testing tool similar to Postman or Insomnia. It allows developers and testers to send, receive, and analyze HTTP requests and responses, simplifying the debugging and integration process.
 
 ### Target Audience
-- **End Users:** Developers and QA testers who need to test APIs during development.
-- **Administrators:** Those responsible for managing API environments and configurations.
-- **Organizations:** Teams requiring a centralized and efficient tool for API testing and collaboration.
+- **End Users :** Developers and QA testers who need to test APIs during development.
+- **Administrators :** Those responsible for managing API environments and configurations.
+- **Organizations :** Teams requiring a centralized and efficient tool for API testing and collaboration.
 
 ---
 
@@ -20,13 +20,13 @@ This application is an API testing tool similar to Postman or Insomnia. It allow
 
 ### Hardware Requirements
 - Minimum:
-  - **Processor:** Dual-core 2 GHz
-  - **Memory:** 4 GB RAM
-  - **Storage:** 200 MB available disk space
+  - **Processor :** Dual-core 2 GHz
+  - **Memory :** 4 GB RAM
+  - **Storage :** 200 MB available disk space
 - Recommended:
-  - **Processor:** Quad-core 3 GHz
-  - **Memory:** 8 GB RAM
-  - **Storage:** 1 GB available disk space
+  - **Processor :** Quad-core 3 GHz
+  - **Memory :** 8 GB RAM
+  - **Storage :** 1 GB available disk space
 
 ### Software Requirements
 1. **Node.js**
@@ -38,9 +38,9 @@ This application is an API testing tool similar to Postman or Insomnia. It allow
    - MongoDB: Recommended for storing test results and environment configurations. (used only if you are willing to self-host your database)
 
 ### Supported Operating Systems
-- **Windows:** 10 or later
-- **Mac OS:** 10.15 (Catalina) or later
-- **Linux:** Ubuntu 20.04 or later, or equivalent distributions.
+- **Windows :** 10 or later
+- **Mac OS :** 10.15 (Catalina) or later
+- **Linux :** Ubuntu 20.04 or later, or equivalent distributions.
 
 ## 3. Installation
 
@@ -157,16 +157,16 @@ You can either launch it from MongoDB Atlas or from a local instance.
 
 #### Using MongoDB Atlas
 
-1. **Create an Account**: Sign up for a free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-2. **Create a Cluster**: Follow the instructions to create a new cluster.
-3. **Add IP Address**: Add your IP address to the list of authorized IPs. You can also allow access from any IP by setting it to `0.0.0.0/0`.
-4. **Get Connection String**: Obtain the connection string for your cluster and update the `MONGO_DB_URI` in your `.env` file.
+1. **Create an Account** : Sign up for a free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. **Create a Cluster** : Follow the instructions to create a new cluster.
+3. **Add IP Address** : Add your IP address to the list of authorized IPs. You can also allow access from any IP by setting it to `0.0.0.0/0`.
+4. **Get Connection String** : Obtain the connection string for your cluster and update the `MONGO_DB_URI` in your `.env` file.
 
 #### Using a Local Instance
 
-1. **Install MongoDB**: Download and install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
-2. **Start MongoDB**: Follow the instructions to start the MongoDB server on your local machine.
-3. **Update Connection String**: Use the local connection string (e.g., `mongodb://localhost:27017/dbname`) and update the `MONGO_DB_URI` in your `.env` file.
+1. **Install MongoDB** : Download and install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
+2. **Start MongoDB** : Follow the instructions to start the MongoDB server on your local machine.
+3. **Update Connection String** : Use the local connection string (e.g., `mongodb://localhost:27017/dbname`) and update the `MONGO_DB_URI` in your `.env` file.
 
 After setting up your MongoDB database, proceed to the next step.
 
