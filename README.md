@@ -194,7 +194,6 @@ The project is structured into various directories and files to ensure maintaina
 ### Frontend directory
 
 ### Root Directory
-- `.env`: Contains the environment variables needed for the application, such as API keys, database URLs, and other configurations.
 - `.gitignore`: Specifies files and directories to be ignored by Git.
 - `package.json`: Manages dependencies, scripts, and project metadata.
 - `package-lock.json`: Automatically generated file to lock dependency versions.
@@ -226,7 +225,7 @@ This is the main source folder containing all the application code and resources
 
 This structured organization ensures clarity, making the codebase easy to understand and modify.
 
-### Backtend directory
+### Backend directory 
 
 The backend of the application is organized to ensure clarity and maintainability. Below is the detailed structure and purpose of each directory and file:
 

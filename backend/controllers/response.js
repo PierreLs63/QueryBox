@@ -75,7 +75,7 @@ export const deleteResponse = async (req, res) => {
             await Response.findByIdAndDelete(responseId);
             await ParamRequest.findByIdAndUpdate(response.paramRequestId, { $pull: { responses: responseId } });
 
-            return res.status(200).json({ message: "Response deleted successfully user=user" });
+            return res.status(200).json({ message: "Response deleted successfully" });
         }
 
         // Sinon, vérifier les privilèges de l'utilisateur
