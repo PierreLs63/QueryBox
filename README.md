@@ -244,7 +244,6 @@ The backend of the application is organized to ensure clarity and maintainabilit
 - `index.js` : The main entry point of the backend application.
 - `package.json` : Manages the backend dependencies, scripts, and metadata.
 - `package-lock.json` : Locks the exact dependency versions for consistency.
-- `README.md` : Documentation file for the backend.
 
 ### Directories
 
